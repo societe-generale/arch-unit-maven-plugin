@@ -170,7 +170,7 @@
                 <version>2.5.3</version>
                 <configuration>
                     <stagingRepository>https://oss.sonatype.org/service/local/staging/deploy/maven2</stagingRepository>
-                    <tagNameFormat>archUnit_maven_plugin@{project.version}</tagNameFormat>
+                    <tagNameFormat>archUnit_maven_plugin_@{project.version}</tagNameFormat>
                     <localCheckout>true</localCheckout>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <pushChanges>false</pushChanges>
