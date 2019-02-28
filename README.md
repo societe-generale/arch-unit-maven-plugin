@@ -1,19 +1,28 @@
 # arch-unit-maven-plugin
 
 [![Build Status](https://travis-ci.org/societe-generale/arch-unit-maven-plugin.svg?branch=master)](https://travis-ci.org/societe-generale/arch-unit-maven-plugin)
+[![Coverage Status](https://coveralls.io/repos/github/societe-generale/arch-unit-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/societe-generale/arch-unit-maven-plugin?branch=master)
 
-**arch-unit-maven-plugin** is a wrapper around [ArchUnit](https://github.com/TNG/ArchUnit). **_ArchUnit_** is a free, simple and extensible library for checking the architecture of your Java code. That is, ArchUnit can check dependencies between packages and classes, layers and slices, check for cyclic dependencies and more. It does so by analyzing given Java bytecode, importing all classes into a Java code structure. ArchUnit's main focus is to automatically test architecture and coding rules, using any plain Java unit testing framework.
+**ArchUnit Maven plugin** is a simple Maven wrapper around [ArchUnit](https://github.com/TNG/ArchUnit) that enables you to easily make sure that all your projects follow the same architecture rules.
 
+ArchUnit is an awesome tool to implement some tricky checks that other static analysis tools can't implement at all : these checks run as unit tests, and guarantee that build will break if any violation is introduced, giving developers very fast feedback on their work. 
 
-## How to use ?
+Now, imagine you have 3 architecture rules, and you want 10 repositories to apply them... By default, you'll have no choice but copy/paste the rules (ie unit tests) in the 10 repositories. And if somebody removes one of these tests later, it may take months to realize it. 
 
-Add below plugin in your project to enable architecture test. Specify in **`projectPath`** property the path of the directory where the rules will be asserted 
+ArchUnit Maven plugin comes with a couple of rules out of the box (but you can add your own) : all you need is a bit of Maven config in your root pom.xml to make sure the rules you want to enforce are actually run at every build ! it then becomes very easy to have a proper governance on dozens of repositories.
+ 
+And if you want to have regular reporting on which projects are using ArchUnit Maven plugin, with which rules, you can use our [GitHub crawler](https://github.com/societe-generale/github-crawler) 
+  
+
+## How to use ArchUnit Maven plugin ? 
+
+Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned, so remove the ones you don't need. If needed, specify in ```<projectPath>``` property the path of the directory where the rules will be asserted 
 
 ```xml
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
   <configuration>
     <projectPath>${project.basedir}/target</projectPath>
     <rules>
@@ -40,42 +49,14 @@ Add below plugin in your project to enable architecture test. Specify in **`proj
 
 ## Adding custom rules
 
-If you want to add your custom test, you have to do the following
+### Add a single rule, for a given project
 
-### Add following maven dependency in your project pom
+If you need to add a rule that is specific to a project, you add a regular ArchUnit test, as described on ArchUnit's homepage. You'll need to import yourself archUnit dependency, so please make sure to use the same version as in the plugin, otherwise there may be strange behaviors. 
 
-```xml
-<dependency>
-    <groupId>com.tngtech.archunit</groupId>
-    <artifactId>archunit</artifactId>
-    <version>0.5.0</version>
-    <scope>test</scope>
-</dependency>
-```
+### Add a rule, and share it across projects
 
-> Make sure you use the same version as in the plugin - we may face incorrect behavior otherwise
+To be able to share a rule, you'll need to package it in a jar. Add the jar to your classpath, and then mention the ```<rule>``` with its fully qualified name as above, so that ArchUnit Maven plugin can instantiate it and run it. 
 
-### Create test file in **`src`** or **`test`** folder
+## Contribute !
 
-**Example**
-
-```java
-public class NoJavaUtilLoggingRule {
-  public void execute(String path) {
-        noClasses().should(USE_JAVA_UTIL_LOGGING).check(new ClassFileImporter().importPath(Paths.get(path)));
-  }
-}
-```
-
-### Apply the rule in **`pom.xml`**
-
-**Example**
-
-```xml
-<rule>NoJavaUtilLoggingRule</rule>
- ```
-###  Build your project
-
-```
-mvn clean install
-```
+If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of default ArchUnit Maven plugin package, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](./src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one. 
