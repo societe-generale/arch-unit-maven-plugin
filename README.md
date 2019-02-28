@@ -51,11 +51,11 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 
 ### Add a single rule, for a given project
 
-If you need to add a rule that is specific to a project, you add a regular ArchUnit test, as described on ArchUnit's homepage. You'll need to import yourself archUnit dependency, so please make sure to use the same version as in the plugin, otherwise there may be strange behaviors. 
+If you need to add a rule that is specific to a project, just add a regular ArchUnit test, as described on ArchUnit's homepage. You'll need to import yourself archUnit dependency, so please make sure to use the same version as in the plugin, otherwise there may be strange behaviors. ArchUnit Maven plugin will not be involved. 
 
 ### Add a rule, and share it across projects
 
-To be able to share a rule, you'll need to package it in a jar. Add the jar to your classpath, and then mention the ```<rule>``` with its fully qualified name as above, so that ArchUnit Maven plugin can instantiate it and run it. 
+To be able to share a rule, you'll need to package it in a jar. Add the jar to your classpath, and then mention the ```<rule>``` with its fully qualified name as above in the ```<rules>``` block, so that ArchUnit Maven plugin can instantiate it and run it. 
 
 ## Contribute !
 
