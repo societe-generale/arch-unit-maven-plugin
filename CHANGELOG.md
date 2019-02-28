@@ -11,6 +11,7 @@
 ### Removed
 
 ### Fixed
+- Coverall code coverage is now being reported
 
 ## [1.0.1] - 2019-02-28
 
