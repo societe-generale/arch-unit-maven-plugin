@@ -6,12 +6,13 @@ import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.runner.RunWith;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-@Slf4j
+/**
+ *  Using PowerMock is very often done for the wrong reasons, and is a smell of bad design. Code refactoring is preferred so that we don't need to mock private or static methods (typical use cases for PowerMock).
+ */
 public class NoPowerMockRuleTest implements ArchRuleTest {
 
     private static final String POWER_MOCK_RUNNER_CLASS_NAME = "PowerMockRunner";

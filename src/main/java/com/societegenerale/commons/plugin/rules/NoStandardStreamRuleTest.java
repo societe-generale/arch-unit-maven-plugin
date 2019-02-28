@@ -8,9 +8,7 @@ import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.lang.ArchCondition;
 
-/**
- * Created by agarg020917 on 11/10/2017.
- */
+
 public class NoStandardStreamRuleTest implements ArchRuleTest {
 
   private static final ArchCondition<JavaClass> notUseStandardStream = ACCESS_STANDARD_STREAMS;

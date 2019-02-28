@@ -10,7 +10,9 @@ import org.junit.Ignore;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
-
+/**
+ * This rule will make sure we don't have any test marked as @Ignore. Code is in source control, so we can always remove the test and add it back later, instead of having dozens of @Ignore tests piling up
+ */
 public class NoTestIgnoreRuleTest implements ArchRuleTest  {
 
   public void execute(String path) {

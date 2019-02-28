@@ -14,6 +14,11 @@ import java.util.List;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static java.util.stream.Collectors.toList;
 
+/**
+ * for Java8 projects, Joda time  deprecated, but a lot of people still use it out of years of habit. This rule will catch such instances, and remind developers they should use the Java 8 classes.
+ *
+ * @see <a href="https://www.joda.org/joda-time/">on Joda time website</a> : <i>from Java SE 8 onwards, users are asked to migrate to java.time (JSR-310) - a core part of the JDK which replaces this project</i>
+ */
 public class NoJodaTimeRuleTest implements ArchRuleTest {
 
   private static final String JODATIME_PACKAGE_PREFIX = "org.joda";

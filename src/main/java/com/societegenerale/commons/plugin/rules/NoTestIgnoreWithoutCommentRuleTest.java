@@ -10,6 +10,9 @@ import org.junit.Ignore;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
+/**
+ * You may want to accept having tests marked as @Ignore, but only if a comment is provided explaining the reason - there's nothing worse than a test marked as @Ignore, with no indication as of why it has been ignored.
+ */
 public class NoTestIgnoreWithoutCommentRuleTest implements ArchRuleTest  {
 
     public void execute(String path)  {

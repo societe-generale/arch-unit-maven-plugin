@@ -9,9 +9,10 @@ import com.tngtech.archunit.lang.SimpleConditionEvent;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 /**
- * Created by agarg020917 on 11/3/2017.
+ * Junit's asserts are pretty poor. We favor the use of AssertJ which is much richer and enables developers to write easily fluent assertions. Therefore we don't want to see people use basic Junit assertions.
+ *
+ * @see : http://joel-costigliola.github.io/assertj/assertj-core.html
  */
-
 public class NoJunitAssertRuleTest implements ArchRuleTest {
 
   @Override

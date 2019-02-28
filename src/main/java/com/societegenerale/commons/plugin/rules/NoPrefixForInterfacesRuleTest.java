@@ -11,6 +11,8 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 /**
  * Interfaces shouldn't be prefixed with "I" like it's the case in .Net
+ *
+ * @see : https://stackoverflow.com/a/2814831/3067542 for the rationale
  */
 public class NoPrefixForInterfacesRuleTest implements ArchRuleTest {
 
