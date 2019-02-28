@@ -39,12 +39,11 @@
         <java.version>1.8</java.version>
         <maven.core.version>3.3.9</maven.core.version>
         <maven.plugin.annotation.version>3.5</maven.plugin.annotation.version>
-        <tng.archunit.version>0.9.1</tng.archunit.version>
+        <tng.archunit.version>0.9.3</tng.archunit.version>
         <junit.version>4.12</junit.version>
         <lombok.version>1.16.6</lombok.version>
-        <jacoco.version>0.7.6.201602180812</jacoco.version>
-        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <jacoco.version>0.8.3</jacoco.version>
+
         <project.testresult.directory>${project.build.directory}/test-results
         </project.testresult.directory>
         <sonar.jacoco.itReportPath>${project.testresult.directory}/coverage/jacoco/jacoco-it.exec
