@@ -55,7 +55,42 @@ If you need to add a rule that is specific to a project, just add a regular Arch
 
 ### Add a rule, and share it across projects
 
-To be able to share a rule, you'll need to package it in a jar. Add the jar to your classpath, and then mention the ```<rule>``` with its fully qualified name as above in the ```<rules>``` block, so that ArchUnit Maven plugin can instantiate it and run it. 
+To be able to share a rule, you'll need to package it in a jar. Add the jar to your classpath (by mentioning it as a plugin's dependency for instance), and then mention the ```<rule>``` with its fully qualified name the ```<rules>``` block, so that ArchUnit Maven plugin can instantiate it and run it. 
+
+So your config would become something like :
+
+```xml
+<plugin>
+  <groupId>com.societegenerale.commons</groupId>
+  <artifactId>arch-unit-maven-plugin</artifactId>
+  <version>LATEST</version>
+  <configuration>
+    <projectPath>${project.basedir}/target</projectPath>
+    <rules>
+       <!-- using a rule available out of the box... -->
+       <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
+       
+       <!-- ... and a custom one, coming from a a package I declare as dependency in the plugin-->
+       <rule>com.myCompany.MyCustomRuleTest</rule>
+    </rules>
+  </configuration>
+  <executions>
+    <execution>
+      <phase>test</phase>
+      <goals>
+        <goal>arch-test</goal>
+      </goals>
+    </execution>
+  </executions>
+  <dependencies>
+    <dependency>
+        <groupId>com.myCompany</groupId>
+        <artifactId>custom-quality-rules</artifactId>
+        <version>1.0</version>
+    </dependency>
+  </dependencies>
+</plugin>
+```
 
 ## Contribute !
 
