@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin.rules;
+package com.societegenerale.commons.plugin;
 
 
 import static java.util.Arrays.stream;
