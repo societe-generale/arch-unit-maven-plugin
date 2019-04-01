@@ -11,7 +11,10 @@ import javax.inject.Inject;
 import static com.societegenerale.commons.plugin.utils.ArchUtils.NO_INJECTED_FIELD_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
-public class NoFieldInjectionTest implements ArchRuleTest  {
+/**
+ * We usually favor constructor injection rather than field injection : this way we can make sure the object is in correct state whenever it's used.
+ */
+public class NoInjectedFieldTest implements ArchRuleTest  {
 
 
     @Override
