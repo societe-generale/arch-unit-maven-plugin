@@ -3,8 +3,10 @@
 ## [Unreleased]
 
 ### Added
+- new rules : NoInjectedFieldTest and NoAutowiredFieldTest - thanks @nils-christian for the idea !
 
 ### Changed
+- upgraded to ArchUnit 0.10.2
 
 ### Deprecated
 
