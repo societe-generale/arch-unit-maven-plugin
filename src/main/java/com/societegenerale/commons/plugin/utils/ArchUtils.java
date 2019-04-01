@@ -39,6 +39,6 @@ public class ArchUtils {
   }
 
   public static boolean isJunitAssert(JavaClass javaClass) {
-    return (JUNIT_ASSERT_PACKAGE_NAME).equals(new StringBuilder().append(javaClass.getPackage()).append(PACKAGE_SEPARATOR).append(javaClass.getSimpleName()).toString());
+    return (JUNIT_ASSERT_PACKAGE_NAME).equals(new StringBuilder().append(javaClass.getPackageName()).append(PACKAGE_SEPARATOR).append(javaClass.getSimpleName()).toString());
   }
 }
