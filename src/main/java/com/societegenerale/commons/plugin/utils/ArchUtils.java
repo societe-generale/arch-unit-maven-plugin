@@ -15,12 +15,14 @@ public class ArchUtils {
 
   private static final String JUNIT_ASSERT_PACKAGE_NAME = "org.junit.Assert";
   public static final String NO_JUNIT_ASSERT_DESCRIPTION = "not use Junit assertions";
+
   public static final String TEST_CLASSES_FOLDER = "/test-classes";
   public static final String SRC_CLASSES_FOLDER = "/classes";
   private static final String PACKAGE_SEPARATOR = ".";
 
   public static final String NO_PREFIX_INTERFACE_VIOLATION_MESSAGE = " : Interfaces shouldn't be prefixed with \"I\" - caller doesn't need to know it's an interface + this is a .Net convention";
   public static final String POWER_MOCK_VIOLATION_MESSAGE= "Favor Mockito and proper dependency injection - ";
+  public static final String NO_INJECTED_FIELD_MESSAGE = "Favor constructor injection and avoid field injection - ";
   public static final String NO_JODA_VIOLATION_MESSAGE = "Use Java8 Date API instead of Joda library";
   public static final String NO_JUNIT_IGNORE_VIOLATION_MESSAGE  = "Tests shouldn't been ignored";
   public static final String NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE  = "Tests shouldn't been ignored without providing a comment explaining why";
