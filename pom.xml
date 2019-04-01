@@ -41,7 +41,9 @@
         <java.version>1.8</java.version>
         <maven.core.version>3.3.9</maven.core.version>
         <maven.plugin.annotation.version>3.5</maven.plugin.annotation.version>
-        <tng.archunit.version>0.9.3</tng.archunit.version>
+
+        <tng.archunit.version>0.10.2</tng.archunit.version>
+
         <junit.version>4.12</junit.version>
         <lombok.version>1.16.6</lombok.version>
         <jacoco.version>0.8.3</jacoco.version>
