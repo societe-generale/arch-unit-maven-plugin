@@ -1,6 +1,7 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithJunitAsserts;
+import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithJunit4Asserts;
+import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithJunit5Asserts;
 import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithOutJunitAsserts;
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClasses;
@@ -12,7 +13,8 @@ import static org.assertj.core.api.Assertions.*;
 
 public class NoJunitAssertRuleTestTest {
 
-    private JavaClasses testClassWithJunitAsserts = new ClassFileImporter().importClasses(TestClassWithJunitAsserts.class);
+    private JavaClasses testClassWithJunit4Asserts = new ClassFileImporter().importClasses(TestClassWithJunit4Asserts.class);
+    private JavaClasses testClassWithJunit5Asserts = new ClassFileImporter().importClasses(TestClassWithJunit5Asserts.class);
     private JavaClasses  tesClassesWithoutJunitAsserts = new ClassFileImporter().importClasses(TestClassWithOutJunitAsserts.class);
 
     @Test
@@ -24,11 +26,11 @@ public class NoJunitAssertRuleTestTest {
 
 
     @Test
-    public void shouldThrowViolations(){
+    public void shouldThrowForJunit4Violations(){
 
         Throwable validationExceptionThrown = catchThrowable(() -> {
 
-            classes().should(NoJunitAssertRuleTest.notUseJunitAssertRule()).check(testClassWithJunitAsserts);
+            classes().should(NoJunitAssertRuleTest.notUseJunitAssertRule()).check(testClassWithJunit4Asserts);
 
         });
 
@@ -38,7 +40,26 @@ public class NoJunitAssertRuleTestTest {
                 .hasMessageContaining("calls method <org.junit.Assert.fail(java.lang.String)");
 
         assertThat(validationExceptionThrown).hasMessageStartingWith("Architecture Violation")
-                .hasMessageContaining(TestClassWithJunitAsserts.class.getName())
+                .hasMessageContaining(TestClassWithJunit4Asserts.class.getName())
+                .hasMessageContaining(ArchUtils.NO_JUNIT_ASSERT_DESCRIPTION);
+    }
+
+    @Test
+    public void shouldThrowForJunit5Violations(){
+
+        Throwable validationExceptionThrown = catchThrowable(() -> {
+
+            classes().should(NoJunitAssertRuleTest.notUseJunitAssertRule()).check(testClassWithJunit5Asserts);
+
+        });
+
+        assertThat(validationExceptionThrown).isInstanceOf(AssertionError.class)
+                .hasMessageContaining("was violated (2 times)")
+                .hasMessageContaining("calls method <org.junit.jupiter.api.Assertions.assertEquals(java.lang.Object, java.lang.Object)")
+                .hasMessageContaining("org.junit.jupiter.api.Assertions.fail(java.lang.String)");
+
+        assertThat(validationExceptionThrown).hasMessageStartingWith("Architecture Violation")
+                .hasMessageContaining(TestClassWithJunit5Asserts.class.getName())
                 .hasMessageContaining(ArchUtils.NO_JUNIT_ASSERT_DESCRIPTION);
     }
 
