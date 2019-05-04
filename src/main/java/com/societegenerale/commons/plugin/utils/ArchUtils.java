@@ -13,7 +13,9 @@ import java.nio.file.Paths;
  */
 public class ArchUtils {
 
-  private static final String JUNIT_ASSERT_PACKAGE_NAME = "org.junit.Assert";
+  private static final String JUNIT4_ASSERT_PACKAGE_NAME = "org.junit.Assert";
+  private static final String JUNIT5_ASSERT_PACKAGE_NAME = "org.junit.jupiter.api.Assertions";
+
   public static final String NO_JUNIT_ASSERT_DESCRIPTION = "not use Junit assertions";
 
   public static final String TEST_CLASSES_FOLDER = "/test-classes";
@@ -42,6 +44,9 @@ public class ArchUtils {
   }
 
   public static boolean isJunitAssert(JavaClass javaClass) {
-    return (JUNIT_ASSERT_PACKAGE_NAME).equals(new StringBuilder().append(javaClass.getPackageName()).append(PACKAGE_SEPARATOR).append(javaClass.getSimpleName()).toString());
+
+    String packageNameToCheck=new StringBuilder().append(javaClass.getPackageName()).append(PACKAGE_SEPARATOR).append(javaClass.getSimpleName()).toString();
+
+    return JUNIT4_ASSERT_PACKAGE_NAME.equals(packageNameToCheck) || JUNIT5_ASSERT_PACKAGE_NAME.equals(packageNameToCheck);
   }
 }
