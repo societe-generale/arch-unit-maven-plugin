@@ -1,15 +1,18 @@
 package com.societegenerale.commons.plugin.rules;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
+import com.societegenerale.commons.plugin.model.ApplyOn;
+import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ArchUtilsTest {
 
@@ -54,7 +57,28 @@ public class ArchUtilsTest {
         noOfClasses++;
       }
     }
-    assertThat(noOfClasses).isEqualTo(12);
+    assertThat(noOfClasses).isEqualTo(15);
+  }
+
+  @Test
+  public void getPackageNameTestForConfigurableRuleWhenNoPackageAndScopeIsGiven() {
+
+    ConfigurableRule configurableRule = new ConfigurableRule();
+    String actualPackage =  ArchUtils.getPackageNameOnWhichRulesToApply(configurableRule);
+    assertThat(actualPackage).isEqualTo("/classes");
+
+  }
+
+  @Test
+  public void getPackageNameTestForConfigurableRuleWhenPackageAndScopeAreGiven() {
+
+    ConfigurableRule configurableRule = new ConfigurableRule();
+    ApplyOn applyOn = new ApplyOn();
+    applyOn.setPackageName("com.socgen.package");
+    applyOn.setScope("test");
+    configurableRule.setApplyOn(applyOn);
+    String actualPackage =  ArchUtils.getPackageNameOnWhichRulesToApply(configurableRule);
+    assertThat(actualPackage).isEqualTo("/test-classes/com/socgen/package");
   }
 
 }
