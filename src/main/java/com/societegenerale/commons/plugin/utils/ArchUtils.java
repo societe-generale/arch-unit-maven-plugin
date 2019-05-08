@@ -4,9 +4,15 @@ import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
+import com.tngtech.archunit.lang.ArchCondition;
+import com.tngtech.archunit.lang.ArchRule;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by agarg020917 on 11/17/2017.
@@ -64,5 +70,29 @@ public class ArchUtils {
             packageNameBuilder.append(SRC_CLASSES_FOLDER);
         }
         return packageNameBuilder.toString().replace(".", "/");
+    }
+
+    public static Map<String, Method> getAllMethodsWhichReturnAnArchCondition(Method[] methods) {
+
+        Map<String, Method> archConditionReturningMethods = new HashMap<>();
+        for (Method method : methods) {
+            if (method.getReturnType().equals(ArchCondition.class)) {
+                archConditionReturningMethods.put(method.getName(), method);
+            }
+        }
+        return archConditionReturningMethods;
+    }
+
+    public static Map<String, Field> getAllFieldsWhichAreArchRules(Field[] fields) {
+
+        Map<String, Field> archRuleFields = new HashMap<>();
+
+        for (Field field : fields) {
+            if (field.getType().equals(ArchRule.class)) {
+                archRuleFields.put(field.getName(), field);
+            }
+        }
+
+        return archRuleFields;
     }
 }

@@ -2,6 +2,7 @@ package com.societegenerale.commons.plugin.rules;
 
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
+import com.societegenerale.commons.plugin.rules.classesForTests.TestClassHavingArchRule;
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
@@ -10,7 +11,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -79,6 +83,29 @@ public class ArchUtilsTest {
     configurableRule.setApplyOn(applyOn);
     String actualPackage =  ArchUtils.getPackageNameOnWhichRulesToApply(configurableRule);
     assertThat(actualPackage).isEqualTo("/test-classes/com/socgen/package");
+  }
+
+
+  @Test
+  public void testGetAllMethodsWhichReturnAnArchCondition(){
+
+    Class<?> testClass = NoJunitAssertRuleTest.class;
+
+    Map<String, Method> actualArchConditionMap = ArchUtils.getAllMethodsWhichReturnAnArchCondition(testClass.getDeclaredMethods());
+
+    assertThat(actualArchConditionMap).isNotEmpty();
+
+  }
+
+  @Test
+  public void testGetAllFieldsWhichAreArchRules(){
+
+    Class<?> testClass = TestClassHavingArchRule.class;
+
+    Map<String, Field> actualArchConditionMap = ArchUtils.getAllFieldsWhichAreArchRules(testClass.getDeclaredFields());
+
+    assertThat(actualArchConditionMap).isNotEmpty();
+
   }
 
 }

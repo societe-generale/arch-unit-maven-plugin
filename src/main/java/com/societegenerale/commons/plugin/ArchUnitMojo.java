@@ -23,8 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.societegenerale.commons.plugin.utils.ArchUtils.getPackageNameOnWhichRulesToApply;
-import static com.societegenerale.commons.plugin.utils.ArchUtils.importAllClassesInPackage;
+import static com.societegenerale.commons.plugin.utils.ArchUtils.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static java.net.URLClassLoader.newInstance;
 
@@ -106,24 +105,8 @@ public class ArchUnitMojo extends AbstractMojo {
         for (ConfigurableRule rule : rules.getConfigurableRules()) {
             Class<?> customRuleClass = contextClassLoader.loadClass(rule.getRule());
 
-            Method[] methods = customRuleClass.getDeclaredMethods();
-
-            Map<String, Method> archConditionReturningMethods = new HashMap<>();
-            Map<String, Field> archRuleFields = new HashMap<>();
-
-            for (Method method : methods) {
-                if (method.getReturnType().equals(ArchCondition.class)) {
-                    archConditionReturningMethods.put(method.getName(), method);
-                }
-            }
-
-            Field[] fields = customRuleClass.getDeclaredFields();
-
-            for (Field field : fields) {
-                if (field.getType().equals(ArchRule.class)) {
-                    archRuleFields.put(field.getName(), field);
-                }
-            }
+            Map<String, Method> archConditionReturningMethods = getAllMethodsWhichReturnAnArchCondition(customRuleClass.getDeclaredMethods());
+            Map<String, Field> archRuleFields = getAllFieldsWhichAreArchRules(customRuleClass.getDeclaredFields());
 
             String packageOnRuleToApply = getPackageNameOnWhichRulesToApply(rule);
 
