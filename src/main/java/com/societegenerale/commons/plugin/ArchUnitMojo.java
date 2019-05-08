@@ -59,14 +59,14 @@ public class ArchUnitMojo extends AbstractMojo {
     @Override
     public void execute() throws MojoFailureException {
 
+        if (!rules.isValid()) {
+            throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
+        }
+
         try {
             ClassLoader contextClassLoader = fetchContextClassLoader();
 
             List<String> preConfiguredRules = rules.getPreConfiguredRules();
-
-            if (preConfiguredRules == null && rules.getConfigurableRules() == null) {
-                throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
-            }
 
             if (preConfiguredRules != null) {
                 invokePreConfiguredRules(contextClassLoader);

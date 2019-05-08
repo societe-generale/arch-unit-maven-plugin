@@ -20,4 +20,18 @@ public class Rules {
     return configurableRules;
   }
 
+  public boolean isValid(){
+
+    return (hasSomePreConfiguredRules() || hasSomeConfigurableRules());
+
+  }
+
+  private boolean hasSomePreConfiguredRules(){
+    return preConfiguredRules!=null && !preConfiguredRules.isEmpty();
+  }
+
+  private boolean hasSomeConfigurableRules(){
+    return configurableRules!=null && !configurableRules.isEmpty();
+  }
+
 }
