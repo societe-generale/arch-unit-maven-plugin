@@ -2,6 +2,7 @@ package com.societegenerale.commons.plugin;
 
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
+import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
@@ -50,6 +51,11 @@ public class ArchUnitMojo extends AbstractMojo {
         return rules;
     }
 
+    private List<String> ruleFailureList = new ArrayList<>();
+
+    private StringBuilder failRuleMessagesBuilder = new StringBuilder();
+
+
     @Override
     public void execute() throws MojoFailureException {
 
@@ -65,10 +71,18 @@ public class ArchUnitMojo extends AbstractMojo {
             if (preConfiguredRules != null) {
                 invokePreConfiguredRules(contextClassLoader);
             }
+
             if (rules.getConfigurableRules() != null) {
                 invokeConfigurableRules(contextClassLoader);
             }
 
+            if(failRuleMessagesBuilder != null)
+            {
+
+                String prefixContentForAllRuleFailures = ArchUtils.getPrefixContentForAllRuleFailures(ruleFailureList);
+
+                throw new MojoFailureException(prefixContentForAllRuleFailures + failRuleMessagesBuilder.toString());
+            }
         } catch (final Exception e) {
             throw new MojoFailureException(e.toString(), e);
         }
@@ -92,9 +106,15 @@ public class ArchUnitMojo extends AbstractMojo {
             throws ReflectiveOperationException {
 
         for (String rule : rules.getPreConfiguredRules()) {
-            Class<?> testClass = contextClassLoader.loadClass(rule);
-            Method method = testClass.getDeclaredMethod(EXECUTE_METHOD_NAME, String.class);
-            method.invoke(testClass.newInstance(), projectPath);
+
+            try {
+                Class<?> testClass = contextClassLoader.loadClass(rule);
+                Method method = testClass.getDeclaredMethod(EXECUTE_METHOD_NAME, String.class);
+                method.invoke(testClass.newInstance(), projectPath);
+            }catch (Exception e){
+                ruleFailureList.add(rule);
+                failRuleMessagesBuilder.append(e.getCause());
+            }
         }
     }
 
@@ -154,18 +174,29 @@ public class ArchUnitMojo extends AbstractMojo {
         }
     }
 
-    private static void invokeArchCustomRule(String projectPath, Field field, Class<?> testClass, String packageOnRuleToApply)
+    private void invokeArchCustomRule(String projectPath, Field field, Class<?> testClass, String packageOnRuleToApply)
             throws ReflectiveOperationException {
+
         field.setAccessible(true);
         ArchRule archRule = (ArchRule) field.get(testClass.newInstance());
-        archRule.check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
+        try {
+            archRule.check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
+        }catch(AssertionError  e){
+            ruleFailureList.add(field.getName());
+            failRuleMessagesBuilder.append(e.getMessage());
+        }
     }
 
     @SuppressWarnings(value = "unchecked")
-    private static void invokeArchUnitCondition(String projectPath, Method method, Class<?> ruleClass, String packageOnRuleToApply) throws ReflectiveOperationException {
+    private void invokeArchUnitCondition(String projectPath, Method method, Class<?> ruleClass, String packageOnRuleToApply) throws ReflectiveOperationException {
         Object ruleObject = method.invoke(ruleClass.newInstance());
         ArchCondition<JavaClass> archCondition = (ArchCondition<JavaClass>) ruleObject;
-        classes().should(archCondition).check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
+        try {
+            classes().should(archCondition).check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
+        }catch (AssertionError assertionError){
+            ruleFailureList.add(method.getName());
+            failRuleMessagesBuilder.append(assertionError.getMessage());
+        }
     }
 
 }
