@@ -37,7 +37,7 @@ public class ArchUtils {
     public static final String NO_JUNIT_IGNORE_VIOLATION_MESSAGE = "Tests shouldn't been ignored";
     public static final String NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE = "Tests shouldn't been ignored without providing a comment explaining why";
 
-    public static final String LINE_SEPARATOR = "line.separator";
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 
     private ArchUtils() {
@@ -101,9 +101,9 @@ public class ArchUtils {
 
         StringBuilder prefixBuilder = new StringBuilder("ArchUnit Maven plugin reported architecture failures listed below :");
 
-        prefixBuilder.append(System.getProperty(LINE_SEPARATOR))
-                .append(ruleFailureList.toString()).append(System.getProperty(LINE_SEPARATOR))
-                .append("More Details on failures are below :").append(System.getProperty(LINE_SEPARATOR));
+        prefixBuilder.append(LINE_SEPARATOR)
+                .append(ruleFailureList.toString()).append(LINE_SEPARATOR)
+                .append("More Details on failures are below :").append(LINE_SEPARATOR);
 
         return prefixBuilder.toString();
     }
