@@ -23,6 +23,13 @@
             <name>Vincent Fuchs</name>
             <email>vincent.fuchs@gmail.com</email>
         </developer>
+        
+        <developer>
+			<id>FanJups</id>
+			<name>Fanon Jupkwo</name>
+			<email>jupsfan@gmail.com</email>
+  		</developer>
+        
     </developers>
 
     <licenses>
@@ -256,6 +263,8 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
             </plugin>
+            
+            
         </plugins>
     </build>
 
