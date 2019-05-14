@@ -3,14 +3,23 @@
 ## [Unreleased]
 
 ### Added
-- new rules : NoInjectedFieldTest and NoAutowiredFieldTest - thanks [@nils-christian]((https://github.com/nils-christian) for the idea !
 
 ### Changed
-- upgraded to ArchUnit 0.10.2
 
 ### Deprecated
 
 ### Removed
+
+### Fixed
+
+## [1.0.2] - 2019-05-06
+
+### Added
+- new rules : NoInjectedFieldTest and NoAutowiredFieldTest - thanks [@nils-christian]((https://github.com/nils-christian) for the idea !
+
+### Changed
+- upgraded to ArchUnit 0.10.2
+- NoJunitAssertRuleTest now also catches JUnit 5 asserts
 
 ### Fixed
 - Coverall code coverage is now being reported

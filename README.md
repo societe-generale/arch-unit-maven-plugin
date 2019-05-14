@@ -22,7 +22,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <configuration>
     <projectPath>${project.basedir}/target</projectPath>
     <rules>
