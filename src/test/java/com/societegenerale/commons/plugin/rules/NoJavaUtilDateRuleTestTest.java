@@ -35,7 +35,15 @@ public class NoJavaUtilDateRuleTestTest {
 
 		});
 
-		assertThat(validationExceptionThrown).hasMessageContaining(ObjectWithJavaUtilDateReferences.class.getName())
+		assertThat(validationExceptionThrown).isInstanceOf(AssertionError.class)
+				.hasMessageContaining("was violated (4 times)")
+				.hasMessageContaining("ObjectWithJavaUtilDateReferences - field name: date")
+				.hasMessageContaining("ObjectWithJavaUtilDateReferences - line: 10")
+				.hasMessageContaining("ObjectWithJavaUtilDateReferences - line: 12")
+				.hasMessageContaining("ObjectWithJavaUtilDateReferences - line: 14");
+
+		assertThat(validationExceptionThrown).hasMessageStartingWith("Architecture Violation")
+				.hasMessageContaining(ObjectWithJavaUtilDateReferences.class.getName())
 				.hasMessageContaining(NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE);
 	}
 
