@@ -1,9 +1,6 @@
 package com.societegenerale.commons.plugin.rules;
 
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static java.util.stream.Collectors.toList;
-
-import java.util.List;
 
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClass;
@@ -49,26 +46,19 @@ public class NoJavaUtilDateRuleTest implements ArchRuleTest {
 			@Override
 			public void check(JavaClass item, ConditionEvents events) {
 
-				List<JavaField> classesWithJavaUtilDateFields = item.getAllFields().stream()
-						.filter(field -> isJavaUtilDateField(field)).collect(toList());
+				item.getAllFields().stream().filter(field -> isJavaUtilDateField(field)).forEach(field -> {
+					events.add(SimpleConditionEvent.violated(field,
+							ArchUtils.NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE + " - class: " + field.getOwner().getName()));
+				});
 
-				for (JavaField field : classesWithJavaUtilDateFields) {
-					events.add(SimpleConditionEvent.violated(field, ArchUtils.NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE
-							+ " - class: " + field.getOwner().getName() + " - field name: " + field.getName()));
-				}
-
-				List<JavaMethodCall> methodsUsingJavaUtilDateInternally = item.getCodeUnits().stream()
-						.filter(codeUnit -> codeUnit instanceof JavaMethod)
+				item.getCodeUnits().stream().filter(codeUnit -> codeUnit instanceof JavaMethod)
 						.flatMap(method -> method.getMethodCallsFromSelf().stream())
 						.filter(method -> method instanceof JavaMethodCall)
-						.filter(method -> isMethodUsingJavaUtilDateInternally(method)).collect(toList());
-
-				for (JavaMethodCall methodCall : methodsUsingJavaUtilDateInternally) {
-					events.add(SimpleConditionEvent.violated(methodCall.getOriginOwner(),
-							ArchUtils.NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE + " - class: "
-									+ methodCall.getOriginOwner().getName() + " - line: "
-									+ methodCall.getLineNumber()));
-				}
+						.filter(method -> isMethodUsingJavaUtilDateInternally(method)).forEach(methodCall -> {
+							events.add(SimpleConditionEvent.violated(methodCall.getOriginOwner(),
+									ArchUtils.NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE + " - class: "
+											+ methodCall.getOriginOwner().getName()));
+						});
 			}
 
 			@SuppressWarnings("deprecation")

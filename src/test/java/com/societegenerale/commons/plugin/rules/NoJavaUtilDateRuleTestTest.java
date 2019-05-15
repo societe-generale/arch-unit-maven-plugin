@@ -2,9 +2,8 @@ package com.societegenerale.commons.plugin.rules;
 
 import static com.societegenerale.commons.plugin.utils.ArchUtils.NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
@@ -27,29 +26,12 @@ public class NoJavaUtilDateRuleTestTest {
 			.importClasses(ObjectWithJavaUtilGregorianCalendar.class);
 
 	@Test
-	public void shouldCatchViolationsInStaticBlocksAndMemberFields() {
+	public void shouldThrowViolations() {
 
-		Throwable validationExceptionThrown = catchThrowable(() -> {
-
+		assertThatThrownBy(() -> {
 			classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate()).check(classesUsingJavaUtilDateLibrary);
-
-		});
-
-		assertThat(validationExceptionThrown).isInstanceOf(AssertionError.class)
-				.hasMessageContaining("was violated (4 times)")
-				.hasMessageContaining("ObjectWithJavaUtilDateReferences - field name: date")
-				.hasMessageContaining("ObjectWithJavaUtilDateReferences - line: 10")
-				.hasMessageContaining("ObjectWithJavaUtilDateReferences - line: 12")
-				.hasMessageContaining("ObjectWithJavaUtilDateReferences - line: 14");
-
-		assertThat(validationExceptionThrown).hasMessageStartingWith("Architecture Violation")
-				.hasMessageContaining(ObjectWithJavaUtilDateReferences.class.getName())
+		}).hasMessageContaining(ObjectWithJavaUtilDateReferences.class.getName())
 				.hasMessageContaining(NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE);
-	}
-
-	@Test(expected = Throwable.class)
-	public void shouldThrowNoJavaUtilDateViolation() {
-		classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate()).check(classesUsingJavaUtilDateLibrary);
 	}
 
 	@Test
@@ -63,6 +45,7 @@ public class NoJavaUtilDateRuleTestTest {
 
 		assertThatCode(() -> classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate())
 				.check(classesUsingJavaUtilGregorianCalendarLibrary)).doesNotThrowAnyException();
+
 	}
 
 }
