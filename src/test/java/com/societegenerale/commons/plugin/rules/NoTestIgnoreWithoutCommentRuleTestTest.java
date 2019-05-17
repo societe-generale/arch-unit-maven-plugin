@@ -6,6 +6,7 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
 
+import static com.societegenerale.commons.plugin.rules.NoTestIgnoreWithoutCommentRuleTest.NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static org.assertj.core.api.Assertions.*;
 
@@ -40,7 +41,7 @@ public class NoTestIgnoreWithoutCommentRuleTestTest {
                 .hasMessageContaining("was violated (2 times)")
                 .hasMessageContaining(TestClassWithIgnoreAtClassLevel.class.getName()+", at class level")
                 .hasMessageContaining(TestClassWithIgnoreAtMethodLevel.class.getName()+" - someIgnoredTestWithoutAComment, at method level")
-                .hasMessageContaining(ArchUtils.NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE);
+                .hasMessageContaining(NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE);
 
     }
 }

@@ -3,7 +3,6 @@ package com.societegenerale.commons.plugin;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
-import com.societegenerale.commons.plugin.utils.ArchUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -19,8 +18,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.societegenerale.commons.plugin.utils.ArchUtils.LINE_SEPARATOR;
-import static com.societegenerale.commons.plugin.utils.ArchUtils.PREFIX_ARCH_VIOLATION_MESSAGE;
 import static java.net.URLClassLoader.newInstance;
 
 /**
@@ -46,6 +43,10 @@ public class ArchUnitMojo extends AbstractMojo {
     }
 
     private RuleInvokerService ruleInvokerService = new RuleInvokerService();
+
+    private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Maven plugin reported architecture failures listed below :";
+
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     @Override
     public void execute() throws MojoFailureException {
@@ -109,9 +110,9 @@ public class ArchUnitMojo extends AbstractMojo {
         StringBuilder errorBuilder = new StringBuilder();
         if (StringUtils.isNotEmpty(errorMessage)) {
             errorBuilder
-                    .append("Rule Violated - ").append(rule).append(System.getProperty(LINE_SEPARATOR))
+                    .append("Rule Violated - ").append(rule).append(LINE_SEPARATOR)
                     .append(errorMessage)
-                    .append(System.getProperty(LINE_SEPARATOR));
+                    .append(LINE_SEPARATOR);
         }
         return errorBuilder.toString();
     }

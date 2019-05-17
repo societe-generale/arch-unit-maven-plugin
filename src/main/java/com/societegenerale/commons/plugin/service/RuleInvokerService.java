@@ -13,12 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.societegenerale.commons.plugin.rules.ArchRuleTest.SRC_CLASSES_FOLDER;
+import static com.societegenerale.commons.plugin.rules.ArchRuleTest.TEST_CLASSES_FOLDER;
 import static com.societegenerale.commons.plugin.utils.ArchUtils.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 public class RuleInvokerService {
 
     private static final String EXECUTE_METHOD_NAME = "execute";
+
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
 
     public String invokePreConfiguredRule(Class<?> ruleClass, String projectPath) {
 
@@ -80,7 +85,7 @@ public class RuleInvokerService {
         try {
             archRule.check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
         } catch (AssertionError e) {
-            errorMessageBuilder.append(e.getMessage()).append(System.getProperty(LINE_SEPARATOR));
+            errorMessageBuilder.append(e.getMessage()).append(LINE_SEPARATOR);
         }
         return errorMessageBuilder.toString();
     }
@@ -93,7 +98,7 @@ public class RuleInvokerService {
         try {
             classes().should(archCondition).check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
         } catch (AssertionError e) {
-            errorMessageBuilder.append(e.getMessage()).append(System.getProperty(LINE_SEPARATOR));
+            errorMessageBuilder.append(e.getMessage()).append(LINE_SEPARATOR);
         }
         return errorMessageBuilder.toString();
     }
