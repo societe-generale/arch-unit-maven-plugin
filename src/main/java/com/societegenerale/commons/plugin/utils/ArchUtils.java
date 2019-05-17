@@ -20,14 +20,11 @@ import java.util.Map;
  */
 public class ArchUtils {
 
-    private static final String JUNIT4_ASSERT_PACKAGE_NAME = "org.junit.Assert";
-    private static final String JUNIT5_ASSERT_PACKAGE_NAME = "org.junit.jupiter.api.Assertions";
-
     public static final String NO_JUNIT_ASSERT_DESCRIPTION = "not use Junit assertions";
 
     public static final String TEST_CLASSES_FOLDER = "/test-classes";
     public static final String SRC_CLASSES_FOLDER = "/classes";
-    private static final String PACKAGE_SEPARATOR = ".";
+
 
     public static final String NO_PREFIX_INTERFACE_VIOLATION_MESSAGE = " : Interfaces shouldn't be prefixed with \"I\" - caller doesn't need to know it's an interface + this is a .Net convention";
     public static final String POWER_MOCK_VIOLATION_MESSAGE = "Favor Mockito and proper dependency injection - ";
@@ -53,60 +50,7 @@ public class ArchUtils {
         return new ClassFileImporter().importPath(Paths.get(path));
     }
 
-    public static boolean isJunitAssert(JavaClass javaClass) {
 
-        String packageNameToCheck = new StringBuilder().append(javaClass.getPackageName()).append(PACKAGE_SEPARATOR).append(javaClass.getSimpleName()).toString();
 
-        return JUNIT4_ASSERT_PACKAGE_NAME.equals(packageNameToCheck) || JUNIT5_ASSERT_PACKAGE_NAME.equals(packageNameToCheck);
-    }
 
-    public static String getPackageNameOnWhichRulesToApply(ConfigurableRule rule) {
-
-        StringBuilder packageNameBuilder = new StringBuilder(SRC_CLASSES_FOLDER);
-
-        if (rule.getApplyOn() != null) {
-            if (rule.getApplyOn().getScope() != null && "test".equals(rule.getApplyOn().getScope())) {
-                packageNameBuilder = new StringBuilder(TEST_CLASSES_FOLDER);
-            }
-            packageNameBuilder.append("/").append(rule.getApplyOn().getPackageName());
-
-        }
-        return packageNameBuilder.toString().replace(".", "/");
-    }
-
-    public static Map<String, Method> getAllMethodsWhichReturnAnArchCondition(Method[] methods) {
-
-        Map<String, Method> archConditionReturningMethods = new HashMap<>();
-        for (Method method : methods) {
-            if (method.getReturnType().equals(ArchCondition.class)) {
-                archConditionReturningMethods.put(method.getName(), method);
-            }
-        }
-        return archConditionReturningMethods;
-    }
-
-    public static Map<String, Field> getAllFieldsWhichAreArchRules(Field[] fields) {
-
-        Map<String, Field> archRuleFields = new HashMap<>();
-
-        for (Field field : fields) {
-            if (field.getType().equals(ArchRule.class)) {
-                archRuleFields.put(field.getName(), field);
-            }
-        }
-
-        return archRuleFields;
-    }
-
-    public static String prepareErrorMessageForRuleFailures(String rule, String errorMessage) {
-
-        StringBuilder errorBuilder = new StringBuilder();
-        if (StringUtils.isNotEmpty(errorMessage)) {
-            errorBuilder
-                    .append("Rule Violated - ").append(rule).append(System.getProperty(LINE_SEPARATOR))
-                    .append(errorMessage)
-                    .append(System.getProperty(LINE_SEPARATOR));
-        }
-        return errorBuilder.toString();
-    }
 }

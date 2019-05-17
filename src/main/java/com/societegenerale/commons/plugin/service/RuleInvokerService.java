@@ -40,7 +40,7 @@ public class RuleInvokerService {
         Map<String, Method> archConditionReturningMethods = getAllMethodsWhichReturnAnArchCondition(customRuleClass.getDeclaredMethods());
         Map<String, Field> archRuleFields = getAllFieldsWhichAreArchRules(customRuleClass.getDeclaredFields());
 
-        String packageOnRuleToApply = getPackageNameOnWhichRulesToApply(rule);
+        String packageOnRuleToApply = getPackageNameOnWhichToApplyRules(rule);
 
         List<String> ruleChecks = rule.getChecks();
         final Map<String, Method> fileterdArchConditions = new HashMap<>();
@@ -96,6 +96,44 @@ public class RuleInvokerService {
             errorMessageBuilder.append(e.getMessage()).append(System.getProperty(LINE_SEPARATOR));
         }
         return errorMessageBuilder.toString();
+    }
+
+    private String getPackageNameOnWhichToApplyRules(ConfigurableRule rule) {
+
+        StringBuilder packageNameBuilder = new StringBuilder(SRC_CLASSES_FOLDER);
+
+        if (rule.getApplyOn() != null) {
+            if (rule.getApplyOn().getScope() != null && "test".equals(rule.getApplyOn().getScope())) {
+                packageNameBuilder = new StringBuilder(TEST_CLASSES_FOLDER);
+            }
+            packageNameBuilder.append("/").append(rule.getApplyOn().getPackageName());
+
+        }
+        return packageNameBuilder.toString().replace(".", "/");
+    }
+
+    private Map<String, Method> getAllMethodsWhichReturnAnArchCondition(Method[] methods) {
+
+        Map<String, Method> archConditionReturningMethods = new HashMap<>();
+        for (Method method : methods) {
+            if (method.getReturnType().equals(ArchCondition.class)) {
+                archConditionReturningMethods.put(method.getName(), method);
+            }
+        }
+        return archConditionReturningMethods;
+    }
+
+    private Map<String, Field> getAllFieldsWhichAreArchRules(Field[] fields) {
+
+        Map<String, Field> archRuleFields = new HashMap<>();
+
+        for (Field field : fields) {
+            if (field.getType().equals(ArchRule.class)) {
+                archRuleFields.put(field.getName(), field);
+            }
+        }
+
+        return archRuleFields;
     }
 
 }

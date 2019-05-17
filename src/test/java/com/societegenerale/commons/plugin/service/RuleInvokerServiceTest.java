@@ -7,7 +7,6 @@ import com.societegenerale.commons.plugin.rules.classesForTests.DummyCustomRule;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,8 +24,6 @@ public class RuleInvokerServiceTest {
         assertThat(errorMessage).isNotEmpty();
         assertThat(errorMessage).contains("Architecture Violation");
         assertThat(errorMessage).contains("Rule 'no classes should access standard streams' was violated ");
-
-
     }
 
     @Test

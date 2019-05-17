@@ -15,6 +15,10 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
  */
 public class NoJunitAssertRuleTest implements ArchRuleTest {
 
+  private static final String JUNIT4_ASSERT_PACKAGE_NAME = "org.junit.Assert";
+  private static final String JUNIT5_ASSERT_PACKAGE_NAME = "org.junit.jupiter.api.Assertions";
+  private static final String PACKAGE_SEPARATOR = ".";
+
   @Override
   public void execute(String path) {
     classes().should(notUseJunitAssertRule()).check(ArchUtils.importAllClassesInPackage(path, ArchUtils.TEST_CLASSES_FOLDER));
@@ -26,10 +30,17 @@ public class NoJunitAssertRuleTest implements ArchRuleTest {
       @Override
       public void check(JavaClass item, ConditionEvents events) {
 
-        item.getMethodCallsFromSelf().stream().filter(methodCall -> ArchUtils.isJunitAssert(methodCall.getTarget().getOwner()))
+        item.getMethodCallsFromSelf().stream().filter(methodCall -> isJunitAssert(methodCall.getTarget().getOwner()))
             .forEach(junitAssertCall -> events.add(SimpleConditionEvent.violated(junitAssertCall,
                 "Favor AssertJ assertions over Junit's - " + junitAssertCall.getDescription())));
       }
     };
+  }
+
+   static boolean isJunitAssert(JavaClass javaClass) {
+
+    String packageNameToCheck = new StringBuilder().append(javaClass.getPackageName()).append(PACKAGE_SEPARATOR).append(javaClass.getSimpleName()).toString();
+
+    return JUNIT4_ASSERT_PACKAGE_NAME.equals(packageNameToCheck) || JUNIT5_ASSERT_PACKAGE_NAME.equals(packageNameToCheck);
   }
 }

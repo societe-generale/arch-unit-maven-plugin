@@ -19,6 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.societegenerale.commons.plugin.utils.ArchUtils.LINE_SEPARATOR;
 import static com.societegenerale.commons.plugin.utils.ArchUtils.PREFIX_ARCH_VIOLATION_MESSAGE;
 import static java.net.URLClassLoader.newInstance;
 
@@ -87,7 +88,7 @@ public class ArchUnitMojo extends AbstractMojo {
             for (String rule : rules.getPreConfiguredRules()) {
                 Class<?> testClass = contextClassLoader.loadClass(rule);
                 String errorMessage = ruleInvokerService.invokePreConfiguredRule(testClass, projectPath);
-                errorListBuilder.append(ArchUtils.prepareErrorMessageForRuleFailures(rule, errorMessage));
+                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
 
             }
         }
@@ -96,10 +97,22 @@ public class ArchUnitMojo extends AbstractMojo {
             for (ConfigurableRule rule : rules.getConfigurableRules()) {
                 Class<?> customRuleClass = contextClassLoader.loadClass(rule.getRule());
                 String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleClass, rule, projectPath);
-                errorListBuilder.append(ArchUtils.prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
+                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
             }
         }
 
         return errorListBuilder.toString();
+    }
+
+    private String prepareErrorMessageForRuleFailures(String rule, String errorMessage) {
+
+        StringBuilder errorBuilder = new StringBuilder();
+        if (StringUtils.isNotEmpty(errorMessage)) {
+            errorBuilder
+                    .append("Rule Violated - ").append(rule).append(System.getProperty(LINE_SEPARATOR))
+                    .append(errorMessage)
+                    .append(System.getProperty(LINE_SEPARATOR));
+        }
+        return errorBuilder.toString();
     }
 }
