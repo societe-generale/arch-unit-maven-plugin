@@ -16,35 +16,43 @@ import com.tngtech.archunit.core.importer.ClassFileImporter;
 
 public class NoJavaUtilDateRuleTestTest {
 
-	private JavaClasses classesUsingJavaUtilDateLibrary = new ClassFileImporter()
-			.importClasses(ObjectWithJavaUtilDateReferences.class);
-
-	private JavaClasses classesUsingJava8Library = new ClassFileImporter().importClasses(ObjectWithJava8TimeLib.class);
-	private JavaClasses classesUsingJavaTextDateFormatLibrary = new ClassFileImporter()
-			.importClasses(ObjectWithJavaTextDateFormat.class);
-	private JavaClasses classesUsingJavaUtilGregorianCalendarLibrary = new ClassFileImporter()
-			.importClasses(ObjectWithJavaUtilGregorianCalendar.class);
-
 	@Test
 	public void shouldThrowViolations() {
 
-		assertThatThrownBy(() -> {
-			classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate()).check(classesUsingJavaUtilDateLibrary);
-		}).hasMessageContaining(ObjectWithJavaUtilDateReferences.class.getName())
-				.hasMessageContaining(NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE);
+		assertExceptionIsThrownFor(ObjectWithJavaUtilDateReferences.ObjectWithAdateField.class);
+
+
 	}
 
 	@Test
 	public void shouldNotThrowAnyViolation() {
-		assertThatCode(
-				() -> classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate()).check(classesUsingJava8Library))
-						.doesNotThrowAnyException();
+
+		assertNoExceptionIsThrownFor(ObjectWithJava8TimeLib.class);
+
+		assertNoExceptionIsThrownFor(ObjectWithJavaTextDateFormat.class);
+
+		assertNoExceptionIsThrownFor(ObjectWithJavaUtilGregorianCalendar.class);
+
+	}
+
+	private void assertExceptionIsThrownFor(Class clazz){
+
+		JavaClasses classToTest= new ClassFileImporter().importClasses(clazz);
+
+		assertThatThrownBy(() -> {
+			classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate()).check(classToTest);
+		}).hasMessageContaining(ObjectWithJavaUtilDateReferences.class.getName())
+				.hasMessageContaining(NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE);
+
+	}
+
+
+	private void assertNoExceptionIsThrownFor(Class clazz){
+
+		JavaClasses classToTest= new ClassFileImporter().importClasses(clazz);
 
 		assertThatCode(() -> classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate())
-				.check(classesUsingJavaTextDateFormatLibrary)).doesNotThrowAnyException();
-
-		assertThatCode(() -> classes().should(NoJavaUtilDateRuleTest.notUseJavaUtilDate())
-				.check(classesUsingJavaUtilGregorianCalendarLibrary)).doesNotThrowAnyException();
+				.check(classToTest)).doesNotThrowAnyException();
 
 	}
 
