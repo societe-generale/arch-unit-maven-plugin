@@ -8,6 +8,7 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
 
+import static com.societegenerale.commons.plugin.rules.NoPrefixForInterfacesRuleTest.NO_PREFIX_INTERFACE_VIOLATION_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static org.assertj.core.api.Assertions.*;
 
@@ -37,7 +38,7 @@ public class NoPrefixForInterfacesRuleTestTest {
                 .hasMessageStartingWith("Architecture Violation")
                 .hasMessageContaining("was violated (1 times)")
                 .hasMessageContaining(IInterfaceWithIncorrectName.class.getName())
-                .hasMessageContaining(ArchUtils.NO_PREFIX_INTERFACE_VIOLATION_MESSAGE);
+                .hasMessageContaining(NO_PREFIX_INTERFACE_VIOLATION_MESSAGE);
 
     }
 

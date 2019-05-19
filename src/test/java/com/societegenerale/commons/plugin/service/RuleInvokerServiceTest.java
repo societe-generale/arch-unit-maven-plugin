@@ -3,92 +3,89 @@ package com.societegenerale.commons.plugin.service;
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest;
-import com.societegenerale.commons.plugin.rules.classesForTests.CustomRuleForTest;
+import com.societegenerale.commons.plugin.rules.classesForTests.DummyCustomRule;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RuleInvokerServiceTest {
 
+    RuleInvokerService ruleInvokerService = new RuleInvokerService();
+
+    ConfigurableRule configurableRule = new ConfigurableRule();
 
     @Test
-    public void testInvokePreConfiguredRulesMethod() {
+    public void shouldInvokePreConfiguredRulesMethod() {
 
-        Class<?> ruleClass = NoStandardStreamRuleTest.class;
-
-        RuleInvokerService ruleInvokerService = new RuleInvokerService();
-        String errorMessage = ruleInvokerService.invokePreConfiguredRule(ruleClass, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
+        String errorMessage = ruleInvokerService.invokePreConfiguredRule(NoStandardStreamRuleTest.class, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
 
         assertThat(errorMessage).isNotEmpty();
         assertThat(errorMessage).contains("Architecture Violation");
         assertThat(errorMessage).contains("Rule 'no classes should access standard streams' was violated ");
-
-
     }
 
     @Test
-    public void testCustomConfiguredRuleChecksWithScopeTest() throws ReflectiveOperationException {
+    public void shouldExecute2ConfigurableRulesOnTest() throws ReflectiveOperationException {
 
-        Class<?> ruleClass = CustomRuleForTest.class;
-
-        ConfigurableRule configurableRule = new ConfigurableRule();
-        ApplyOn applyOn = new ApplyOn();
-        applyOn.setPackageName("com.societegenerale.commons.plugin.rules");
-        applyOn.setScope("test");
-
-        List<String> checks = new ArrayList<>();
-        checks.add("noGenericExceptionThrown");
-        checks.add("notUseJunitAssertRule");
+        ApplyOn applyOn = new ApplyOn("com.societegenerale.commons.plugin.rules","test");
 
         configurableRule.setApplyOn(applyOn);
-        configurableRule.setChecks(checks);
+        configurableRule.setChecks(Arrays.asList("annotatedWithTest","resideInMyPackage"));
 
-        RuleInvokerService ruleInvokerService = new RuleInvokerService();
-
-        String errorMessage = ruleInvokerService.invokeConfigurableRules(ruleClass, configurableRule, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
+        String errorMessage = ruleInvokerService.invokeConfigurableRules(DummyCustomRule.class, configurableRule, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
         assertThat(errorMessage).isNotEmpty();
         assertThat(errorMessage).contains("Architecture Violation");
-        assertThat(errorMessage).contains("Rule 'classes should not use Junit assertions' was violated (4 times)");
-        assertThat(errorMessage).contains("no classes should throw generic exceptions' was violated (1 times)");
+        assertThat(errorMessage).contains("classes should be annotated with @Test");
+        assertThat(errorMessage).contains("classes should reside in a package 'myPackage'");
+    }
+
+    @Test
+    public void shouldExecuteOnlyTheConfiguredRule() throws ReflectiveOperationException {
+
+        ApplyOn applyOn = new ApplyOn("com.societegenerale.commons.plugin.rules","test");
+
+        configurableRule.setApplyOn(applyOn);
+        configurableRule.setChecks(Arrays.asList("annotatedWithTest"));
+
+        String errorMessage = ruleInvokerService.invokeConfigurableRules(DummyCustomRule.class, configurableRule, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
+        assertThat(errorMessage).isNotEmpty();
+        assertThat(errorMessage).contains("Architecture Violation");
+        assertThat(errorMessage).contains("classes should be annotated with @Test");
+        assertThat(errorMessage).doesNotContain("classes should reside in a package 'myPackage'");
     }
 
 
     @Test
-    public void testCustomConfiguredRuleWithScopeMain() throws ReflectiveOperationException {
+    public void shouldExecuteAllRulesFromConfigurableClassByDefault() throws ReflectiveOperationException {
 
-        Class<?> ruleClass = CustomRuleForTest.class;
+        Class<?> ruleClass = DummyCustomRule.class;
 
-        ConfigurableRule configurableRule = new ConfigurableRule();
-        ApplyOn applyOn = new ApplyOn();
-        applyOn.setPackageName("com.societegenerale.commons.plugin.rules");
-        applyOn.setScope("main");
+        ApplyOn applyOn = new ApplyOn("com.societegenerale.commons.plugin.rules","main");
+
         configurableRule.setApplyOn(applyOn);
 
-        RuleInvokerService ruleInvokerService = new RuleInvokerService();
         String errorMessage = ruleInvokerService.invokeConfigurableRules(ruleClass, configurableRule, "./target/classes/com/societegenerale/commons/plugin/rules");
-        assertThat(errorMessage).isEmpty();
 
+        assertThat(errorMessage).isNotEmpty();
+        assertThat(errorMessage).contains("Architecture Violation");
+        assertThat(errorMessage).contains("classes should be annotated with @Test");
+        assertThat(errorMessage).contains("classes should reside in a package 'myPackage'");
     }
 
     @Test
-    public void testCustomConfiguredRuleWithScopeTest() throws ReflectiveOperationException {
+    public void shouldExecuteAllRulesOnSpecificPackageInTest() throws ReflectiveOperationException {
 
-        Class<?> ruleClass = CustomRuleForTest.class;
+        Class<?> ruleClass = DummyCustomRule.class;
 
-        ConfigurableRule configurableRule = new ConfigurableRule();
-        ApplyOn applyOn = new ApplyOn();
-        applyOn.setPackageName("com.societegenerale.commons.plugin.rules");
-        applyOn.setScope("test");
+        ApplyOn applyOn = new ApplyOn("com.societegenerale.commons.plugin.rules","test");
         configurableRule.setApplyOn(applyOn);
-        RuleInvokerService ruleInvokerService = new RuleInvokerService();
 
-        String errorMessage = ruleInvokerService.invokeConfigurableRules(ruleClass, configurableRule, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
+        String errorMessage = ruleInvokerService.invokeConfigurableRules(ruleClass, configurableRule, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests/specificCase");
         assertThat(errorMessage).isNotEmpty();
         assertThat(errorMessage).contains("Architecture Violation");
-        assertThat(errorMessage).contains("Rule 'classes should not use Junit assertions' was violated (4 times)");
-        assertThat(errorMessage).contains("no classes should throw generic exceptions' was violated (1 times)");
+        assertThat(errorMessage).contains("Rule 'classes should be annotated with @Test' was violated (1 times)");
+        assertThat(errorMessage).contains("Rule 'classes should reside in a package 'myPackage'' was violated (1 times)");
     }
 }

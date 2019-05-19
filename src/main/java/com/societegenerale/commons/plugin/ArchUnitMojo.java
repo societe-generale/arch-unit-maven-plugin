@@ -3,7 +3,6 @@ package com.societegenerale.commons.plugin;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
-import com.societegenerale.commons.plugin.utils.ArchUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -19,7 +18,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.societegenerale.commons.plugin.utils.ArchUtils.PREFIX_ARCH_VIOLATION_MESSAGE;
 import static java.net.URLClassLoader.newInstance;
 
 /**
@@ -45,6 +43,10 @@ public class ArchUnitMojo extends AbstractMojo {
     }
 
     private RuleInvokerService ruleInvokerService = new RuleInvokerService();
+
+    private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Maven plugin reported architecture failures listed below :";
+
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
     @Override
     public void execute() throws MojoFailureException {
@@ -87,7 +89,7 @@ public class ArchUnitMojo extends AbstractMojo {
             for (String rule : rules.getPreConfiguredRules()) {
                 Class<?> testClass = contextClassLoader.loadClass(rule);
                 String errorMessage = ruleInvokerService.invokePreConfiguredRule(testClass, projectPath);
-                errorListBuilder.append(ArchUtils.prepareErrorMessageForRuleFailures(rule, errorMessage));
+                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
 
             }
         }
@@ -96,10 +98,22 @@ public class ArchUnitMojo extends AbstractMojo {
             for (ConfigurableRule rule : rules.getConfigurableRules()) {
                 Class<?> customRuleClass = contextClassLoader.loadClass(rule.getRule());
                 String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleClass, rule, projectPath);
-                errorListBuilder.append(ArchUtils.prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
+                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
             }
         }
 
         return errorListBuilder.toString();
+    }
+
+    private String prepareErrorMessageForRuleFailures(String rule, String errorMessage) {
+
+        StringBuilder errorBuilder = new StringBuilder();
+        if (StringUtils.isNotEmpty(errorMessage)) {
+            errorBuilder
+                    .append("Rule Violated - ").append(rule).append(LINE_SEPARATOR)
+                    .append(errorMessage)
+                    .append(LINE_SEPARATOR);
+        }
+        return errorBuilder.toString();
     }
 }

@@ -17,9 +17,11 @@ public class NoPowerMockRuleTest implements ArchRuleTest {
 
     private static final String POWER_MOCK_RUNNER_CLASS_NAME = "PowerMockRunner";
 
+    protected static final String POWER_MOCK_VIOLATION_MESSAGE = "Favor Mockito and proper dependency injection - ";
+
     @Override
     public void execute(String path) {
-        classes().should(notUsePowerMock()).check(ArchUtils.importAllClassesInPackage(path, ArchUtils.TEST_CLASSES_FOLDER));
+        classes().should(notUsePowerMock()).check(ArchUtils.importAllClassesInPackage(path, TEST_CLASSES_FOLDER));
     }
 
     public static ArchCondition<JavaClass> notUsePowerMock() {
@@ -36,7 +38,7 @@ public class NoPowerMockRuleTest implements ArchRuleTest {
                     if (runWithAnnotation.isPresent() && runWithAnnotation.get().toString().contains(POWER_MOCK_RUNNER_CLASS_NAME)) {
 
                         events.add(SimpleConditionEvent.violated(testClass,
-                                ArchUtils.POWER_MOCK_VIOLATION_MESSAGE + testClass.getName()));
+                                POWER_MOCK_VIOLATION_MESSAGE + testClass.getName()));
                     }
                 }
                 catch(RuntimeException e){

@@ -10,6 +10,11 @@ public class ApplyOn {
   @Parameter(property = "scope")
   private String scope;
 
+  public ApplyOn(String packageName, String scope) {
+    this.packageName = packageName;
+    this.scope = scope;
+  }
+
   public String getPackageName() {
     return packageName;
   }

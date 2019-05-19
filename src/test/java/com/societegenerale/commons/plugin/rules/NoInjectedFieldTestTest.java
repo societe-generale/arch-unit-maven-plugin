@@ -6,8 +6,8 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
 
+import static com.societegenerale.commons.plugin.rules.NoInjectedFieldTest.NO_INJECTED_FIELD_MESSAGE;
 import static com.societegenerale.commons.plugin.rules.NoInjectedFieldTest.notBeInjected;
-import static com.societegenerale.commons.plugin.utils.ArchUtils.NO_INJECTED_FIELD_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static org.assertj.core.api.Assertions.*;
 

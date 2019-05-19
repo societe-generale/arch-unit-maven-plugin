@@ -15,13 +15,15 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
  */
 public class NoTestIgnoreWithoutCommentRuleTest implements ArchRuleTest  {
 
+    protected static final String NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE = "Tests shouldn't been ignored without providing a comment explaining why";
+
     public void execute(String path)  {
-        classes().should(notBeIgnoredWithoutAComment()).check(ArchUtils.importAllClassesInPackage(path, ArchUtils.TEST_CLASSES_FOLDER));
+        classes().should(notBeIgnoredWithoutAComment()).check(ArchUtils.importAllClassesInPackage(path, TEST_CLASSES_FOLDER));
     }
 
     public static ArchCondition<JavaClass> notBeIgnoredWithoutAComment() {
 
-        return new ArchCondition<JavaClass>(ArchUtils.NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE) {
+        return new ArchCondition<JavaClass>(NO_JUNIT_IGNORE_WITHOUT_COMMENT_VIOLATION_MESSAGE) {
 
             @Override
             @SuppressWarnings("squid:S1166")

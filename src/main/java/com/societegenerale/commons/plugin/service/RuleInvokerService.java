@@ -13,12 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.societegenerale.commons.plugin.rules.ArchRuleTest.SRC_CLASSES_FOLDER;
+import static com.societegenerale.commons.plugin.rules.ArchRuleTest.TEST_CLASSES_FOLDER;
 import static com.societegenerale.commons.plugin.utils.ArchUtils.*;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 
 public class RuleInvokerService {
 
     private static final String EXECUTE_METHOD_NAME = "execute";
+
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
 
     public String invokePreConfiguredRule(Class<?> ruleClass, String projectPath) {
 
@@ -40,7 +45,7 @@ public class RuleInvokerService {
         Map<String, Method> archConditionReturningMethods = getAllMethodsWhichReturnAnArchCondition(customRuleClass.getDeclaredMethods());
         Map<String, Field> archRuleFields = getAllFieldsWhichAreArchRules(customRuleClass.getDeclaredFields());
 
-        String packageOnRuleToApply = getPackageNameOnWhichRulesToApply(rule);
+        String packageOnRuleToApply = getPackageNameOnWhichToApplyRules(rule);
 
         List<String> ruleChecks = rule.getChecks();
         final Map<String, Method> fileterdArchConditions = new HashMap<>();
@@ -80,7 +85,7 @@ public class RuleInvokerService {
         try {
             archRule.check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
         } catch (AssertionError e) {
-            errorMessageBuilder.append(e.getMessage()).append(System.getProperty(LINE_SEPARATOR));
+            errorMessageBuilder.append(e.getMessage()).append(LINE_SEPARATOR);
         }
         return errorMessageBuilder.toString();
     }
@@ -93,9 +98,47 @@ public class RuleInvokerService {
         try {
             classes().should(archCondition).check(importAllClassesInPackage(projectPath, packageOnRuleToApply));
         } catch (AssertionError e) {
-            errorMessageBuilder.append(e.getMessage()).append(System.getProperty(LINE_SEPARATOR));
+            errorMessageBuilder.append(e.getMessage()).append(LINE_SEPARATOR);
         }
         return errorMessageBuilder.toString();
+    }
+
+    private String getPackageNameOnWhichToApplyRules(ConfigurableRule rule) {
+
+        StringBuilder packageNameBuilder = new StringBuilder(SRC_CLASSES_FOLDER);
+
+        if (rule.getApplyOn() != null) {
+            if (rule.getApplyOn().getScope() != null && "test".equals(rule.getApplyOn().getScope())) {
+                packageNameBuilder = new StringBuilder(TEST_CLASSES_FOLDER);
+            }
+            packageNameBuilder.append("/").append(rule.getApplyOn().getPackageName());
+
+        }
+        return packageNameBuilder.toString().replace(".", "/");
+    }
+
+    private Map<String, Method> getAllMethodsWhichReturnAnArchCondition(Method[] methods) {
+
+        Map<String, Method> archConditionReturningMethods = new HashMap<>();
+        for (Method method : methods) {
+            if (method.getReturnType().equals(ArchCondition.class)) {
+                archConditionReturningMethods.put(method.getName(), method);
+            }
+        }
+        return archConditionReturningMethods;
+    }
+
+    private Map<String, Field> getAllFieldsWhichAreArchRules(Field[] fields) {
+
+        Map<String, Field> archRuleFields = new HashMap<>();
+
+        for (Field field : fields) {
+            if (field.getType().equals(ArchRule.class)) {
+                archRuleFields.put(field.getName(), field);
+            }
+        }
+
+        return archRuleFields;
     }
 
 }
