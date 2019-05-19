@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
-public class ArchUnitRuleMojoTest {
+public class ArchUnitMojoTest {
 
   @InjectMocks
   private ArchUnitMojo archUnitMojo;
