@@ -20,33 +20,35 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 
 ```xml
 <plugin>
-  <groupId>com.societegenerale.commons</groupId>
-  <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>1.0.2</version>
-  <configuration>
-    <projectPath>${project.basedir}/target</projectPath>
-    <rules>
-       <rule>com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest</rule>
-       <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
-       <rule>com.societegenerale.commons.plugin.rules.NoJodaTimeRuleTest</rule>
-       <rule>com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest</rule>
-       <rule>com.societegenerale.commons.plugin.rules.NoPrefixForInterfacesRuleTest</rule>
-       <!-- you may want to use one of the below rules, but not both at same time -->
-       <rule>com.societegenerale.commons.plugin.rules.NoTestIgnoreRuleTest</rule>
-       <rule>com.societegenerale.commons.plugin.rules.NoTestIgnoreWithoutCommentRuleTest</rule>
-       
-       <rule>com.societegenerale.commons.plugin.rules.NoInjectedFieldTest</rule>
-       <rule>com.societegenerale.commons.plugin.rules.NoAutowiredFieldTest</rule>
-    </rules>
-  </configuration>
-  <executions>
-    <execution>
-      <phase>test</phase>
-      <goals>
-        <goal>arch-test</goal>
-      </goals>
-    </execution>
-  </executions>
+	<groupId>com.societegenerale.commons</groupId>
+	<artifactId>arch-unit-maven-plugin</artifactId>
+	<version>1.0.2</version>
+	<configuration>
+		<projectPath>${project.basedir}/target</projectPath>
+		<rules>
+			<preConfiguredRules>
+				<rule>com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoJodaTimeRuleTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoPrefixForInterfacesRuleTest</rule>
+				<!-- you may want to use one of the below rules, but not both at same time -->
+				<rule>com.societegenerale.commons.plugin.rules.NoTestIgnoreRuleTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoTestIgnoreWithoutCommentRuleTest</rule>
+
+				<rule>com.societegenerale.commons.plugin.rules.NoInjectedFieldTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoAutowiredFieldTest</rule>
+			</preConfiguredRules>
+		</rules>
+	</configuration>
+	<executions>
+		<execution>
+			<phase>test</phase>
+			<goals>
+				<goal>arch-test</goal>
+			</goals>
+		</execution>
+	</executions>
 </plugin>
 ```
 
@@ -71,10 +73,22 @@ So your config would become something like :
     <projectPath>${project.basedir}/target</projectPath>
     <rules>
        <!-- using a rule available out of the box... -->
-       <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
-       
+       <preConfiguredRules>
+            <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
+       </preConfiguredRules>
        <!-- ... and a custom one, coming from a a package I declare as dependency in the plugin-->
-       <rule>com.myCompany.MyCustomRuleTest</rule>
+       <configurableRules>
+       	<configurableRule>
+       		<rule>com.mycompany.rules.CustomArchRule</rule>
+       		<applyOn>
+       			<packageName>com.myproject.mypackage</packageName>
+       			<scope>test</scope>
+       		</applyOn>
+       		<checks>
+       			<check>customArchRule</check>
+       		</checks>
+       	</configurableRule>
+       </configurableRules>
     </rules>
   </configuration>
   <executions>
@@ -89,7 +103,7 @@ So your config would become something like :
     <dependency>
         <groupId>com.myCompany</groupId>
         <artifactId>custom-quality-rules</artifactId>
-        <version>1.0</version>
+        <version>1.0.0</version>
     </dependency>
   </dependencies>
 </plugin>
@@ -97,4 +111,4 @@ So your config would become something like :
 
 ## Contribute !
 
-If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of default ArchUnit Maven plugin package, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](./src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one. 
+If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of default ArchUnit Maven plugin package, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](./src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one.
