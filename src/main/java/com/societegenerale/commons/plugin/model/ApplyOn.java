@@ -10,6 +10,12 @@ public class ApplyOn {
   @Parameter(property = "scope")
   private String scope;
 
+  //default constructor is required at runtime
+  public ApplyOn() {
+
+  }
+
+  //convenience constructor when calling from unit tests
   public ApplyOn(String packageName, String scope) {
     this.packageName = packageName;
     this.scope = scope;
