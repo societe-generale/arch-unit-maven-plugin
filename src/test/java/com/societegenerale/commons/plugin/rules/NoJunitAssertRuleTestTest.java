@@ -8,6 +8,7 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
 
+import static com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest.NO_JUNIT_ASSERT_DESCRIPTION;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static org.assertj.core.api.Assertions.*;
 
@@ -41,7 +42,7 @@ public class NoJunitAssertRuleTestTest {
 
         assertThat(validationExceptionThrown).hasMessageStartingWith("Architecture Violation")
                 .hasMessageContaining(TestClassWithJunit4Asserts.class.getName())
-                .hasMessageContaining(ArchUtils.NO_JUNIT_ASSERT_DESCRIPTION);
+                .hasMessageContaining(NO_JUNIT_ASSERT_DESCRIPTION);
     }
 
     @Test
@@ -60,7 +61,7 @@ public class NoJunitAssertRuleTestTest {
 
         assertThat(validationExceptionThrown).hasMessageStartingWith("Architecture Violation")
                 .hasMessageContaining(TestClassWithJunit5Asserts.class.getName())
-                .hasMessageContaining(ArchUtils.NO_JUNIT_ASSERT_DESCRIPTION);
+                .hasMessageContaining(NO_JUNIT_ASSERT_DESCRIPTION);
     }
 
 }

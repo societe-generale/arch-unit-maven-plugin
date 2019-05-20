@@ -6,8 +6,8 @@ import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
 
+import static com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest.POWER_MOCK_VIOLATION_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
-import static com.societegenerale.commons.plugin.utils.ArchUtils.POWER_MOCK_VIOLATION_MESSAGE;
 import static org.assertj.core.api.Assertions.*;
 
 public class NoPowerMockRuleTestTest {
