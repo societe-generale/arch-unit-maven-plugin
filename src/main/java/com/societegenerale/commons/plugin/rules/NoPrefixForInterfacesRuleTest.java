@@ -16,12 +16,14 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
  */
 public class NoPrefixForInterfacesRuleTest implements ArchRuleTest {
 
+  protected static final String NO_PREFIX_INTERFACE_VIOLATION_MESSAGE = " : Interfaces shouldn't be prefixed with \"I\" - caller doesn't need to know it's an interface + this is a .Net convention";
+
   private static Character upperCaseI = 'I';
 
   @Override
   public void execute(String path) {
 
-    classes().that().areInterfaces().should(notBePrefixed()).check(ArchUtils.importAllClassesInPackage(path, ArchUtils.SRC_CLASSES_FOLDER));
+    classes().that().areInterfaces().should(notBePrefixed()).check(ArchUtils.importAllClassesInPackage(path, SRC_CLASSES_FOLDER));
 
   }
 
@@ -35,7 +37,7 @@ public class NoPrefixForInterfacesRuleTest implements ArchRuleTest {
         Character secondCharacter = item.getSimpleName().charAt(1);
 
         if (firstCharacter.equals(upperCaseI) && Character.isUpperCase(secondCharacter)) {
-          events.add(SimpleConditionEvent.violated(item, item.getName() + ArchUtils.NO_PREFIX_INTERFACE_VIOLATION_MESSAGE));
+          events.add(SimpleConditionEvent.violated(item, item.getName() + NO_PREFIX_INTERFACE_VIOLATION_MESSAGE));
         }
       }
     };

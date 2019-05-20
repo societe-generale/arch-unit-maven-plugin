@@ -23,9 +23,11 @@ public class NoJodaTimeRuleTest implements ArchRuleTest {
 
   private static final String JODATIME_PACKAGE_PREFIX = "org.joda";
 
+  protected static final String NO_JODA_VIOLATION_MESSAGE = "Use Java8 Date API instead of Joda library";
+
   @Override
   public void execute(String path) {
-    classes().should(notUseJodaTime()).check(ArchUtils.importAllClassesInPackage(path, ArchUtils.SRC_CLASSES_FOLDER));
+    classes().should(notUseJodaTime()).check(ArchUtils.importAllClassesInPackage(path, SRC_CLASSES_FOLDER));
   }
 
   protected static ArchCondition<JavaClass> notUseJodaTime() {
@@ -39,7 +41,7 @@ public class NoJodaTimeRuleTest implements ArchRuleTest {
                 .collect(toList());
 
         for(JavaField field : classesWithJodaTimeFields){
-          events.add(SimpleConditionEvent.violated(field, ArchUtils.NO_JODA_VIOLATION_MESSAGE
+          events.add(SimpleConditionEvent.violated(field, NO_JODA_VIOLATION_MESSAGE
                   +" - class: "+field.getOwner().getName()
                   +" - field name: "+field.getName()));
         }
@@ -52,13 +54,13 @@ public class NoJodaTimeRuleTest implements ArchRuleTest {
                 .collect(toList());
 
         for(JavaMethodCall methodCall : methodsUsingJodaTimeInternally){
-          events.add(SimpleConditionEvent.violated(methodCall.getOriginOwner(), ArchUtils.NO_JODA_VIOLATION_MESSAGE
+          events.add(SimpleConditionEvent.violated(methodCall.getOriginOwner(), NO_JODA_VIOLATION_MESSAGE
                   +" - class: "+methodCall.getOriginOwner().getName()+ " - line: "+methodCall.getLineNumber()));
         }
       }
 
       private boolean isJodaTimeField(JavaField field) {
-        return field.getType().getName().startsWith(JODATIME_PACKAGE_PREFIX);
+        return field.getRawType().getName().startsWith(JODATIME_PACKAGE_PREFIX);
       }
 
       private boolean isMethodUsingJodaTimeInternally(JavaMethodCall javaMethodCall) {

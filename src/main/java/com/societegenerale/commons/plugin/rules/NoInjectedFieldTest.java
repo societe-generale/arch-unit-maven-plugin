@@ -8,7 +8,6 @@ import com.tngtech.archunit.lang.SimpleConditionEvent;
 
 import javax.inject.Inject;
 
-import static com.societegenerale.commons.plugin.utils.ArchUtils.NO_INJECTED_FIELD_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
 /**
@@ -16,11 +15,12 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
  */
 public class NoInjectedFieldTest implements ArchRuleTest  {
 
+    protected static final String NO_INJECTED_FIELD_MESSAGE = "Favor constructor injection and avoid field injection - ";
 
     @Override
     public void execute(String path) {
 
-        fields().should(notBeInjected()).check(ArchUtils.importAllClassesInPackage(path, ArchUtils.SRC_CLASSES_FOLDER));
+        fields().should(notBeInjected()).check(ArchUtils.importAllClassesInPackage(path, SRC_CLASSES_FOLDER));
     }
 
     protected static ArchCondition<JavaField> notBeInjected() {

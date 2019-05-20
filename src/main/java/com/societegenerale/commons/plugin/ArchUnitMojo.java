@@ -1,5 +1,9 @@
 package com.societegenerale.commons.plugin;
 
+import com.societegenerale.commons.plugin.model.ConfigurableRule;
+import com.societegenerale.commons.plugin.model.Rules;
+import com.societegenerale.commons.plugin.service.RuleInvokerService;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
@@ -9,7 +13,6 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,49 +29,91 @@ import static java.net.URLClassLoader.newInstance;
 @Mojo(name = "arch-test", requiresDependencyResolution = ResolutionScope.TEST)
 public class ArchUnitMojo extends AbstractMojo {
 
-  @Parameter(property = "projectPath")
-  private String projectPath;
+    @Parameter(property = "projectPath")
+    private String projectPath;
 
-  @Parameter(property = "rules")
-  private List<String> rules;
+    @Parameter(property = "rules")
+    private Rules rules;
 
-  public List<String> getRules() {
-    return rules;
-  }
+    @Parameter(defaultValue = "${project}", required = true, readonly = true)
+    private MavenProject mavenProject;
 
-  private static final String EXECUTE_METHOD_NAME = "execute";
-
-  @Parameter(defaultValue = "${project}", required = true, readonly = true)
-  private MavenProject mavenProject;
-
-  @Override
-  public void execute() throws MojoFailureException {
-
-    try {
-      ClassLoader contextClassLoader = fetchContextClassLoader();
-      for (String rule : getRules()) {
-        Class<?> testClass = contextClassLoader.loadClass(rule);
-        Method method = testClass.getDeclaredMethod(EXECUTE_METHOD_NAME, String.class);
-        method.invoke(testClass.newInstance(), projectPath);
-      }
-    } catch (final Exception e) {
-      throw new MojoFailureException(e.toString(), e);
-    }
-  }
-
-  private ClassLoader fetchContextClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
-
-    List<URL> urls = new ArrayList<>();
-    List<String> elements = mavenProject.getTestClasspathElements();
-    for (String element : elements) {
-      urls.add(new File(element).toURI().toURL());
+    public Rules getRules() {
+        return rules;
     }
 
-    ClassLoader contextClassLoader = newInstance(
-        urls.toArray(new URL[0]),
-        Thread.currentThread().getContextClassLoader());
-    Thread.currentThread().setContextClassLoader(contextClassLoader);
-    return contextClassLoader;
-  }
+    private RuleInvokerService ruleInvokerService = new RuleInvokerService();
 
+    private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Maven plugin reported architecture failures listed below :";
+
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
+    @Override
+    public void execute() throws MojoFailureException {
+
+        String ruleFailureMessage;
+        try {
+            ClassLoader contextClassLoader = fetchContextClassLoader();
+            if (!rules.isValid()) {
+                throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
+            }
+            ruleFailureMessage = invokeRules(contextClassLoader);
+        } catch (final Exception e) {
+            throw new MojoFailureException(e.toString(), e);
+        }
+
+        if (!StringUtils.isEmpty(ruleFailureMessage)) {
+            throw new MojoFailureException(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
+        }
+    }
+
+    private ClassLoader fetchContextClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
+
+        List<URL> urls = new ArrayList<>();
+        List<String> elements = mavenProject.getTestClasspathElements();
+        for (String element : elements) {
+            urls.add(new File(element).toURI().toURL());
+        }
+
+        ClassLoader contextClassLoader = newInstance(urls.toArray(new URL[0]), Thread.currentThread().getContextClassLoader());
+        Thread.currentThread().setContextClassLoader(contextClassLoader);
+        return contextClassLoader;
+    }
+
+
+    private String invokeRules(ClassLoader contextClassLoader) throws ReflectiveOperationException {
+
+        StringBuilder errorListBuilder = new StringBuilder(StringUtils.EMPTY);
+
+        if (rules.hasSomePreConfiguredRules()) {
+            for (String rule : rules.getPreConfiguredRules()) {
+                Class<?> testClass = contextClassLoader.loadClass(rule);
+                String errorMessage = ruleInvokerService.invokePreConfiguredRule(testClass, projectPath);
+                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
+
+            }
+        }
+
+        if (rules.hasSomeConfigurableRules()) {
+            for (ConfigurableRule rule : rules.getConfigurableRules()) {
+                Class<?> customRuleClass = contextClassLoader.loadClass(rule.getRule());
+                String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleClass, rule, projectPath);
+                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
+            }
+        }
+
+        return errorListBuilder.toString();
+    }
+
+    private String prepareErrorMessageForRuleFailures(String rule, String errorMessage) {
+
+        StringBuilder errorBuilder = new StringBuilder();
+        if (StringUtils.isNotEmpty(errorMessage)) {
+            errorBuilder
+                    .append("Rule Violated - ").append(rule).append(LINE_SEPARATOR)
+                    .append(errorMessage)
+                    .append(LINE_SEPARATOR);
+        }
+        return errorBuilder.toString();
+    }
 }
