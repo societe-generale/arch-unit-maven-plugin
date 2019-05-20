@@ -5,8 +5,6 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaField;
-import com.tngtech.archunit.core.domain.JavaMethod;
-import com.tngtech.archunit.core.domain.JavaMethodCall;
 import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ConditionEvents;
 import com.tngtech.archunit.lang.SimpleConditionEvent;
@@ -34,10 +32,11 @@ public class NoJavaUtilDateRuleTest implements ArchRuleTest {
 
 	private static final String JAVA_UTIL_DATE_PACKAGE_PREFIX = "java.util.Date";
 
+	protected static final String NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE = "Use Java8 java.time or java.util.GregorianCalendar or java.text.DateFormat  to parse and format dates instead of java.util.Date library because they  support internationalization better";
+
 	@Override
 	public void execute(String path) {
-		classes().should(notUseJavaUtilDate())
-				.check(ArchUtils.importAllClassesInPackage(path, ArchUtils.SRC_CLASSES_FOLDER));
+		classes().should(notUseJavaUtilDate()).check(ArchUtils.importAllClassesInPackage(path, SRC_CLASSES_FOLDER));
 	}
 
 	protected static ArchCondition<JavaClass> notUseJavaUtilDate() {
@@ -48,26 +47,13 @@ public class NoJavaUtilDateRuleTest implements ArchRuleTest {
 
 				item.getAllFields().stream().filter(field -> isJavaUtilDateField(field)).forEach(field -> {
 					events.add(SimpleConditionEvent.violated(field,
-							ArchUtils.NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE + " - class: " + field.getOwner().getName()));
+							NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE + " - class: " + field.getOwner().getName()));
 				});
 
-				item.getCodeUnits().stream().filter(codeUnit -> codeUnit instanceof JavaMethod)
-						.flatMap(method -> method.getMethodCallsFromSelf().stream())
-						.filter(method -> method instanceof JavaMethodCall)
-						.filter(method -> isMethodUsingJavaUtilDateInternally(method)).forEach(methodCall -> {
-							events.add(SimpleConditionEvent.violated(methodCall.getOriginOwner(),
-									ArchUtils.NO_JAVA_UTIL_DATE_VIOLATION_MESSAGE + " - class: "
-											+ methodCall.getOriginOwner().getName()));
-						});
 			}
 
-			@SuppressWarnings("deprecation")
 			private boolean isJavaUtilDateField(JavaField field) {
-				return field.getType().getName().startsWith(JAVA_UTIL_DATE_PACKAGE_PREFIX);
-			}
-
-			private boolean isMethodUsingJavaUtilDateInternally(JavaMethodCall javaMethodCall) {
-				return javaMethodCall.getTarget().getFullName().startsWith(JAVA_UTIL_DATE_PACKAGE_PREFIX);
+				return field.getRawType().getName().startsWith(JAVA_UTIL_DATE_PACKAGE_PREFIX);
 			}
 
 		};
