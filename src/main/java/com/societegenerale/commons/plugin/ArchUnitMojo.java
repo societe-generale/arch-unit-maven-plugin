@@ -30,7 +30,7 @@ import static java.net.URLClassLoader.newInstance;
 public class ArchUnitMojo extends AbstractMojo {
 
     @Parameter(property = "projectPath")
-    private String projectPath;
+    private String projectPath="./target";
 
     @Parameter(property = "rules")
     private Rules rules;

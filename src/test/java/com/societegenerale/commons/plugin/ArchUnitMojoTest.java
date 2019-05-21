@@ -79,18 +79,6 @@ public class ArchUnitMojoTest {
 
   }
 
-
-  @Test
-  public void testNumberOfRulesInArchUnitPlugin() throws Exception {
-
-    pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", pomDom);
-
-    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
-    Rules archUnitRules = mojo.getRules();
-    assertThat(archUnitRules.getPreConfiguredRules().size()).isEqualTo(7);
-    assertThat(archUnitRules.getConfigurableRules().size()).isEqualTo(1);
-  }
-
   @Test
   public void shouldFailWhenNoRuleConfigured() throws Exception {
 
@@ -124,7 +112,6 @@ public class ArchUnitMojoTest {
   }
 
   @Test
-  @Ignore
   public void shouldFailWithExpectedMessageWhenViolationsAreFound() throws Exception {
 
     pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", pomDom);
@@ -136,7 +123,8 @@ public class ArchUnitMojoTest {
 
     assertThatExceptionOfType(MojoFailureException.class)
             .isThrownBy(() -> mojo.execute())
-            .withMessageContaining("Arch unit Plugin should have at least one preconfigured/configurable rule");
+            // one violation among others...
+            .withMessageContaining("classes should not use Junit assertions");
   }
 
 
