@@ -87,8 +87,8 @@ public class ArchUnitMojo extends AbstractMojo {
 
         if (rules.hasSomePreConfiguredRules()) {
             for (String rule : rules.getPreConfiguredRules()) {
-                Class<?> testClass = contextClassLoader.loadClass(rule);
-                String errorMessage = ruleInvokerService.invokePreConfiguredRule(testClass, projectPath);
+                Class<?> ruleToApplyClass = contextClassLoader.loadClass(rule);
+                String errorMessage = ruleInvokerService.invokePreConfiguredRule(ruleToApplyClass, projectPath);
                 errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
 
             }
@@ -96,8 +96,8 @@ public class ArchUnitMojo extends AbstractMojo {
 
         if (rules.hasSomeConfigurableRules()) {
             for (ConfigurableRule rule : rules.getConfigurableRules()) {
-                Class<?> customRuleClass = contextClassLoader.loadClass(rule.getRule());
-                String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleClass, rule, projectPath);
+                Class<?> customRuleToApplyClass = contextClassLoader.loadClass(rule.getRule());
+                String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleToApplyClass, rule, projectPath);
                 errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
             }
         }
