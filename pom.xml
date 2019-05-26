@@ -58,6 +58,8 @@
         <project.testresult.directory>${project.build.directory}/test-results
         </project.testresult.directory>
     </properties>
+    
+    
 
     <scm>
         <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
@@ -76,6 +78,10 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+    <issueManagement>
+		<system>GitHub Issues</system>
+		<url>https://github.com/societe-generale/arch-unit-maven-plugin/issues</url>
+	</issueManagement>
     <dependencies>
         <dependency>
             <groupId>org.apache.maven</groupId>
@@ -264,9 +270,76 @@
                 <version>4.3.0</version>
             </plugin>
             
+            <!-- Generating github  gh pages & maven project documents  -->
+            
+            <plugin>
+            
+            	<groupId>org.apache.maven.plugins</groupId>
+            	<artifactId>maven-site-plugin</artifactId>
+            	<version>3.7.1</version>
+            
+            </plugin>
+            
+            <plugin>
+				<groupId>com.github.github</groupId>
+				<artifactId>site-maven-plugin</artifactId>
+				<version>0.12</version>
+				<configuration>
+					<message>Building site for ${project.name} ${project.version}</message>
+					<server>github</server>
+					
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>site</goal>
+						</goals>
+						<phase>site</phase>
+					</execution>
+				</executions>
+			</plugin>
+            
             
         </plugins>
     </build>
+    
+    <reporting>
+    
+    	<plugins>
+	        <plugin>
+	            <groupId>org.apache.maven.plugins</groupId>
+	            <artifactId>maven-project-info-reports-plugin</artifactId>
+	            <version>3.0.0</version>
+	            <reportSets>
+	                <reportSet>
+	                    <reports>
+	                        <report>index</report>
+	                        <report>licenses</report>
+	                        <report>dependency-info</report>
+	                        <report>ci-management</report>
+	                        <report>dependencies</report>
+	                        <report>dependency-convergence</report>
+	                        <report>dependency-management</report>
+	                        <report>distribution-management</report>
+	                        <report>help</report>
+	                        <report>issue-management</report>
+	                        <report>mailing-lists</report>
+	                        <report>modules</report>
+	                        <report>plugin-management</report>
+	                        <report>plugins</report>
+	                        <report>team</report>
+	                        <report>scm</report>
+	                        <report>summary</report>
+	                        
+	                        
+	                    </reports>
+	                </reportSet>
+	            </reportSets>
+	        </plugin>
+    	</plugins>
+    
+    
+    </reporting>
 
     <profiles>
         <profile>
