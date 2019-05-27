@@ -112,3 +112,9 @@ So your config would become something like :
 ## Contribute !
 
 If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of default ArchUnit Maven plugin package, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](./src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one.
+
+## Official maintainers
+
+- Arpit Garg 
+- Vincent Fuchs
+
