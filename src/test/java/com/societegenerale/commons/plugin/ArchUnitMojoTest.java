@@ -3,9 +3,11 @@ package com.societegenerale.commons.plugin;
 
 import com.societegenerale.commons.plugin.model.Rules;
 import lombok.val;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.project.MavenProject;
+import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3Dom;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
@@ -22,6 +24,7 @@ import java.io.StringReader;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static java.util.Arrays.stream;
@@ -72,6 +75,25 @@ public class ArchUnitMojoTest {
                                           "</build>" +
                                       "</project>";
 
+  String pomWithNoRule=  "<project>" +
+          "<build>" +
+          "<plugins>" +
+          "<plugin>" +
+          "<artifactId>arch-unit-maven-plugin</artifactId>" +
+          "<configuration>" +
+          "<rules>" +
+          "<preConfiguredRules>" +
+          "</preConfiguredRules>" +
+          "<configurableRules>" +
+          "</configurableRules>" +
+          "</rules>" +
+          "</configuration>" +
+          "</plugin>" +
+          "</plugins>" +
+          "</build>" +
+          "</project>";
+
+
   @Before
   public void setUp() throws Exception {
 
@@ -82,29 +104,9 @@ public class ArchUnitMojoTest {
   @Test
   public void shouldFailWhenNoRuleConfigured() throws Exception {
 
-    String pomWithNoRule=  "<project>" +
-                                "<build>" +
-                                    "<plugins>" +
-                                        "<plugin>" +
-                                            "<artifactId>arch-unit-maven-plugin</artifactId>" +
-                                            "<configuration>" +
-                                                "<rules>" +
-                                                    "<preConfiguredRules>" +
-                                                    "</preConfiguredRules>" +
-                                                    "<configurableRules>" +
-                                                    "</configurableRules>" +
-                                                "</rules>" +
-                                            "</configuration>" +
-                                        "</plugin>" +
-                                    "</plugins>" +
-                                "</build>" +
-                            "</project>";
-
-
     pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
 
     ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
-
 
     assertThatExceptionOfType(MojoFailureException.class)
                       .isThrownBy(() -> mojo.execute())
@@ -112,43 +114,107 @@ public class ArchUnitMojoTest {
   }
 
   @Test
-  public void shouldFailWithExpectedMessageWhenViolationsAreFound() throws Exception {
+  public void shouldExecuteSinglePreconfiguredRule() throws Exception {
 
-    pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", pomDom);
+    pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
+    pluginConfiguration.getChild("projectPath").setValue("./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
+
+    // add single rule
+    PlexusConfiguration preConfiguredRules=pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
+    preConfiguredRules.addChild("rule","com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest");
+
+    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
+
+    executeAndExpectViolations(mojo,1,"Favor Mockito and proper dependency injection");
+  }
+
+  @Test
+  public void shouldExecuteSingleConfigurableRule() throws Exception {
+
+    pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
+
+    PlexusConfiguration configurableRule=new DefaultPlexusConfiguration("configurableRule");
+
+    configurableRule.addChild("rule","com.societegenerale.commons.plugin.rules.MyCustomRule");
+    configurableRule.addChild(buildChecksBlock("annotatedWithTest"));
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase","test"));
+
+    PlexusConfiguration configurableRules=pluginConfiguration.getChild("rules").getChild("configurableRules");
+    configurableRules.addChild(configurableRule);
 
     ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
 
-    mockTestClasspathElements(mojo.getClass());
+    executeAndExpectViolations(mojo,1,"classes should be annotated with @Test");
 
-
-    assertThatExceptionOfType(MojoFailureException.class)
-            .isThrownBy(() -> mojo.execute())
-            // one violation among others...
-            .withMessageContaining("classes should not use Junit assertions");
   }
 
+  @Test
+  public void shouldExecuteBothConfigurableRule_and_PreConfiguredRule() throws Exception {
 
-  @Test(expected = Exception.class)
-  public void shouldFailAsTestClassPathElementsAreMocked() throws Exception {
+    pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
 
-    pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", pomDom);
+    PlexusConfiguration configurableRule=new DefaultPlexusConfiguration("configurableRule");
+
+    configurableRule.addChild("rule","com.societegenerale.commons.plugin.rules.MyCustomRule");
+    configurableRule.addChild(buildChecksBlock("annotatedWithTest"));
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase","test"));
+
+    PlexusConfiguration configurableRules=pluginConfiguration.getChild("rules").getChild("configurableRules");
+    configurableRules.addChild(configurableRule);
+
+    PlexusConfiguration preConfiguredRules=pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
+    preConfiguredRules.addChild("rule","com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest");
 
     ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
-    mockTestClasspathElements(mojo.getClass());
-    mojo.execute();
+
+    executeAndExpectViolations(mojo,2,"classes should be annotated with @Test","Favor Mockito and proper dependency injection" );
+
   }
 
-  private void mockTestClasspathElements(Class<?>... classes) throws Exception {
+  private void executeAndExpectViolations(ArchUnitMojo mojo ,int nbExpectedViolations, String... expectedExceptionMessages){
 
-    val classesToReturn=stream(classes)
-            .map(Class::getProtectionDomain)
-            .map(ProtectionDomain::getCodeSource)
-            .map(CodeSource::getLocation)
-            .map(URL::toString)
-            .distinct()
-            .collect(Collectors.toList());
+    //would have loved to use AssertJ assertThatExceptionOfType + withMessageMatching(regex) ,
+    // but not able to find the regex to match only once..
+    // so going the dirty way..
+    boolean expectedExceptionFound=false;
 
-    doReturn(classesToReturn).when(mavenProject).getTestClasspathElements();
+    try{
+      mojo.execute();
+    }
+    catch(MojoFailureException e){
+      assertThat(StringUtils.countMatches(e.toString(), "was violated")).isEqualTo(nbExpectedViolations);
+
+      assertThat(e.toString()).contains(expectedExceptionMessages);
+      expectedExceptionFound=true;
+    }
+
+    if(!expectedExceptionFound){
+      fail("was expecting an exception");
+    }
+  }
+
+
+  private PlexusConfiguration buildApplyOnBlock(String packageName, String scope) {
+
+    PlexusConfiguration packageNameElement=new DefaultPlexusConfiguration("packageName",packageName);
+    PlexusConfiguration scopeElement=new DefaultPlexusConfiguration("scope",scope);
+    PlexusConfiguration applyOnElement=new DefaultPlexusConfiguration("applyOn");
+    applyOnElement.addChild(packageNameElement);
+    applyOnElement.addChild(scopeElement);
+
+    return  applyOnElement;
+  }
+
+  private PlexusConfiguration buildChecksBlock(String... checks) {
+
+    PlexusConfiguration checksElement=new DefaultPlexusConfiguration("checks");
+
+    for(int i =0; i< checks.length ; i++){
+      PlexusConfiguration check=new DefaultPlexusConfiguration("check",checks[i]);
+      checksElement.addChild(check);
+    }
+
+    return  checksElement;
   }
 
 }
