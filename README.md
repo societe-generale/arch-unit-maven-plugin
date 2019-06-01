@@ -22,7 +22,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
 	<artifactId>arch-unit-maven-plugin</artifactId>
-	<version>1.0.2</version>
+	<version>2.0.0</version>
 	<configuration>
 		<projectPath>${project.basedir}/target</projectPath>
 		<rules>
@@ -30,6 +30,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 				<rule>com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest</rule>
 				<rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
 				<rule>com.societegenerale.commons.plugin.rules.NoJodaTimeRuleTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoJavaUtilDateRuleTest</rule>
 				<rule>com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest</rule>
 				<rule>com.societegenerale.commons.plugin.rules.NoPrefixForInterfacesRuleTest</rule>
 				<!-- you may want to use one of the below rules, but not both at same time -->
@@ -68,7 +69,7 @@ So your config would become something like :
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>LATEST</version>
+  <version>2.0.0</version>
   <configuration>
     <projectPath>${project.basedir}/target</projectPath>
     <rules>
