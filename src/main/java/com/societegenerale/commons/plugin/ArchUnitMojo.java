@@ -30,7 +30,7 @@ import static java.net.URLClassLoader.newInstance;
 public class ArchUnitMojo extends AbstractMojo {
 
     @Parameter(property = "projectPath")
-    private String projectPath="./target";
+    private String projectPath = "./target";
 
     @Parameter(property = "rules")
     private Rules rules;
@@ -82,26 +82,20 @@ public class ArchUnitMojo extends AbstractMojo {
         return contextClassLoader;
     }
 
-
     private String invokeRules(ClassLoader contextClassLoader) throws ReflectiveOperationException {
 
         StringBuilder errorListBuilder = new StringBuilder(StringUtils.EMPTY);
 
-        if (rules.hasSomePreConfiguredRules()) {
-            for (String rule : rules.getPreConfiguredRules()) {
-                Class<?> ruleToApplyClass = contextClassLoader.loadClass(rule);
-                String errorMessage = ruleInvokerService.invokePreConfiguredRule(ruleToApplyClass, projectPath);
-                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
-
-            }
+        for (String rule : rules.getPreConfiguredRules()) {
+            Class<?> ruleToApplyClass = contextClassLoader.loadClass(rule);
+            String errorMessage = ruleInvokerService.invokePreConfiguredRule(ruleToApplyClass, projectPath);
+            errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
         }
 
-        if (rules.hasSomeConfigurableRules()) {
-            for (ConfigurableRule rule : rules.getConfigurableRules()) {
-                Class<?> customRuleToApplyClass = contextClassLoader.loadClass(rule.getRule());
-                String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleToApplyClass, rule, projectPath);
-                errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
-            }
+        for (ConfigurableRule rule : rules.getConfigurableRules()) {
+            Class<?> customRuleToApplyClass = contextClassLoader.loadClass(rule.getRule());
+            String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleToApplyClass, rule, projectPath);
+            errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
         }
 
         return errorListBuilder.toString();

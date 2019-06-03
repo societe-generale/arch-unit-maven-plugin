@@ -48,27 +48,27 @@ public class RuleInvokerService {
         String packageOnRuleToApply = getPackageNameOnWhichToApplyRules(rule);
 
         List<String> ruleChecks = rule.getChecks();
-        final Map<String, Method> fileterdArchConditions = new HashMap<>();
-        final Map<String, Field> fileteredArchRules = new HashMap<>();
+        final Map<String, Method> filteredArchConditions = new HashMap<>();
+        final Map<String, Field> filteredArchRules = new HashMap<>();
         if (ruleChecks != null) {
             ruleChecks.forEach(check -> {
                 if (archConditionReturningMethods.containsKey(check)) {
-                    fileterdArchConditions.putAll(archConditionReturningMethods.entrySet().stream()
+                    filteredArchConditions.putAll(archConditionReturningMethods.entrySet().stream()
                             .filter(map -> map.getKey().equals(check)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
                 } else if (archRuleFields.containsKey(check)) {
-                    fileteredArchRules.putAll(archRuleFields.entrySet().stream()
+                    filteredArchRules.putAll(archRuleFields.entrySet().stream()
                             .filter(map -> map.getKey().equals(check)).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue)));
                 }
             });
         } else {
-            fileterdArchConditions.putAll(archConditionReturningMethods);
-            fileteredArchRules.putAll(archRuleFields);
+            filteredArchConditions.putAll(archConditionReturningMethods);
+            filteredArchRules.putAll(archRuleFields);
         }
 
-        for (Method method : fileterdArchConditions.values()) {
+        for (Method method : filteredArchConditions.values()) {
             failRuleMessagesBuilder.append(invokeArchUnitCondition(projectPath, method, customRuleClass, packageOnRuleToApply));
         }
-        for (Field field : fileteredArchRules.values()) {
+        for (Field field : filteredArchRules.values()) {
             failRuleMessagesBuilder.append(invokeArchCustomRule(projectPath, field, customRuleClass, packageOnRuleToApply));
         }
 
