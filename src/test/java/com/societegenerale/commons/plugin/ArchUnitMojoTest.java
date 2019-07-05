@@ -88,7 +88,7 @@ public class ArchUnitMojoTest {
     ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
 
     executeAndExpectViolations(mojo,
-        expectRuleFailure("classes should  not use Powermock ")
+        expectRuleFailure("classes should not use Powermock")
             .withDetails("Favor Mockito and proper dependency injection - " + TestClassWithPowerMock.class.getName()));
   }
 
@@ -129,7 +129,7 @@ public class ArchUnitMojoTest {
 
     executeAndExpectViolations(mojo,
         expectRuleFailure("classes should be annotated with @Test").ofAnyKind(),
-        expectRuleFailure("classes should  not use Powermock ").ofAnyKind());
+        expectRuleFailure("classes should not use Powermock").ofAnyKind());
   }
 
   private void executeAndExpectViolations(ArchUnitMojo mojo, ExpectedRuleFailure... expectedRuleFailures) {
