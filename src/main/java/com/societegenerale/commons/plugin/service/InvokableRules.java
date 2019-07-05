@@ -38,11 +38,21 @@ class InvokableRules {
 
         Set<Field> allFieldsWhichAreArchRules = getAllFieldsWhichAreArchRules(rulesLocation.getDeclaredFields());
         Set<Method> allMethodsWhichReturnAnArchCondition = getAllMethodsWhichReturnAnArchCondition(rulesLocation.getDeclaredMethods());
+        validateRuleChecks(Sets.union(allMethodsWhichReturnAnArchCondition, allFieldsWhichAreArchRules), ruleChecks);
 
         Predicate<String> isChosenCheck = ruleChecks.isEmpty() ? check -> true : ruleChecks::contains;
 
         archRuleFields = filterNames(allFieldsWhichAreArchRules, isChosenCheck);
         archConditionReturningMethods = filterNames(allMethodsWhichReturnAnArchCondition, isChosenCheck);
+    }
+
+    private void validateRuleChecks(Set<? extends Member> allFieldsAndMethods, Collection<String> ruleChecks) {
+        Set<String> allFieldAndMethodNames = allFieldsAndMethods.stream().map(Member::getName).collect(toSet());
+        Set<String> illegalChecks = Sets.difference(ImmutableSet.copyOf(ruleChecks), allFieldAndMethodNames);
+
+        if (!illegalChecks.isEmpty()) {
+            throw new IllegalChecksConfigurationException(rulesLocation, illegalChecks);
+        }
     }
 
     private <M extends Member> Set<M> filterNames(Set<M> members, Predicate<String> namePredicate) {

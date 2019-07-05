@@ -92,6 +92,24 @@ public class ArchUnitMojoTest {
   }
 
   @Test
+  public void shouldFailWronglyDefinedConfigurableRule() throws Exception {
+    PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
+
+    String missingCheck = "notThere";
+    String ruleClass = MyCustomRules.class.getName();
+
+    configurableRule.addChild("rule", ruleClass);
+    configurableRule.addChild(buildChecksBlock(missingCheck));
+    pluginConfiguration.getChild("rules").getChild("configurableRules").addChild(configurableRule);
+
+    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
+
+    assertThatExceptionOfType(MojoFailureException.class)
+        .isThrownBy(mojo::execute)
+        .withMessageContaining(String.format("The following configured checks are not present within %s: [%s]", ruleClass, missingCheck));
+  }
+
+  @Test
   public void shouldExecuteSingleConfigurableRule() throws Exception {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
