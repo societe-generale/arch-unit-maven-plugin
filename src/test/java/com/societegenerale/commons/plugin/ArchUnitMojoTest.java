@@ -24,7 +24,6 @@ import java.util.Set;
 
 import static java.util.Arrays.stream;
 import static org.assertj.core.api.Assertions.*;
-import static org.mockito.Mockito.doReturn;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ArchUnitMojoTest {

@@ -49,7 +49,7 @@ public class ArchUtilsTest {
 				noOfClasses++;
 			}
 		}
-		assertThat(noOfClasses).isEqualTo(17);
+		assertThat(noOfClasses).isEqualTo(21);
 	}
 
 }
