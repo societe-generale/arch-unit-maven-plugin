@@ -16,7 +16,6 @@ import javassist.Modifier;
  * 
  * @see <a href=
  *      "https://en.wikipedia.org/wiki/Encapsulation_(computer_programming)">Encapsulation</a>
- * 
  */
 
 public class NoPublicFieldsRuleTest implements ArchRuleTest {
@@ -43,9 +42,7 @@ public class NoPublicFieldsRuleTest implements ArchRuleTest {
 
 			private boolean isPublicField(JavaField field) {
 
-				int modifiers = field.reflect().getModifiers();
-
-				return Modifier.isPublic(modifiers);
+				return Modifier.isPublic(field.reflect().getModifiers());
 
 			}
 
