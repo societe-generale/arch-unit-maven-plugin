@@ -7,7 +7,8 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 /**
  * A dummy class with rules to configure through plugin config
  */
-public class MyCustomRule {
+@SuppressWarnings("unused")
+public class MyCustomRules {
 
     static ArchRule annotatedWithTest = classes().should().beAnnotatedWith("Test");
     static ArchRule resideInMyPackage = classes().should().resideInAPackage("myPackage");
