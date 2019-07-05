@@ -19,7 +19,6 @@ import javassist.Modifier;
  */
 
 public class NoPublicFieldsRuleTest implements ArchRuleTest {
-
 	protected static final String NO_PUBLIC_FIELDS_VIOLATION_MESSAGE = "Respect encapsulation : no public fields";
 
 	@Override
