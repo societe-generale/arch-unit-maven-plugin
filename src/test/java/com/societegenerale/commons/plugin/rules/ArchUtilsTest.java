@@ -37,7 +37,7 @@ public class ArchUtilsTest {
 				noOfClasses++;
 			}
 		}
-		assertThat(noOfClasses).isEqualTo(10);
+		assertThat(noOfClasses).isEqualTo(11);
 	}
 
 	@Test
@@ -49,7 +49,7 @@ public class ArchUtilsTest {
 				noOfClasses++;
 			}
 		}
-		assertThat(noOfClasses).isEqualTo(17);
+		assertThat(noOfClasses).isEqualTo(18);
 	}
 
 }
