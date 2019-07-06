@@ -41,7 +41,7 @@ public class NoJavaUtilDateRuleTest implements ArchRuleTest {
 
 	protected static ArchCondition<JavaClass> notUseJavaUtilDate() {
 
-		return new ArchCondition<JavaClass>("not use Java Util Date ") {
+		return new ArchCondition<JavaClass>("not use Java Util Date") {
 			@Override
 			public void check(JavaClass item, ConditionEvents events) {
 

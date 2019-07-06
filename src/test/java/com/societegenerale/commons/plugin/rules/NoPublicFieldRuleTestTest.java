@@ -1,18 +1,18 @@
 package com.societegenerale.commons.plugin.rules;
 
-import static com.societegenerale.commons.plugin.rules.NoPublicFieldsRuleTest.NO_PUBLIC_FIELDS_VIOLATION_MESSAGE;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
+import static com.societegenerale.commons.plugin.rules.NoPublicFieldRuleTest.NO_PUBLIC_FIELD_VIOLATION_MESSAGE;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithPublicField;
 import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithNoPublicField;
+import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithPublicField;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 
-public class NoPublicFieldsRuleTestTest {
+public class NoPublicFieldRuleTestTest {
 
 	@Test
 	public void shouldThrowViolations() {
@@ -33,9 +33,9 @@ public class NoPublicFieldsRuleTestTest {
 		JavaClasses classToTest = new ClassFileImporter().importClasses(clazz);
 
 		assertThatThrownBy(() -> {
-			classes().should(NoPublicFieldsRuleTest.noPublicFields()).check(classToTest);
+			fields().should(NoPublicFieldRuleTest.notBePublic()).check(classToTest);
 		}).hasMessageContaining(ObjectWithPublicField.class.getName())
-				.hasMessageContaining(NO_PUBLIC_FIELDS_VIOLATION_MESSAGE);
+				.hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE);
 
 	}
 
@@ -43,7 +43,7 @@ public class NoPublicFieldsRuleTestTest {
 
 		JavaClasses classToTest = new ClassFileImporter().importClasses(clazz);
 
-		assertThatCode(() -> classes().should(NoPublicFieldsRuleTest.noPublicFields()).check(classToTest))
+		assertThatCode(() -> fields().should(NoPublicFieldRuleTest.notBePublic()).check(classToTest))
 				.doesNotThrowAnyException();
 
 	}
