@@ -33,9 +33,8 @@ public class NoPublicFieldRuleTestTest {
 		JavaClasses classToTest = new ClassFileImporter().importClasses(clazz);
 
 		assertThatThrownBy(() -> {
-			fields().should(NoPublicFieldRuleTest.notBePublic()).check(classToTest);
-		}).hasMessageContaining(ObjectWithPublicField.class.getName())
-				.hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE);
+			fields().should().notBePublic().because(NO_PUBLIC_FIELD_VIOLATION_MESSAGE).check(classToTest);
+		});
 
 	}
 
@@ -43,8 +42,9 @@ public class NoPublicFieldRuleTestTest {
 
 		JavaClasses classToTest = new ClassFileImporter().importClasses(clazz);
 
-		assertThatCode(() -> fields().should(NoPublicFieldRuleTest.notBePublic()).check(classToTest))
-				.doesNotThrowAnyException();
+		assertThatCode(
+				() -> fields().should().notBePublic().because(NO_PUBLIC_FIELD_VIOLATION_MESSAGE).check(classToTest))
+						.doesNotThrowAnyException();
 
 	}
 
