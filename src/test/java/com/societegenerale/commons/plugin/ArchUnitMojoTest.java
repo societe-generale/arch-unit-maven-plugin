@@ -2,6 +2,8 @@ package com.societegenerale.commons.plugin;
 
 import java.io.StringReader;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.collect.ImmutableSet;
 import com.societegenerale.commons.plugin.rules.MyCustomRules;
@@ -14,6 +16,7 @@ import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.project.MavenProject;
 import org.assertj.core.api.AbstractThrowableAssert;
+import org.assertj.core.api.Condition;
 import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
@@ -143,6 +146,27 @@ public class ArchUnitMojoTest {
   }
 
   @Test
+  public void shouldExecuteAllConfigurableRuleChecksIfUnconfigured() throws Exception {
+
+    PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
+
+    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
+
+    PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
+    configurableRules.addChild(configurableRule);
+
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
+
+    executeAndExpectViolations(mojo,
+        expectRuleFailure("classes should be annotated with @Test").ofAnyKind(),
+        expectRuleFailure("classes should be annotated with @Test").ofAnyKind(),
+        expectRuleFailure("classes should reside in a package 'myPackage'").ofAnyKind(),
+        expectRuleFailure("classes should reside in a package 'myPackage'").ofAnyKind()
+    );
+  }
+
+  @Test
   public void shouldExecuteBothConfigurableRule_and_PreConfiguredRule() throws Exception {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
@@ -170,6 +194,21 @@ public class ArchUnitMojoTest {
       throwableAssert.hasMessageContaining(String.format("Rule '%s' was violated", expectedFailure.ruleDescription));
       expectedFailure.details.forEach(throwableAssert::hasMessageContaining);
     });
+    throwableAssert.has(exactNumberOfViolatedRules(expectedRuleFailures.length));
+  }
+
+  private Condition<Throwable> exactNumberOfViolatedRules(final int number) {
+    return new Condition<Throwable>("exactly " + number + " violated rules") {
+      @Override
+      public boolean matches(Throwable throwable) {
+        Matcher matcher = Pattern.compile("Rule '.*' was violated").matcher(throwable.getMessage());
+        int numberOfOccurrences = 0;
+        while (matcher.find()) {
+          numberOfOccurrences++;
+        }
+        return numberOfOccurrences == number;
+      }
+    };
   }
 
   private PlexusConfiguration buildApplyOnBlock(String packageName, String scope) {
