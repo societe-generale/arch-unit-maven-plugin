@@ -10,7 +10,7 @@ public class ReflectionUtils {
         try {
             return Thread.currentThread().getContextClassLoader().loadClass(className);
         } catch (ClassNotFoundException e) {
-            throw new ReflectionException(e);
+            throw ReflectionException.wrap(e);
         }
     }
 
@@ -20,7 +20,7 @@ public class ReflectionUtils {
             constructor.setAccessible(true);
             return constructor.newInstance();
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            throw new ReflectionException(e);
+            throw ReflectionException.wrap(e);
         }
     }
 
@@ -31,7 +31,7 @@ public class ReflectionUtils {
             method.setAccessible(true);
             return (T) method.invoke(owner, args);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new ReflectionException(e);
+            throw ReflectionException.wrap(e);
         }
     }
 
@@ -42,7 +42,7 @@ public class ReflectionUtils {
             field.setAccessible(true);
             return (T) field.get(owner);
         } catch (IllegalAccessException e) {
-            throw new ReflectionException(e);
+            throw ReflectionException.wrap(e);
         }
     }
 }

@@ -12,16 +12,13 @@ import java.util.function.Predicate;
 
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
-import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
-import com.tngtech.archunit.lang.ArchCondition;
 import com.tngtech.archunit.lang.ArchRule;
 
 import static com.societegenerale.commons.plugin.utils.ReflectionUtils.getValue;
 import static com.societegenerale.commons.plugin.utils.ReflectionUtils.invoke;
 import static com.societegenerale.commons.plugin.utils.ReflectionUtils.loadClassWithContextClassLoader;
 import static com.societegenerale.commons.plugin.utils.ReflectionUtils.newInstance;
-import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static java.lang.System.lineSeparator;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.joining;
@@ -30,20 +27,20 @@ import static java.util.stream.Collectors.toSet;
 class InvokableRules {
     private final Class<?> rulesLocation;
     private final Set<Field> archRuleFields;
-    private final Set<Method> archConditionReturningMethods;
+    private final Set<Method> archRuleMethods;
 
     private InvokableRules(String rulesClassName, List<String> ruleChecks) {
 
         rulesLocation = loadClassWithContextClassLoader(rulesClassName);
 
         Set<Field> allFieldsWhichAreArchRules = getAllFieldsWhichAreArchRules(rulesLocation.getDeclaredFields());
-        Set<Method> allMethodsWhichReturnAnArchCondition = getAllMethodsWhichReturnAnArchCondition(rulesLocation.getDeclaredMethods());
-        validateRuleChecks(Sets.union(allMethodsWhichReturnAnArchCondition, allFieldsWhichAreArchRules), ruleChecks);
+        Set<Method> allMethodsWhichAreArchRules = getAllMethodsWhichAreArchRules(rulesLocation.getDeclaredMethods());
+        validateRuleChecks(Sets.union(allMethodsWhichAreArchRules, allFieldsWhichAreArchRules), ruleChecks);
 
         Predicate<String> isChosenCheck = ruleChecks.isEmpty() ? check -> true : ruleChecks::contains;
 
         archRuleFields = filterNames(allFieldsWhichAreArchRules, isChosenCheck);
-        archConditionReturningMethods = filterNames(allMethodsWhichReturnAnArchCondition, isChosenCheck);
+        archRuleMethods = filterNames(allMethodsWhichAreArchRules, isChosenCheck);
     }
 
     private void validateRuleChecks(Set<? extends Member> allFieldsAndMethods, Collection<String> ruleChecks) {
@@ -61,9 +58,9 @@ class InvokableRules {
                 .collect(toSet());
     }
 
-    private Set<Method> getAllMethodsWhichReturnAnArchCondition(Method[] methods) {
+    private Set<Method> getAllMethodsWhichAreArchRules(Method[] methods) {
         return stream(methods)
-                .filter(m -> ArchCondition.class.isAssignableFrom(m.getReturnType()))
+                .filter(m -> m.getParameterCount() == 1 && JavaClasses.class.isAssignableFrom(m.getParameterTypes()[0]))
                 .collect(toSet());
     }
 
@@ -78,9 +75,8 @@ class InvokableRules {
         Object instance = newInstance(rulesLocation);
 
         InvocationResult result = new InvocationResult();
-        for (Method method : archConditionReturningMethods) {
-            ArchCondition<JavaClass> condition = invoke(method, instance);
-            checkForFailure(() -> classes().should(condition).check(importedClasses))
+        for (Method method : archRuleMethods) {
+            checkForFailure(() -> invoke(method, instance, importedClasses))
                     .ifPresent(result::add);
         }
         for (Field field : archRuleFields) {

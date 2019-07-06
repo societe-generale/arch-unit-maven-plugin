@@ -1,9 +1,15 @@
 package com.societegenerale.commons.plugin;
 
+import java.io.StringReader;
+import java.util.Set;
+
 import com.google.common.collect.ImmutableSet;
 import com.societegenerale.commons.plugin.rules.MyCustomRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
 import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithPowerMock;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.project.MavenProject;
@@ -17,25 +23,28 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 
-import java.io.StringReader;
-import java.util.Set;
-
+import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
 import static java.util.Arrays.stream;
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
-@RunWith(MockitoJUnitRunner.class)
+@RunWith(DataProviderRunner.class)
 public class ArchUnitMojoTest {
+
+  @Rule
+  public final MojoRule mojoRule = new MojoRule();
+
+  @Rule
+  public final MockitoRule mockitoRule = MockitoJUnit.rule();
 
   @InjectMocks
   private ArchUnitMojo archUnitMojo;
 
   @Mock
   private MavenProject mavenProject;
-
-  @Rule
-  public MojoRule rule = new MojoRule();
 
   private PlexusConfiguration pluginConfiguration;
 
@@ -61,14 +70,14 @@ public class ArchUnitMojoTest {
   @Before
   public void setUp() throws Exception {
 
-    pluginConfiguration = rule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
+    pluginConfiguration = mojoRule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
 
   }
 
   @Test
   public void shouldFailWhenNoRuleConfigured() throws Exception {
 
-    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
 
     assertThatExceptionOfType(MojoFailureException.class)
         .isThrownBy(mojo::execute)
@@ -84,7 +93,7 @@ public class ArchUnitMojoTest {
     PlexusConfiguration preConfiguredRules = pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
     preConfiguredRules.addChild("rule", NoPowerMockRuleTest.class.getName());
 
-    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
 
     executeAndExpectViolations(mojo,
         expectRuleFailure("classes should not use Powermock")
@@ -102,26 +111,32 @@ public class ArchUnitMojoTest {
     configurableRule.addChild(buildChecksBlock(missingCheck));
     pluginConfiguration.getChild("rules").getChild("configurableRules").addChild(configurableRule);
 
-    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
 
     assertThatExceptionOfType(MojoFailureException.class)
         .isThrownBy(mojo::execute)
         .withMessageContaining(String.format("The following configured checks are not present within %s: [%s]", ruleClass, missingCheck));
   }
 
+  @DataProvider
+  public static Object[][] configurableRuleChecks() {
+    return testForEach("annotatedWithTest_asField", "annotatedWithTest_asMethod");
+  }
+
   @Test
-  public void shouldExecuteSingleConfigurableRule() throws Exception {
+  @UseDataProvider("configurableRuleChecks")
+  public void shouldExecuteSingleConfigurableRuleCheck(String checkName) throws Exception {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
     configurableRule.addChild("rule", MyCustomRules.class.getName());
-    configurableRule.addChild(buildChecksBlock("annotatedWithTest"));
+    configurableRule.addChild(buildChecksBlock(checkName));
     configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
 
     PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
     configurableRules.addChild(configurableRule);
 
-    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
 
     executeAndExpectViolations(mojo,
         expectRuleFailure("classes should be annotated with @Test").ofAnyKind());
@@ -132,8 +147,8 @@ public class ArchUnitMojoTest {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
-    configurableRule.addChild("rule", "com.societegenerale.commons.plugin.rules.MyCustomRules");
-    configurableRule.addChild(buildChecksBlock("annotatedWithTest"));
+    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild(buildChecksBlock("annotatedWithTest_asField"));
     configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
 
     PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
@@ -142,7 +157,7 @@ public class ArchUnitMojoTest {
     PlexusConfiguration preConfiguredRules = pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
     preConfiguredRules.addChild("rule", NoPowerMockRuleTest.class.getName());
 
-    ArchUnitMojo mojo = (ArchUnitMojo) rule.configureMojo(archUnitMojo, pluginConfiguration);
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
 
     executeAndExpectViolations(mojo,
         expectRuleFailure("classes should be annotated with @Test").ofAnyKind(),
