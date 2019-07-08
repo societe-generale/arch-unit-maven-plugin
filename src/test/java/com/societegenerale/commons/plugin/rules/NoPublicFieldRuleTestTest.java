@@ -1,8 +1,9 @@
 package com.societegenerale.commons.plugin.rules;
 
 import static com.societegenerale.commons.plugin.rules.NoPublicFieldRuleTest.NO_PUBLIC_FIELD_VIOLATION_MESSAGE;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.catchThrowable;
 
 import org.junit.Test;
 
@@ -31,10 +32,16 @@ public class NoPublicFieldRuleTestTest {
 
 		JavaClasses classToTest = new ClassFileImporter().importClasses(clazz);
 
-		assertThatThrownBy(() -> {
+		Throwable validationExceptionThrown = catchThrowable(() -> {
+
 			NoPublicFieldRuleTest.rule.check(classToTest);
-		}).hasMessageStartingWith("Architecture Violation").hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE)
-				.hasMessageContaining("was violated (1 times)").hasMessageContaining(clazz.getName());
+
+		});
+
+		assertThat(validationExceptionThrown).isInstanceOf(AssertionError.class)
+				.hasMessageStartingWith("Architecture Violation")
+				.hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE).hasMessageContaining("was violated (1 times)")
+				.hasMessageContaining(clazz.getName());
 
 	}
 
@@ -45,5 +52,24 @@ public class NoPublicFieldRuleTestTest {
 		assertThatCode(() -> NoPublicFieldRuleTest.rule.check(classToTest)).doesNotThrowAnyException();
 
 	}
+
+	/*
+	 * 
+	 * private ArchCondition<JavaField> notBePublicField() {
+	 * 
+	 * return new ArchCondition<JavaField>("not use public field") {
+	 * 
+	 * @Override public void check(JavaField field, ConditionEvents events) {
+	 * 
+	 * if (Modifier.isPublic(field.reflect().getModifiers()))
+	 * 
+	 * events.add(SimpleConditionEvent.violated(field,
+	 * NO_PUBLIC_FIELD_VIOLATION_MESSAGE + " - class: " + field.getOwner().getName()
+	 * + " - field name: " + field.getName()));
+	 * 
+	 * }
+	 * 
+	 * }; }
+	 */
 
 }
