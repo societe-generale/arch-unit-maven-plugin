@@ -3,7 +3,12 @@ package com.societegenerale.commons.plugin.rules;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 
 import com.societegenerale.commons.plugin.utils.ArchUtils;
-import com.tngtech.archunit.lang.ArchRule;
+import com.tngtech.archunit.core.domain.JavaField;
+import com.tngtech.archunit.lang.ArchCondition;
+import com.tngtech.archunit.lang.ConditionEvents;
+import com.tngtech.archunit.lang.SimpleConditionEvent;
+
+import javassist.Modifier;
 
 /**
  * It is important to respect encapsulation.
@@ -15,12 +20,27 @@ import com.tngtech.archunit.lang.ArchRule;
 public class NoPublicFieldRuleTest implements ArchRuleTest {
 	protected static final String NO_PUBLIC_FIELD_VIOLATION_MESSAGE = "you should respect encapsulation : no public field";
 
-	protected static final ArchRule rule = fields().should().notBePublic().because(NO_PUBLIC_FIELD_VIOLATION_MESSAGE);
-
 	@Override
 	public void execute(String path) {
 
-		rule.check(ArchUtils.importAllClassesInPackage(path, SRC_CLASSES_FOLDER));
+		fields().should(notBePublicField()).check(ArchUtils.importAllClassesInPackage(path, SRC_CLASSES_FOLDER));
+	}
+
+	protected static ArchCondition<JavaField> notBePublicField() {
+
+		return new ArchCondition<JavaField>("not use public field") {
+
+			@Override
+			public void check(JavaField field, ConditionEvents events) {
+
+				if (Modifier.isPublic(field.reflect().getModifiers()))
+
+					events.add(SimpleConditionEvent.violated(field, NO_PUBLIC_FIELD_VIOLATION_MESSAGE + " - class: "
+							+ field.getOwner().getName() + " - field name: " + field.getName()));
+
+			}
+
+		};
 	}
 
 }

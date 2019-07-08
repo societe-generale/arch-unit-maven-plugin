@@ -1,6 +1,7 @@
 package com.societegenerale.commons.plugin.rules;
 
 import static com.societegenerale.commons.plugin.rules.NoPublicFieldRuleTest.NO_PUBLIC_FIELD_VIOLATION_MESSAGE;
+import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.catchThrowable;
@@ -34,7 +35,7 @@ public class NoPublicFieldRuleTestTest {
 
 		Throwable validationExceptionThrown = catchThrowable(() -> {
 
-			NoPublicFieldRuleTest.rule.check(classToTest);
+			fields().should(NoPublicFieldRuleTest.notBePublicField()).check(classToTest);
 
 		});
 
@@ -49,27 +50,9 @@ public class NoPublicFieldRuleTestTest {
 
 		JavaClasses classToTest = new ClassFileImporter().importClasses(clazz);
 
-		assertThatCode(() -> NoPublicFieldRuleTest.rule.check(classToTest)).doesNotThrowAnyException();
+		assertThatCode(() -> fields().should(NoPublicFieldRuleTest.notBePublicField()).check(classToTest))
+				.doesNotThrowAnyException();
 
 	}
-
-	/*
-	 * 
-	 * private ArchCondition<JavaField> notBePublicField() {
-	 * 
-	 * return new ArchCondition<JavaField>("not use public field") {
-	 * 
-	 * @Override public void check(JavaField field, ConditionEvents events) {
-	 * 
-	 * if (Modifier.isPublic(field.reflect().getModifiers()))
-	 * 
-	 * events.add(SimpleConditionEvent.violated(field,
-	 * NO_PUBLIC_FIELD_VIOLATION_MESSAGE + " - class: " + field.getOwner().getName()
-	 * + " - field name: " + field.getName()));
-	 * 
-	 * }
-	 * 
-	 * }; }
-	 */
 
 }
