@@ -34,7 +34,8 @@ public class NoPublicFieldRuleTestTest {
 
 		assertThatThrownBy(() -> {
 			fields().should().notBePublic().because(NO_PUBLIC_FIELD_VIOLATION_MESSAGE).check(classToTest);
-		});
+		}).hasMessageStartingWith("Architecture Violation").hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE)
+				.hasMessageContaining("was violated (1 times)").hasMessageContaining(clazz.getName());
 
 	}
 
