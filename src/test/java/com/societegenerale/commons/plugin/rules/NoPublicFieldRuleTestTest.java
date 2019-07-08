@@ -2,9 +2,8 @@ package com.societegenerale.commons.plugin.rules;
 
 import static com.societegenerale.commons.plugin.rules.NoPublicFieldRuleTest.NO_PUBLIC_FIELD_VIOLATION_MESSAGE;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.fields;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.catchThrowable;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
@@ -33,14 +32,9 @@ public class NoPublicFieldRuleTestTest {
 
 		JavaClasses classToTest = new ClassFileImporter().importClasses(clazz);
 
-		Throwable validationExceptionThrown = catchThrowable(() -> {
-
+		assertThatThrownBy(() -> {
 			fields().should(NoPublicFieldRuleTest.notBePublicField()).check(classToTest);
-
-		});
-
-		assertThat(validationExceptionThrown).isInstanceOf(AssertionError.class)
-				.hasMessageStartingWith("Architecture Violation")
+		}).hasMessageStartingWith("Architecture Violation")
 				.hasMessageContaining("Rule 'fields should not use public field'")
 				.hasMessageContaining("was violated (1 times)").hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE)
 				.hasMessageContaining(" - class: ").hasMessageContaining(clazz.getName())
