@@ -41,8 +41,10 @@ public class NoPublicFieldRuleTestTest {
 
 		assertThat(validationExceptionThrown).isInstanceOf(AssertionError.class)
 				.hasMessageStartingWith("Architecture Violation")
-				.hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE).hasMessageContaining("was violated (1 times)")
-				.hasMessageContaining(clazz.getName());
+				.hasMessageContaining("Rule 'fields should not use public field'")
+				.hasMessageContaining("was violated (1 times)").hasMessageContaining(NO_PUBLIC_FIELD_VIOLATION_MESSAGE)
+				.hasMessageContaining(" - class: ").hasMessageContaining(clazz.getName())
+				.hasMessageContaining(" - field name: ");
 
 	}
 
