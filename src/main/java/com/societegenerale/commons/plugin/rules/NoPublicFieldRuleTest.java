@@ -18,7 +18,7 @@ public class NoPublicFieldRuleTest implements ArchRuleTest {
 	public void execute(String path) {
 
 		fields().should().notBePublic().because(NO_PUBLIC_FIELD_VIOLATION_MESSAGE)
-				.check(ArchUtils.importAllClassesInPackage(path));
+				.check(ArchUtils.importAllClassesInPackage(path, ""));
 	}
 
 }

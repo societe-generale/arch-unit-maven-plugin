@@ -16,15 +16,8 @@ public class ArchUtils {
 	}
 
 	public static JavaClasses importAllClassesInPackage(String path, String classFolder) {
-		Path classesPath = Paths.get(path + classFolder);
-		if (classesPath.toFile().exists()) {
-			return new ClassFileImporter().importPath(classesPath);
-		}
-		return new ClassFileImporter().importPath(Paths.get(path));
-	}
 
-	public static JavaClasses importAllClassesInPackage(String path) {
-		Path classesPath = Paths.get(path);
+		Path classesPath = Paths.get(path + classFolder);
 		if (classesPath.toFile().exists()) {
 			return new ClassFileImporter().importPath(classesPath);
 		}
