@@ -22,7 +22,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
 	<artifactId>arch-unit-maven-plugin</artifactId>
-	<version>2.0.0</version>
+	<version>2.1.0</version>
 	<configuration>
 		<projectPath>${project.basedir}/target</projectPath>
 		<rules>
@@ -61,7 +61,13 @@ If you need to add a rule that is specific to a project, just add a regular Arch
 
 ### Add a rule, and share it across projects
 
-To be able to share a rule, you'll need to package it in a jar. Add the jar to your classpath (by mentioning it as a plugin's dependency for instance), and then mention the ```<rule>``` with its fully qualified name the ```<rules>``` block, so that ArchUnit Maven plugin can instantiate it and run it. 
+You can share custom rules by packaging the respective classes containing the rules in a jar.
+Such classes can either contain fields of type `ArchRule` or methods taking a single parameter of type
+`JavaClasses` (compare JUnit support at https://www.archunit.org/userguide/html/000_Index.html#_junit_4_5_support).
+The classes those rules will be checked against are configured within the plugin.
+Add the jar containing your classes to your classpath (by mentioning it as a plugin's dependency for instance), 
+and then mention the ```<rule>``` with its fully qualified name the ```<rules>``` block, 
+so that ArchUnit Maven plugin can instantiate it and run it. 
 
 So your config would become something like :
 
@@ -69,7 +75,7 @@ So your config would become something like :
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>2.0.0</version>
+  <version>2.1.0</version>
   <configuration>
     <projectPath>${project.basedir}/target</projectPath>
     <rules>
@@ -77,18 +83,20 @@ So your config would become something like :
        <preConfiguredRules>
             <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
        </preConfiguredRules>
-       <!-- ... and a custom one, coming from a a package I declare as dependency in the plugin-->
+       <!-- ... and a custom one, coming from a dependency of the plugin-->
        <configurableRules>
-       	<configurableRule>
-       		<rule>com.mycompany.rules.CustomArchRule</rule>
-       		<applyOn>
-       			<packageName>com.myproject.mypackage</packageName>
-       			<scope>test</scope>
-       		</applyOn>
-       		<checks>
-       			<check>customArchRule</check>
-       		</checks>
-       	</configurableRule>
+       	 <configurableRule>
+       	 	<rule>com.mycompany.rules.CustomArchRule</rule>
+       	 	<applyOn>
+       	 		<packageName>com.myproject.mypackage</packageName>
+       	 		<scope>test</scope>
+       	 	</applyOn>
+            <!-- if the checks block is missing, all rules will be evaluated -->
+       	 	<checks>
+       	 	    <!-- otherwise you can specify either field or method names here -->
+       	 		<check>customArchRule</check>
+       	 	</checks>
+       	 </configurableRule>
        </configurableRules>
     </rules>
   </configuration>
@@ -102,6 +110,7 @@ So your config would become something like :
   </executions>
   <dependencies>
     <dependency>
+        <!-- dependency contains com.mycompany.rules.CustomArchRule -->
         <groupId>com.myCompany</groupId>
         <artifactId>custom-quality-rules</artifactId>
         <version>1.0.0</version>

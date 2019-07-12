@@ -26,7 +26,7 @@ public class NoPowerMockRuleTest implements ArchRuleTest {
 
     public static ArchCondition<JavaClass> notUsePowerMock() {
 
-        return new ArchCondition<JavaClass>(" not use Powermock ") {
+        return new ArchCondition<JavaClass>("not use Powermock") {
 
             @Override
             @SuppressWarnings("squid:S1166")

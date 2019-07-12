@@ -2,6 +2,7 @@ package com.societegenerale.commons.plugin.model;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurableRule {
@@ -13,7 +14,7 @@ public class ConfigurableRule {
   private ApplyOn applyOn;
 
   @Parameter(property ="checks")
-  private List<String> checks;
+  private List<String> checks = new ArrayList<>();
 
   public List<String> getChecks() {
     return checks;
