@@ -5,16 +5,20 @@
 ### Added
 
 ### Changed
-- PR #15 - will now fail if test to execute is not found
-- PR #15 - all checks of a configurableRule will execute by default
-- PR #15 - pretty big refactoring, to improve overall design
---> Thanks a lot to [@codecholeric](https://github.com/codecholeric) for the contribution ! 
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [2.1.0] - 2019-07-12
+
+### Changed
+- PR #15 - will now fail if test to execute is not found
+- PR #15 - all checks of a configurableRule will execute by default
+- PR #15 - pretty big refactoring, to improve overall design
+--> Thanks a lot to [@codecholeric](https://github.com/codecholeric) for the contribution ! 
 
 ## [2.0.0] - 2019-05-19
 
