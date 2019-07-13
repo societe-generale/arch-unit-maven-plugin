@@ -18,6 +18,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.lang.System.lineSeparator;
 import static java.net.URLClassLoader.newInstance;
 
 /**
@@ -46,8 +47,6 @@ public class ArchUnitMojo extends AbstractMojo {
 
     private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Maven plugin reported architecture failures listed below :";
 
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
-
     @Override
     public void execute() throws MojoFailureException {
 
@@ -57,11 +56,11 @@ public class ArchUnitMojo extends AbstractMojo {
 
         String ruleFailureMessage;
         try {
-            ClassLoader contextClassLoader = fetchContextClassLoader();
+            configureContextClassLoader();
 
-            ruleFailureMessage = invokeRules(contextClassLoader);
+            ruleFailureMessage = invokeRules();
         } catch (final Exception e) {
-            throw new MojoFailureException(e.toString(), e);
+            throw new MojoFailureException(e.getMessage(), e);
         }
 
         if (!StringUtils.isEmpty(ruleFailureMessage)) {
@@ -69,7 +68,7 @@ public class ArchUnitMojo extends AbstractMojo {
         }
     }
 
-    private ClassLoader fetchContextClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
+    private void configureContextClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
 
         List<URL> urls = new ArrayList<>();
         List<String> elements = mavenProject.getTestClasspathElements();
@@ -79,22 +78,19 @@ public class ArchUnitMojo extends AbstractMojo {
 
         ClassLoader contextClassLoader = newInstance(urls.toArray(new URL[0]), Thread.currentThread().getContextClassLoader());
         Thread.currentThread().setContextClassLoader(contextClassLoader);
-        return contextClassLoader;
     }
 
-    private String invokeRules(ClassLoader contextClassLoader) throws ReflectiveOperationException {
+    private String invokeRules() {
 
-        StringBuilder errorListBuilder = new StringBuilder(StringUtils.EMPTY);
+        StringBuilder errorListBuilder = new StringBuilder();
 
         for (String rule : rules.getPreConfiguredRules()) {
-            Class<?> ruleToApplyClass = contextClassLoader.loadClass(rule);
-            String errorMessage = ruleInvokerService.invokePreConfiguredRule(ruleToApplyClass, projectPath);
+            String errorMessage = ruleInvokerService.invokePreConfiguredRule(rule, projectPath);
             errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
         }
 
         for (ConfigurableRule rule : rules.getConfigurableRules()) {
-            Class<?> customRuleToApplyClass = contextClassLoader.loadClass(rule.getRule());
-            String errorMessage = ruleInvokerService.invokeConfigurableRules(customRuleToApplyClass, rule, projectPath);
+            String errorMessage = ruleInvokerService.invokeConfigurableRules(rule, projectPath);
             errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
         }
 
@@ -106,9 +102,9 @@ public class ArchUnitMojo extends AbstractMojo {
         StringBuilder errorBuilder = new StringBuilder();
         if (StringUtils.isNotEmpty(errorMessage)) {
             errorBuilder
-                    .append("Rule Violated - ").append(rule).append(LINE_SEPARATOR)
+                    .append("Rule Violated - ").append(rule).append(lineSeparator())
                     .append(errorMessage)
-                    .append(LINE_SEPARATOR);
+                    .append(lineSeparator());
         }
         return errorBuilder.toString();
     }

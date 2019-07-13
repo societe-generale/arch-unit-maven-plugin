@@ -10,6 +10,8 @@ public class NoPublicFieldRuleTestTest {
 
 	String pathObjectWithPublicField = "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests/ObjectWithPublicField.class";
 
+	String pathObjectWithPublicStaticFinalField = "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests/ObjectWithPublicStaticFinalField.class";
+
 	@Test(expected = AssertionError.class)
 	public void shouldThrowViolations() {
 
@@ -18,9 +20,17 @@ public class NoPublicFieldRuleTestTest {
 	}
 
 	@Test
-	public void shouldNotThrowAnyViolation() {
+	public void shouldNotThrowAnyViolation1() {
 
 		assertThatCode(() -> new NoPublicFieldRuleTest().execute(pathObjectWithNoPublicField))
+				.doesNotThrowAnyException();
+
+	}
+
+	@Test
+	public void shouldNotThrowAnyViolation2() {
+
+		assertThatCode(() -> new NoPublicFieldRuleTest().execute(pathObjectWithPublicStaticFinalField))
 				.doesNotThrowAnyException();
 
 	}
