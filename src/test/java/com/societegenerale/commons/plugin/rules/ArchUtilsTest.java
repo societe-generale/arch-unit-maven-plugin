@@ -48,9 +48,8 @@ public class ArchUtilsTest {
 			if (!javaClass.getName().contains("$")) {
 				noOfClasses++;
 			}
-	
+		}
 		assertThat(noOfClasses).isEqualTo(22);
-
 	}
 
 }
