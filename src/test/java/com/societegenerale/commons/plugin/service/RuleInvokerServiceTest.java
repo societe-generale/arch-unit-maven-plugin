@@ -42,6 +42,21 @@ public class RuleInvokerServiceTest {
     }
 
     @Test
+    public void shouldExecuteConfigurableRuleWithNoPackageProvided_OnlyOnClassesOfScope() {
+
+        ApplyOn applyOn = new ApplyOn(null,"test");
+
+        configurableRule.setRule(DummyCustomRule.class.getName());
+        configurableRule.setApplyOn(applyOn);
+        configurableRule.setChecks(Arrays.asList("annotatedWithTest"));
+
+        String errorMessage = ruleInvokerService.invokeConfigurableRules(configurableRule, "./target/aut-target/");
+        assertThat(errorMessage).isNotEmpty();
+        assertThat(errorMessage).doesNotContain("Class <com.societegenerale.aut.main.ObjectWithAdateField>");
+        assertThat(errorMessage).contains("Class <com.societegenerale.aut.test.TestClassWithOutJunitAsserts>");
+    }
+
+    @Test
     public void shouldExecute2ConfigurableRulesOnTest() {
 
         ApplyOn applyOn = new ApplyOn("com.societegenerale.commons.plugin.rules","test");
