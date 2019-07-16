@@ -1,8 +1,8 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithIgnoreAtClassLevel;
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithIgnoreAtMethodLevel;
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithOutJunitAsserts;
+import com.societegenerale.aut.test.TestClassWithIgnoreAtClassLevel;
+import com.societegenerale.aut.test.TestClassWithIgnoreAtMethodLevel;
+import com.societegenerale.aut.test.TestClassWithOutJunitAsserts;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;

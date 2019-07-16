@@ -1,7 +1,10 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.*;
-import com.societegenerale.commons.plugin.utils.ArchUtils;
+import com.societegenerale.aut.test.TestClassWithIgnoreAtClassLevel;
+import com.societegenerale.aut.test.TestClassWithIgnoreAtClassLevelWithComment;
+import com.societegenerale.aut.test.TestClassWithIgnoreAtMethodLevel;
+import com.societegenerale.aut.test.TestClassWithIgnoreAtMethodLevelWithComment;
+import com.societegenerale.aut.test.TestClassWithOutJunitAsserts;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
@@ -12,8 +15,8 @@ import static org.assertj.core.api.Assertions.*;
 
 public class NoTestIgnoreWithoutCommentRuleTestTest {
 
-    private JavaClasses testClassWithIgnoreButNoComment = new ClassFileImporter().importClasses(TestClassWithIgnoreAtMethodLevel.class,TestClassWithIgnoreAtClassLevel.class);
-    private JavaClasses testClassWithIgnoreAndComment = new ClassFileImporter().importClasses(TestClassWithIgnoreAtMethodLevelWithComment.class,TestClassWithIgnoreAtClassLevelWithComment.class);
+    private JavaClasses testClassWithIgnoreButNoComment = new ClassFileImporter().importClasses(TestClassWithIgnoreAtMethodLevel.class, TestClassWithIgnoreAtClassLevel.class);
+    private JavaClasses testClassWithIgnoreAndComment = new ClassFileImporter().importClasses(TestClassWithIgnoreAtMethodLevelWithComment.class, TestClassWithIgnoreAtClassLevelWithComment.class);
     private JavaClasses testClassWithoutIgnoreAtAll= new ClassFileImporter().importClasses(TestClassWithOutJunitAsserts.class);
 
     @Test

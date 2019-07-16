@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin.rules.classesForTests;
+package com.societegenerale.aut.test;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -6,12 +6,11 @@ import org.junit.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
 
-
-public class TestClassWithIgnoreAtMethodLevel {
+@Ignore
+public class TestClassWithIgnoreAtClassLevel {
 
     @Test
-    @Ignore
-    public void someIgnoredTestWithoutAComment() {
+    public void someTestUsingAssertJ() {
 
         assertThat(true).isTrue();
 
