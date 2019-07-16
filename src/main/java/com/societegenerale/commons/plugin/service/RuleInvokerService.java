@@ -5,6 +5,8 @@ import java.lang.reflect.Method;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.service.InvokableRules.InvocationResult;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import static com.societegenerale.commons.plugin.rules.ArchRuleTest.SRC_CLASSES_FOLDER;
 import static com.societegenerale.commons.plugin.rules.ArchRuleTest.TEST_CLASSES_FOLDER;
@@ -12,6 +14,7 @@ import static com.societegenerale.commons.plugin.utils.ArchUtils.importAllClasse
 import static com.societegenerale.commons.plugin.utils.ReflectionUtils.loadClassWithContextClassLoader;
 
 public class RuleInvokerService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(RuleInvokerService.class);
 
     private static final String EXECUTE_METHOD_NAME = "execute";
 
@@ -29,6 +32,10 @@ public class RuleInvokerService {
     }
 
     public String invokeConfigurableRules(ConfigurableRule rule, String projectPath) {
+        if(rule.isSkip()) {
+            LOGGER.info("Skipping rule {}", rule.getRule());
+            return "";
+        }
 
         InvokableRules invokableRules = InvokableRules.of(rule.getRule(), rule.getChecks());
 
