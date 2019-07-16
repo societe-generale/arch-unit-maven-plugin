@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Added
-- skip parameter to skip plugin execution
+- skip parameter to skip configurable rules or whole plugin execution
 
 ### Changed
 
