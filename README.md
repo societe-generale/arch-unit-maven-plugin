@@ -119,6 +119,51 @@ So your config would become something like :
 </plugin>
 ```
 
+## Skipping rules
+
+In case of adding **ArchUnit Maven plugin** to a legacy code base you might not be able to enforce all rules immediately.
+You may add **ArchUnit Maven plugin** to a parent POM of your Maven artifacts and still be able to skip execution in child
+projects by using the skip-configuration.
+
+### Skipping just one rule
+
+Most of the time you add a new rule to your **ArchUnit Maven plugin** (which might immediately be available in all of
+your artifacts) but the issues **ArchUnit** reveals using your rule may not be fixed as soon as you need to release the
+next version of your artifacts.
+
+To skip a rule temporarily, configure it like
+
+```xml
+<properties>
+  <archunit.customrule.skip>false</archunit.customrule.skip>
+</properties>
+<!-- and inside your plugin's configuration -->
+<configurableRule>
+  <rule>com.mycompany.rules.CustomArchRule</rule>
+  <skip>${archunit.customrule.skip}</skip>
+  <!-- detailed configuration omitted -->
+</configurableRule>
+```
+
+and then your slow-to-be-fixed-artifacts my override the property `<archunit.customrule.skip>true</archunit.customrule.skip>`
+
+### Skipping the whole plugin
+
+If even skipping certain rules doesn't fit your needs, configure to skip the whole plugin execution:
+
+```xml
+<properties>
+  <archunit.skip>false</archunit.skip>
+</properties>
+<!-- and then inside the ArchUnit Maven plugin -->
+  <configuration>
+    <skip>${archunit.skip}</skip>
+  </configuration>
+```
+
+and then you can switch the parameter `archunit.skip` either on runtime (via `-Darchunit.skip=true`) or statically in child modules.
+
+
 ## Contribute !
 
 If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of default ArchUnit Maven plugin package, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](./src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one.

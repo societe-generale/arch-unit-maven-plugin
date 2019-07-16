@@ -11,6 +11,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -29,6 +31,23 @@ import static java.net.URLClassLoader.newInstance;
  */
 @Mojo(name = "arch-test", requiresDependencyResolution = ResolutionScope.TEST)
 public class ArchUnitMojo extends AbstractMojo {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ArchUnitMojo.class);
+
+    /**
+     * Skips all processing performed by this plugin.
+     *
+     * <pre>
+     * {@code
+     * ...
+     * <configuration>
+     *   <skip>false</skip>
+     * </configuration>
+     * ...
+     * }
+     * </pre>
+     */
+    @Parameter(defaultValue = "false", property = "archunit.skip", required = false)
+    private boolean skip;
 
     @Parameter(property = "projectPath")
     private String projectPath = "./target";
@@ -49,6 +68,10 @@ public class ArchUnitMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoFailureException {
+        if (skip) {
+            LOGGER.info("Skipping execution.");
+            return;
+        }
 
         if (!rules.isValid()) {
             throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
