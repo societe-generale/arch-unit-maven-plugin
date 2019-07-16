@@ -31,8 +31,7 @@ import org.mockito.junit.MockitoRule;
 
 import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
 import static java.util.Arrays.stream;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(DataProviderRunner.class)
 public class ArchUnitMojoTest {
@@ -208,7 +207,9 @@ public class ArchUnitMojoTest {
 
     ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
 
-    mojo.execute();
+    assertThatCode(() -> {
+      mojo.execute();
+    }).doesNotThrowAnyException();
   }
 
   private void executeAndExpectViolations(ArchUnitMojo mojo, ExpectedRuleFailure... expectedRuleFailures) {
