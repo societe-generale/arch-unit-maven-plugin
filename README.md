@@ -127,7 +127,7 @@ projects by using the skip-configuration.
 
 ```xml
 <properties>
-  <archunit.skip>false<archunit.skip>
+  <archunit.skip>false</archunit.skip>
 </properties>
 <!-- and then inside the ArchUnit Maven plugin -->
   <configuration>
@@ -135,7 +135,8 @@ projects by using the skip-configuration.
   </configuration>
 ```
 
-This allows you to switch parameter either on runtime or statically in child modules.
+and then you can switch the parameter `archunit.skip` either on runtime (via `-Darchunit.skip=true`) or statically in child modules.
+
 
 ## Contribute !
 
