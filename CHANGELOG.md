@@ -3,6 +3,7 @@
 ## [Unreleased]
 
 ### Added
+- skip parameter to skip plugin execution
 
 ### Changed
 

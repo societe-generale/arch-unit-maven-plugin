@@ -51,6 +51,7 @@ public class ArchUnitMojoTest {
 
   private PlexusConfiguration pluginConfiguration;
 
+
   // @formatter:off
   private static final String pomWithNoRule =
       "<project>" +
@@ -186,6 +187,28 @@ public class ArchUnitMojoTest {
     executeAndExpectViolations(mojo,
         expectRuleFailure("classes should be annotated with @Test").ofAnyKind(),
         expectRuleFailure("classes should not use Powermock").ofAnyKind());
+  }
+
+  @Test
+  public void shouldNotExecuteConfigurableRule_and_PreConfiguredRule_IfSkipIsTrue() throws Exception {
+
+    PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
+
+    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild(buildChecksBlock("annotatedWithTest_asField"));
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
+
+    PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
+    configurableRules.addChild(configurableRule);
+
+    PlexusConfiguration preConfiguredRules = pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
+    preConfiguredRules.addChild("rule", NoPowerMockRuleTest.class.getName());
+
+    pluginConfiguration.getChild("skip").setValue("true");
+
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
+
+    mojo.execute();
   }
 
   private void executeAndExpectViolations(ArchUnitMojo mojo, ExpectedRuleFailure... expectedRuleFailures) {

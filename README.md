@@ -119,6 +119,24 @@ So your config would become something like :
 </plugin>
 ```
 
+## Skipping rules
+
+In case of adding **ArchUnit Maven plugin** to a legacy code base you might not be able to enforce all rules immediately.
+You may add **ArchUnit Maven plugin** to a parent POM of your Maven artifacts and still be able to skip execution in child
+projects by using the skip-configuration.
+
+```xml
+<properties>
+  <archunit.skip>false<archunit.skip>
+</properties>
+<!-- and then inside the ArchUnit Maven plugin -->
+  <configuration>
+    <skip>${archunit.skip}</skip>
+  </configuration>
+```
+
+This allows you to switch parameter either on runtime or statically in child modules.
+
 ## Contribute !
 
 If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of default ArchUnit Maven plugin package, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](./src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one.
