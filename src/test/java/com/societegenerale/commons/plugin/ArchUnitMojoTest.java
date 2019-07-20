@@ -31,8 +31,7 @@ import org.mockito.junit.MockitoRule;
 
 import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
 import static java.util.Arrays.stream;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 @RunWith(DataProviderRunner.class)
 public class ArchUnitMojoTest {
@@ -50,6 +49,7 @@ public class ArchUnitMojoTest {
   private MavenProject mavenProject;
 
   private PlexusConfiguration pluginConfiguration;
+
 
   // @formatter:off
   private static final String pomWithNoRule =
@@ -186,6 +186,30 @@ public class ArchUnitMojoTest {
     executeAndExpectViolations(mojo,
         expectRuleFailure("classes should be annotated with @Test").ofAnyKind(),
         expectRuleFailure("classes should not use Powermock").ofAnyKind());
+  }
+
+  @Test
+  public void shouldNotExecuteConfigurableRule_and_PreConfiguredRule_IfSkipIsTrue() throws Exception {
+
+    PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
+
+    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild(buildChecksBlock("annotatedWithTest_asField"));
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
+
+    PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
+    configurableRules.addChild(configurableRule);
+
+    PlexusConfiguration preConfiguredRules = pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
+    preConfiguredRules.addChild("rule", NoPowerMockRuleTest.class.getName());
+
+    pluginConfiguration.getChild("skip").setValue("true");
+
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
+
+    assertThatCode(() -> {
+      mojo.execute();
+    }).doesNotThrowAnyException();
   }
 
   private void executeAndExpectViolations(ArchUnitMojo mojo, ExpectedRuleFailure... expectedRuleFailures) {
