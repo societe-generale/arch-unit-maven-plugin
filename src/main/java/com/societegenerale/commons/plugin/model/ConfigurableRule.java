@@ -16,6 +16,9 @@ public class ConfigurableRule {
   @Parameter(property ="checks")
   private List<String> checks = new ArrayList<>();
 
+  @Parameter(defaultValue = "false", required = false)
+  private boolean skip;
+
   public List<String> getChecks() {
     return checks;
   }
@@ -38,5 +41,13 @@ public class ConfigurableRule {
 
   public void setApplyOn(ApplyOn applyOn) {
     this.applyOn = applyOn;
+  }
+
+  public boolean isSkip() {
+    return skip;
+  }
+
+  public void setSkip(boolean skip) {
+    this.skip = skip;
   }
 }

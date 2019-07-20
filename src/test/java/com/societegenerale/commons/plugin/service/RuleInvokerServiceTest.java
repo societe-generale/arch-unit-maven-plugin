@@ -28,6 +28,20 @@ public class RuleInvokerServiceTest {
     }
 
     @Test
+    public void shouldNotExecuteSkippedConfigurableRules() {
+
+        ApplyOn applyOn = new ApplyOn("com.societegenerale.commons.plugin.rules","test");
+
+        configurableRule.setRule(DummyCustomRule.class.getName());
+        configurableRule.setApplyOn(applyOn);
+        configurableRule.setChecks(Arrays.asList("annotatedWithTest","resideInMyPackage"));
+        configurableRule.setSkip(true);
+
+        String errorMessage = ruleInvokerService.invokeConfigurableRules(configurableRule, "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
+        assertThat(errorMessage).isEmpty();
+    }
+
+    @Test
     public void shouldExecute2ConfigurableRulesOnTest() {
 
         ApplyOn applyOn = new ApplyOn("com.societegenerale.commons.plugin.rules","test");
