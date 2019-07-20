@@ -18,8 +18,8 @@ public class NoPublicFieldRuleTest implements ArchRuleTest {
 	@Override
 	public void execute(String path) {
 
-		ArchRule rulePublic = fields().should().bePublic().andShould().beStatic().andShould().beFinal().orShould()
-				.notBePublic().because(NO_PUBLIC_FIELD_VIOLATION_MESSAGE);
+		ArchRule rulePublic = fields().that().areNotStatic().or().areNotFinal().should().notBePublic()
+				.because(NO_PUBLIC_FIELD_VIOLATION_MESSAGE);
 
 		rulePublic.check(ArchUtils.importAllClassesInPackage(path, ""));
 
