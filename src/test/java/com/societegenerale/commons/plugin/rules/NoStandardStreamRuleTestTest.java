@@ -5,7 +5,7 @@ import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.classes;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.catchThrowable;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithStandardStream;
+import com.societegenerale.aut.test.TestClassWithStandardStream;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithJava8TimeLib;
-import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithJodaTimeReferences;
+import com.societegenerale.aut.main.ObjectWithJava8TimeLib;
+import com.societegenerale.aut.main.ObjectWithJodaTimeReferences;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;

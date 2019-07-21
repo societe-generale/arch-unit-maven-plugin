@@ -7,10 +7,10 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import org.junit.Test;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithAdateField;
-import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithJava8TimeLib;
-import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithJavaTextDateFormat;
-import com.societegenerale.commons.plugin.rules.classesForTests.ObjectWithJavaUtilGregorianCalendar;
+import com.societegenerale.aut.main.ObjectWithAdateField;
+import com.societegenerale.aut.main.ObjectWithJava8TimeLib;
+import com.societegenerale.aut.main.ObjectWithJavaTextDateFormat;
+import com.societegenerale.aut.main.ObjectWithJavaUtilGregorianCalendar;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 

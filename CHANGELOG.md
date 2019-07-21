@@ -12,6 +12,7 @@
 ### Removed
 
 ### Fixed
+- will now allow to use scope with empty package
 
 ## [2.1.0] - 2019-07-12
 

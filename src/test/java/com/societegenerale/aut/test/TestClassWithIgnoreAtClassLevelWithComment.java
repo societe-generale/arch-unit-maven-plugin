@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin.rules.classesForTests;
+package com.societegenerale.aut.test;
 
 import org.junit.Ignore;
 import org.junit.Test;

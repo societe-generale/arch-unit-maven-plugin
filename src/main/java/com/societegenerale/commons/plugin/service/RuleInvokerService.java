@@ -54,7 +54,9 @@ public class RuleInvokerService {
             if (rule.getApplyOn().getScope() != null && "test".equals(rule.getApplyOn().getScope())) {
                 packageNameBuilder = new StringBuilder(TEST_CLASSES_FOLDER);
             }
-            packageNameBuilder.append("/").append(rule.getApplyOn().getPackageName());
+            if (rule.getApplyOn().getPackageName() != null) {
+                packageNameBuilder.append("/").append(rule.getApplyOn().getPackageName());
+            }
 
         }
         return packageNameBuilder.toString().replace(".", "/");
