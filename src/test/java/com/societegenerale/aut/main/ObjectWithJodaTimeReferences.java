@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin.rules.classesForTests;
+package com.societegenerale.aut.main;
 
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;

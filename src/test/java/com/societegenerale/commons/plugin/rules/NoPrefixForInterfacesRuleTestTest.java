@@ -1,9 +1,8 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.IInterfaceWithIncorrectName;
-import com.societegenerale.commons.plugin.rules.classesForTests.InterfaceWithCorrectName;
-import com.societegenerale.commons.plugin.rules.classesForTests.TotallyGoodInterfaceName;
-import com.societegenerale.commons.plugin.utils.ArchUtils;
+import com.societegenerale.aut.main.IInterfaceWithIncorrectName;
+import com.societegenerale.aut.main.InterfaceWithCorrectName;
+import com.societegenerale.aut.main.TotallyGoodInterfaceName;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;

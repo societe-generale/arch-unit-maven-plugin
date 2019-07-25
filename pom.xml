@@ -269,8 +269,44 @@
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
             </plugin>
-            
-            
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-aut-classes-to-destination</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>testResources</goal>
+                        </goals>
+
+                        <configuration>
+                            <outputDirectory>${build.directory}/aut-target/classes/com/societegenerale/aut/main</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${build.directory}/test-classes/com/societegenerale/aut/main</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-aut-test-classes-to-destination</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>testResources</goal>
+                        </goals>
+
+                        <configuration>
+                            <outputDirectory>${build.directory}/aut-target/test-classes/com/societegenerale/aut/test</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${build.directory}/test-classes/com/societegenerale/aut/test</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 

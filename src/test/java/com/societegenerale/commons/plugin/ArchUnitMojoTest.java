@@ -8,7 +8,7 @@ import java.util.regex.Pattern;
 import com.google.common.collect.ImmutableSet;
 import com.societegenerale.commons.plugin.rules.MyCustomRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithPowerMock;
+import com.societegenerale.aut.test.TestClassWithPowerMock;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -90,7 +90,7 @@ public class ArchUnitMojoTest {
   @Test
   public void shouldExecuteSinglePreconfiguredRule() throws Exception {
 
-    pluginConfiguration.getChild("projectPath").setValue("./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests");
+    pluginConfiguration.getChild("projectPath").setValue("./target/aut-target/test-classes/com/societegenerale/aut/test");
 
     // add single rule
     PlexusConfiguration preConfiguredRules = pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
@@ -134,7 +134,7 @@ public class ArchUnitMojoTest {
 
     configurableRule.addChild("rule", MyCustomRules.class.getName());
     configurableRule.addChild(buildChecksBlock(checkName));
-    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.aut.test.specificCase", "test"));
 
     PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
     configurableRules.addChild(configurableRule);
@@ -151,7 +151,7 @@ public class ArchUnitMojoTest {
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
     configurableRule.addChild("rule", MyCustomRules.class.getName());
-    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.aut.test.specificCase", "test"));
 
     PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
     configurableRules.addChild(configurableRule);
@@ -173,7 +173,7 @@ public class ArchUnitMojoTest {
 
     configurableRule.addChild("rule", MyCustomRules.class.getName());
     configurableRule.addChild(buildChecksBlock("annotatedWithTest_asField"));
-    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
+    configurableRule.addChild(buildApplyOnBlock("com.societegenerale.aut.test.specificCase", "test"));
 
     PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
     configurableRules.addChild(configurableRule);

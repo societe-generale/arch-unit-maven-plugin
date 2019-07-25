@@ -1,7 +1,7 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithAutowiredField;
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithInjectedField;
+import com.societegenerale.aut.test.TestClassWithAutowiredField;
+import com.societegenerale.aut.test.TestClassWithInjectedField;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;

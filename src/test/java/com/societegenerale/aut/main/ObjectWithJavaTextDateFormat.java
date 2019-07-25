@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin.rules.classesForTests;
+package com.societegenerale.aut.main;
 
 import java.text.DateFormat;
 

@@ -1,9 +1,8 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithJunit4Asserts;
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithJunit5Asserts;
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithOutJunitAsserts;
-import com.societegenerale.commons.plugin.utils.ArchUtils;
+import com.societegenerale.aut.test.TestClassWithJunit4Asserts;
+import com.societegenerale.aut.test.TestClassWithJunit5Asserts;
+import com.societegenerale.aut.test.TestClassWithOutJunitAsserts;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
