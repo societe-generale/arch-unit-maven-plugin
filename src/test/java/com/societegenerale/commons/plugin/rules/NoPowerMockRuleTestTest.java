@@ -1,7 +1,7 @@
 package com.societegenerale.commons.plugin.rules;
 
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithOutJunitAsserts;
-import com.societegenerale.commons.plugin.rules.classesForTests.TestClassWithPowerMock;
+import com.societegenerale.aut.test.TestClassWithOutJunitAsserts;
+import com.societegenerale.aut.test.TestClassWithPowerMock;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import org.junit.Test;
