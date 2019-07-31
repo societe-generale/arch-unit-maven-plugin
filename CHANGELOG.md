@@ -3,7 +3,6 @@
 ## [Unreleased]
 
 ### Added
-- skip parameter to skip configurable rules or whole plugin execution
 
 ### Changed
 
@@ -12,7 +11,18 @@
 ### Removed
 
 ### Fixed
-- will now allow to use scope with empty package
+
+## [2.2.0] - 2019-07-31
+
+### Added
+- PR #14 - new rule available out of the box : no public fields - thanks [@FanJups](https://github.com/FanJups) for the contribution !
+- PR #17 - skip parameter to skip configurable rules or whole plugin execution - thanks [@croesh](https://github.com/croesch) for the contribution !
+
+### Changed
+- upgraded to ArchUnit 0.11.0
+
+### Fixed
+- PR #16 - will now allow to use scope with empty package + test structure refactoring - thanks [@croesh](https://github.com/croesch) for the contribution !
 
 ## [2.1.0] - 2019-07-12
 
