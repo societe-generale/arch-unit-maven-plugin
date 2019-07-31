@@ -1,16 +1,14 @@
 package com.societegenerale.commons.plugin.rules;
 
-import static org.assertj.core.api.Assertions.assertThatCode;
-
 import org.junit.Test;
+
+import static org.assertj.core.api.Assertions.assertThatCode;
 
 public class NoPublicFieldRuleTestTest {
 
-	String pathObjectWithNoPublicField = "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests/ObjectWithNoPublicField.class";
+	String pathObjectWithNoPublicField = "./target/aut-target/test-classes/com/societegenerale/aut/test/ObjectWithNoNonStaticPublicField.class";
 
-	String pathObjectWithPublicField = "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests/ObjectWithPublicField.class";
-
-	String pathObjectWithPublicStaticFinalField = "./target/test-classes/com/societegenerale/commons/plugin/rules/classesForTests/ObjectWithPublicStaticFinalField.class";
+	String pathObjectWithPublicField = "./target/aut-target/test-classes/com/societegenerale/aut/test/ObjectWithPublicField.class";
 
 	@Test(expected = AssertionError.class)
 	public void shouldThrowViolations() {
@@ -20,17 +18,9 @@ public class NoPublicFieldRuleTestTest {
 	}
 
 	@Test
-	public void shouldNotThrowAnyViolation1() {
+	public void shouldNotThrowAnyViolation_even_with_publicStaticFinaField() {
 
 		assertThatCode(() -> new NoPublicFieldRuleTest().execute(pathObjectWithNoPublicField))
-				.doesNotThrowAnyException();
-
-	}
-
-	@Test
-	public void shouldNotThrowAnyViolation2() {
-
-		assertThatCode(() -> new NoPublicFieldRuleTest().execute(pathObjectWithPublicStaticFinalField))
 				.doesNotThrowAnyException();
 
 	}
