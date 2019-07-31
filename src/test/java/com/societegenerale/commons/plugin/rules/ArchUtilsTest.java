@@ -13,8 +13,9 @@ public class ArchUtilsTest {
 
 	@Test
 	public void shouldLoadClassesFromGivenPackage() {
-		JavaClasses classes = ArchUtils
-				.importAllClassesInPackage("./target/classes/", "com/societegenerale/commons/plugin/model");
+		JavaClasses classes = ArchUtils.importAllClassesInPackage("./target/classes/", "com/societegenerale/commons/plugin/model");
+
+				
 
 		long noOfClassesInPackage = classes.stream().count();
 
@@ -27,7 +28,8 @@ public class ArchUtilsTest {
 
 		long noOfClasses = classes.stream().filter(it -> !it.isInnerClass()).count();
 
-		assertThat(noOfClasses).isEqualTo(21);
+		assertThat(noOfClasses).isEqualTo(22);
+
 	}
 
 }
