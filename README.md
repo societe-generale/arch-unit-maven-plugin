@@ -33,6 +33,8 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 				<rule>com.societegenerale.commons.plugin.rules.NoJavaUtilDateRuleTest</rule>
 				<rule>com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest</rule>
 				<rule>com.societegenerale.commons.plugin.rules.NoPrefixForInterfacesRuleTest</rule>
+				<rule>com.societegenerale.commons.plugin.rules.NoPublicFieldRuleTest</rule>
+				
 				<!-- you may want to use one of the below rules, but not both at same time -->
 				<rule>com.societegenerale.commons.plugin.rules.NoTestIgnoreRuleTest</rule>
 				<rule>com.societegenerale.commons.plugin.rules.NoTestIgnoreWithoutCommentRuleTest</rule>
