@@ -165,6 +165,10 @@ If even skipping certain rules doesn't fit your needs, configure to skip the who
 
 and then you can switch the parameter `archunit.skip` either on runtime (via `-Darchunit.skip=true`) or statically in child modules.
 
+### ArchUnit advanced configuration
+
+Since v2.2.0, you can benefit from ArchUnit advanced configuration, as the plugin can find `archunit.properties` file. More infos in [ArchUnit's user guide](https://www.archunit.org/userguide/html/000_Index.html#_advanced_configuration)
+
 
 ## Contribute !
 
@@ -175,3 +179,6 @@ If you don't want to package your rules separately and/or feel they could be use
 - Arpit Garg 
 - Vincent Fuchs
 
+
+
+[]: https://www.archunit.org/userguide/html/000_Index.html#_advanced_configuration
