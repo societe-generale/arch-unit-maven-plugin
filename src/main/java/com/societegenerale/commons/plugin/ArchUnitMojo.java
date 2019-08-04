@@ -1,5 +1,11 @@
 package com.societegenerale.commons.plugin;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
@@ -11,12 +17,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.System.lineSeparator;
 import static java.net.URLClassLoader.newInstance;
@@ -58,7 +58,7 @@ public class ArchUnitMojo extends AbstractMojo {
         return rules;
     }
 
-    private RuleInvokerService ruleInvokerService = new RuleInvokerService();
+    private RuleInvokerService ruleInvokerService ;
 
     private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Maven plugin reported architecture failures listed below :";
 
@@ -76,6 +76,8 @@ public class ArchUnitMojo extends AbstractMojo {
         String ruleFailureMessage;
         try {
             configureContextClassLoader();
+
+            ruleInvokerService = new RuleInvokerService(getLog());
 
             ruleFailureMessage = invokeRules();
         } catch (final Exception e) {
@@ -109,7 +111,7 @@ public class ArchUnitMojo extends AbstractMojo {
         }
 
         for (ConfigurableRule rule : rules.getConfigurableRules()) {
-            String errorMessage = ruleInvokerService.invokeConfigurableRules(getLog(), rule, projectPath);
+            String errorMessage = ruleInvokerService.invokeConfigurableRules(rule, projectPath);
             errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
         }
 
