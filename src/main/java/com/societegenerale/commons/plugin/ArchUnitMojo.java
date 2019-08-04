@@ -1,5 +1,11 @@
 package com.societegenerale.commons.plugin;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
@@ -13,12 +19,6 @@ import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.System.lineSeparator;
 import static java.net.URLClassLoader.newInstance;
@@ -68,6 +68,12 @@ public class ArchUnitMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoFailureException {
+
+        if("pom".equals(mavenProject.getPackaging())){
+            LOGGER.debug("module packaging is 'pom', so skipping execution");
+            return;
+        }
+
         if (skip) {
             LOGGER.info("Skipping execution.");
             return;
