@@ -73,6 +73,10 @@ public class ArchUnitMojo extends AbstractMojo {
             throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
         }
 
+        if ("pom".equals(mavenProject.getPackaging())) {
+            getLog().debug("module packaging is 'pom', so skipping execution");
+            return;
+        }
         String ruleFailureMessage;
         try {
             configureContextClassLoader();
