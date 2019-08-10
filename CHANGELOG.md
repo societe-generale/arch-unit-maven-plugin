@@ -5,6 +5,8 @@
 ### Added
 
 ### Changed
+- PR #20 - using Maven recommended way for logging - thanks [@croesh](https://github.com/croesh) for the contribution !
+- PR #27 - setting Maven plugins versions to avoid warning at build time - thanks [@khmarbaise](https://github.com/khmarbaise) for the contribution !
 
 ### Deprecated
 
