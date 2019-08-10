@@ -1,5 +1,11 @@
 package com.societegenerale.commons.plugin;
 
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
@@ -11,14 +17,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 import static java.lang.System.lineSeparator;
 import static java.net.URLClassLoader.newInstance;
@@ -31,8 +29,6 @@ import static java.net.URLClassLoader.newInstance;
  */
 @Mojo(name = "arch-test", requiresDependencyResolution = ResolutionScope.TEST)
 public class ArchUnitMojo extends AbstractMojo {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ArchUnitMojo.class);
-
     /**
      * Skips all processing performed by this plugin.
      *
@@ -62,14 +58,14 @@ public class ArchUnitMojo extends AbstractMojo {
         return rules;
     }
 
-    private RuleInvokerService ruleInvokerService = new RuleInvokerService();
+    private RuleInvokerService ruleInvokerService ;
 
     private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Maven plugin reported architecture failures listed below :";
 
     @Override
     public void execute() throws MojoFailureException {
         if (skip) {
-            LOGGER.info("Skipping execution.");
+            getLog().info("Skipping execution.");
             return;
         }
 
@@ -80,6 +76,8 @@ public class ArchUnitMojo extends AbstractMojo {
         String ruleFailureMessage;
         try {
             configureContextClassLoader();
+
+            ruleInvokerService = new RuleInvokerService(getLog());
 
             ruleFailureMessage = invokeRules();
         } catch (final Exception e) {

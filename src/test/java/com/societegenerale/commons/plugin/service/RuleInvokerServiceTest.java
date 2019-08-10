@@ -1,21 +1,25 @@
 package com.societegenerale.commons.plugin.service;
 
+import java.util.Arrays;
+
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest;
 import com.societegenerale.commons.plugin.rules.classesForTests.DummyCustomRule;
+import org.apache.maven.plugin.logging.Log;
+import org.apache.maven.plugin.testing.SilentLog;
 import org.junit.Test;
-
-import java.util.Arrays;
 
 import static java.util.Collections.singletonList;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RuleInvokerServiceTest {
 
-    RuleInvokerService ruleInvokerService = new RuleInvokerService();
+    RuleInvokerService ruleInvokerService = new RuleInvokerService(new SilentLog());
 
     ConfigurableRule configurableRule = new ConfigurableRule();
+
+    private Log testLogger = new SilentLog();
 
     @Test
     public void shouldInvokePreConfiguredRulesMethod() {
