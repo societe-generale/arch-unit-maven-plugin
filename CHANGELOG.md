@@ -3,6 +3,8 @@
 ## [Unreleased]
 
 ### Added
+- PR #28 - adding a new rule : DontReturnNullCollectionTest
+
 
 ### Changed
 - PR #20 - using Maven recommended way for logging - thanks [@croesh](https://github.com/croesh) for the contribution !
