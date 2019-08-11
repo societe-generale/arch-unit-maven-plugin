@@ -11,11 +11,11 @@ import com.tngtech.archunit.lang.ArchRule;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.methods;
 
 /**
- * Returning null lists forces the caller to always perform a null check, which hinders readability. It's much better to never return a null List,
- * and instead return an empty list.
- * This rule enforces that all methods returning a List must be annotated with @Nonnull
+ * Returning null collections (List, Set) forces the caller to always perform a null check, which hinders readability. It's much better to never return a null Collection, and instead return an empty one.
+ * This rule enforces that all methods returning a Collection must be annotated with @Nonnull
  *
- * @see there's no agrees standard for notNull annotation - https://stackoverflow.com/questions/4963300/which-notnull-java-annotation-should-i-use/
+ * @see: there is no agreed standard for notNull annotation, see <a href= "https://stackoverflow.com/questions/4963300/which-notnull-java-annotation-should-i-use/">here</a>
+ *
  *
  */
 public class DontReturnNullCollectionTest implements ArchRuleTest {
