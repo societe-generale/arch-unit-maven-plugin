@@ -2,6 +2,8 @@ package com.societegenerale.commons.plugin.rules;
 
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import org.apache.maven.plugin.testing.SilentLog;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,11 +13,15 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class ArchUtilsTest {
 
+	@BeforeClass
+	public static void setup(){
+		new ArchUtils(new SilentLog());
+	}
+
 	@Test
 	public void shouldLoadClassesFromGivenPackage() {
-		JavaClasses classes = ArchUtils.importAllClassesInPackage("./target/classes/", "com/societegenerale/commons/plugin/model");
 
-				
+		JavaClasses classes = ArchUtils.importAllClassesInPackage("./target/classes/", "com/societegenerale/commons/plugin/model");
 
 		long noOfClassesInPackage = classes.stream().count();
 
@@ -28,7 +34,7 @@ public class ArchUtilsTest {
 
 		long noOfClasses = classes.stream().filter(it -> !it.isInnerClass()).count();
 
-		assertThat(noOfClasses).isEqualTo(22);
+		assertThat(noOfClasses).isEqualTo(23);
 
 	}
 
