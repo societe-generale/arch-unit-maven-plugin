@@ -178,7 +178,3 @@ If you don't want to package your rules separately and/or feel they could be use
 
 - Arpit Garg 
 - Vincent Fuchs
-
-
-
-[]: https://www.archunit.org/userguide/html/000_Index.html#_advanced_configuration
