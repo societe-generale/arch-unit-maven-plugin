@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +17,6 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
 
-import static java.lang.System.lineSeparator;
 import static java.net.URLClassLoader.newInstance;
 
 /**
@@ -83,7 +81,7 @@ public class ArchUnitMojo extends AbstractMojo {
 
             ruleInvokerService = new RuleInvokerService(getLog());
 
-            ruleFailureMessage = invokeRules();
+            ruleFailureMessage = ruleInvokerService.invokeRules(rules, projectPath);
         } catch (final Exception e) {
             throw new MojoFailureException(e.getMessage(), e);
         }
@@ -105,32 +103,4 @@ public class ArchUnitMojo extends AbstractMojo {
         Thread.currentThread().setContextClassLoader(contextClassLoader);
     }
 
-    private String invokeRules() {
-
-        StringBuilder errorListBuilder = new StringBuilder();
-
-        for (String rule : rules.getPreConfiguredRules()) {
-            String errorMessage = ruleInvokerService.invokePreConfiguredRule(rule, projectPath);
-            errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
-        }
-
-        for (ConfigurableRule rule : rules.getConfigurableRules()) {
-            String errorMessage = ruleInvokerService.invokeConfigurableRules(rule, projectPath);
-            errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
-        }
-
-        return errorListBuilder.toString();
-    }
-
-    private String prepareErrorMessageForRuleFailures(String rule, String errorMessage) {
-
-        StringBuilder errorBuilder = new StringBuilder();
-        if (StringUtils.isNotEmpty(errorMessage)) {
-            errorBuilder
-                    .append("Rule Violated - ").append(rule).append(lineSeparator())
-                    .append(errorMessage)
-                    .append(lineSeparator());
-        }
-        return errorBuilder.toString();
-    }
 }

@@ -3,14 +3,17 @@ package com.societegenerale.commons.plugin.service;
 import java.lang.reflect.Method;
 
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
+import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.InvokableRules.InvocationResult;
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClasses;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.plugin.logging.Log;
 
 import static com.societegenerale.commons.plugin.rules.ArchRuleTest.SRC_CLASSES_FOLDER;
 import static com.societegenerale.commons.plugin.rules.ArchRuleTest.TEST_CLASSES_FOLDER;
 import static com.societegenerale.commons.plugin.utils.ReflectionUtils.loadClassWithContextClassLoader;
+import static java.lang.System.lineSeparator;
 
 public class RuleInvokerService {
     private static final String EXECUTE_METHOD_NAME = "execute";
@@ -24,7 +27,25 @@ public class RuleInvokerService {
         archUtils =new ArchUtils(log);
     }
 
-    public String invokePreConfiguredRule(String ruleClassName, String projectPath) {
+    public String invokeRules(Rules rules, String projectPath) {
+
+        StringBuilder errorListBuilder = new StringBuilder();
+
+        for (String rule : rules.getPreConfiguredRules()) {
+            String errorMessage = invokePreConfiguredRule(rule, projectPath);
+            errorListBuilder.append(prepareErrorMessageForRuleFailures(rule, errorMessage));
+        }
+
+        for (ConfigurableRule rule : rules.getConfigurableRules()) {
+            String errorMessage = invokeConfigurableRules(rule, projectPath);
+            errorListBuilder.append(prepareErrorMessageForRuleFailures(rule.getRule(), errorMessage));
+        }
+
+        return errorListBuilder.toString();
+
+    }
+
+    private String invokePreConfiguredRule(String ruleClassName, String projectPath) {
         Class<?> ruleClass = loadClassWithContextClassLoader(ruleClassName);
 
         String errorMessage = "";
@@ -37,7 +58,7 @@ public class RuleInvokerService {
         return errorMessage;
     }
 
-    public String invokeConfigurableRules(ConfigurableRule rule, String projectPath) {
+    private String invokeConfigurableRules(ConfigurableRule rule, String projectPath) {
         if(rule.isSkip()) {
             if(log.isInfoEnabled()) {
                 log.info("Skipping rule " + rule.getRule());
@@ -68,5 +89,18 @@ public class RuleInvokerService {
 
         }
         return packageNameBuilder.toString().replace(".", "/");
+    }
+
+
+    private String prepareErrorMessageForRuleFailures(String rule, String errorMessage) {
+
+        StringBuilder errorBuilder = new StringBuilder();
+        if (StringUtils.isNotEmpty(errorMessage)) {
+            errorBuilder
+                    .append("Rule Violated - ").append(rule).append(lineSeparator())
+                    .append(errorMessage)
+                    .append(lineSeparator());
+        }
+        return errorBuilder.toString();
     }
 }

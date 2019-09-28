@@ -1,11 +1,20 @@
 package com.societegenerale.commons.plugin.model;
 
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.maven.plugins.annotations.Parameter;
+
 public class Rules {
+
+    public Rules() {
+        //no arg constructor required by Maven when running the plugin
+    }
+
+    public Rules(List<String> preConfiguredRules, List<ConfigurableRule> configurableRules) {
+        this.preConfiguredRules = preConfiguredRules;
+        this.configurableRules = configurableRules;
+    }
 
     @Parameter(property = "preConfiguredRules")
     private List<String> preConfiguredRules= new ArrayList<>();
