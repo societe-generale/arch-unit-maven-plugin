@@ -54,6 +54,7 @@
         <junit.version>4.12</junit.version>
         <lombok.version>1.18.10</lombok.version>
         <jacoco.version>0.8.3</jacoco.version>
+        <mockito.version>3.0.0</mockito.version>
 
         <project.testresult.directory>${project.build.directory}/test-results
         </project.testresult.directory>
@@ -100,6 +101,15 @@
             <artifactId>archunit</artifactId>
             <version>${tng.archunit.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
