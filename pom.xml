@@ -52,7 +52,7 @@
         <tng.archunit.version>0.11.0</tng.archunit.version>
 
         <junit.version>4.12</junit.version>
-        <lombok.version>1.16.6</lombok.version>
+        <lombok.version>1.18.10</lombok.version>
         <jacoco.version>0.8.3</jacoco.version>
 
         <project.testresult.directory>${project.build.directory}/test-results
