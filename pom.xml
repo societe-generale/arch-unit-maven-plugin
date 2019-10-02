@@ -2,8 +2,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.societegenerale.commons</groupId>
-    <artifactId>arch-unit-maven-plugin</artifactId>
-    <packaging>maven-plugin</packaging>
+    <artifactId>arch-unit-build-plugin-parent</artifactId>
+    <packaging>pom</packaging>
     <version>2.2.1-SNAPSHOT</version>
 
     <name>ArchUnit Maven plugin</name>
@@ -84,115 +84,12 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
-    <dependencies>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
-            <version>${maven.core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-            <version>${maven.plugin.annotation.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.tngtech.archunit</groupId>
-            <artifactId>archunit</artifactId>
-            <version>${tng.archunit.version}</version>
-        </dependency>
 
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
+<modules>
+    <module>arch-unit-build-plugin-core</module>
+    <module>arch-unit-maven-plugin</module>
+</modules>
 
-
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.9</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <!-- Adding this lib to be able to have a test class using @Autowired. required only for test. -->
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-            <version>5.1.5.RELEASE</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>1.7.3</version>
-            <!-- Need to add powerMock as a dependency WITHOUT test scope. This way, we're sure the Powermock classes are part of the plugin, and will be found
-            by the plugin at runtime in different projects. Without it, NoPowerMockRuleTest actually won't work !
-             see https://github.com/TNG/ArchUnit/issues/120
-             -->
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.9.1</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.tngtech.junit.dataprovider</groupId>
-            <artifactId>junit4-dataprovider</artifactId>
-            <version>2.4</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.maven.plugin-testing</groupId>
-            <artifactId>maven-plugin-testing-harness</artifactId>
-            <version>3.3.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-compat</artifactId>
-            <version>3.5.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!--
-        ! Added to prevent logging output during Tests
-        ! based on slf4j requirement of archunit itself.
-        -->
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-nop</artifactId>
-            <version>1.7.25</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.4.2</version>
-            <scope>test</scope>
-        </dependency>
-
-    </dependencies>
     <build>
         <plugins>
             <plugin>

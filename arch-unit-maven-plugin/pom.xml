@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.societegenerale.commons</groupId>
+    <artifactId>arch-unit-maven-plugin</artifactId>
+    <packaging>maven-plugin</packaging>
+
+    <name>ArchUnit Maven plugin</name>
+
+    <parent>
+        <groupId>com.societegenerale.commons</groupId>
+        <artifactId>arch-unit-build-plugin-parent</artifactId>
+        <version>2.2.1-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+
+        <dependency>
+            <groupId>com.societegenerale.commons</groupId>
+            <artifactId>arch-unit-build-plugin-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-core</artifactId>
+            <version>${maven.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>${maven.plugin.annotation.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+
+    </dependencies>
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.6.0</version>
+                <executions>
+                    <execution>
+                        <id>default-descriptor</id>
+                        <phase>process-classes</phase>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-aut-classes-to-destination</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>testResources</goal>
+                        </goals>
+
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/aut-target/classes/com/societegenerale/aut/main</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/test-classes/com/societegenerale/aut/main</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-aut-test-classes-to-destination</id>
+                        <phase>process-test-classes</phase>
+                        <goals>
+                            <goal>testResources</goal>
+                        </goals>
+
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/aut-target/test-classes/com/societegenerale/aut/test</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/test-classes/com/societegenerale/aut/test</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
