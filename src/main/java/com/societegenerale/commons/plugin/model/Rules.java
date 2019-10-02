@@ -16,6 +16,8 @@ public class Rules {
         this.configurableRules = configurableRules;
     }
 
+
+
     @Parameter(property = "preConfiguredRules")
     private List<String> preConfiguredRules= new ArrayList<>();
 
@@ -42,4 +44,11 @@ public class Rules {
         return !configurableRules.isEmpty();
     }
 
+    public void setPreConfiguredRules(List<String> preConfiguredRules) {
+        this.preConfiguredRules = preConfiguredRules;
+    }
+
+    public void setConfigurableRules(List<ConfigurableRule> configurableRules) {
+        this.configurableRules = configurableRules;
+    }
 }
