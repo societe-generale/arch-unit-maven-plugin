@@ -3,8 +3,6 @@ package com.societegenerale.commons.plugin.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.maven.plugins.annotations.Parameter;
-
 public class Rules {
 
     public Rules() {
@@ -16,12 +14,8 @@ public class Rules {
         this.configurableRules = configurableRules;
     }
 
-
-
-    @Parameter(property = "preConfiguredRules")
     private List<String> preConfiguredRules= new ArrayList<>();
 
-    @Parameter(property = "configurableRules")
     private List<ConfigurableRule> configurableRules= new ArrayList<>();
 
     public List<String> getPreConfiguredRules() {

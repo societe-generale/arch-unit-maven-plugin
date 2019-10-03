@@ -1,22 +1,16 @@
 package com.societegenerale.commons.plugin.model;
 
-import org.apache.maven.plugins.annotations.Parameter;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ConfigurableRule {
 
-  @Parameter(property ="rule")
   private String rule;
 
-  @Parameter(property ="applyOn")
   private ApplyOn applyOn;
 
-  @Parameter(property ="checks")
   private List<String> checks = new ArrayList<>();
 
-  @Parameter(defaultValue = "false", required = false)
   private boolean skip;
 
   public List<String> getChecks() {

@@ -1,13 +1,11 @@
 package com.societegenerale.commons.plugin.model;
 
-import org.apache.maven.plugins.annotations.Parameter;
 
 public class ApplyOn {
 
-  @Parameter(property = "packageName")
   private String packageName;
 
-  @Parameter(property = "scope")
+
   private String scope;
 
   //default constructor is required at runtime

@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
-import org.apache.maven.plugin.logging.Log;
+import com.societegenerale.commons.plugin.Log;
 
 /**
  * Created by agarg020917 on 11/17/2017.

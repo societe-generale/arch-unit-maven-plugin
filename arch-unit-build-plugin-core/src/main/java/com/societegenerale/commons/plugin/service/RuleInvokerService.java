@@ -8,7 +8,7 @@ import com.societegenerale.commons.plugin.service.InvokableRules.InvocationResul
 import com.societegenerale.commons.plugin.utils.ArchUtils;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.maven.plugin.logging.Log;
+import com.societegenerale.commons.plugin.Log;
 
 import static com.societegenerale.commons.plugin.rules.ArchRuleTest.SRC_CLASSES_FOLDER;
 import static com.societegenerale.commons.plugin.rules.ArchRuleTest.TEST_CLASSES_FOLDER;

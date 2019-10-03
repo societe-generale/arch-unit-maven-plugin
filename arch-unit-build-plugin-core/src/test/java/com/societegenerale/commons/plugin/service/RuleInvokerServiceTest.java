@@ -2,13 +2,14 @@ package com.societegenerale.commons.plugin.service;
 
 import java.util.Arrays;
 
+import com.societegenerale.commons.plugin.Log;
+import com.societegenerale.commons.plugin.SilentLog;
 import com.societegenerale.commons.plugin.model.ApplyOn;
 import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest;
 import com.societegenerale.commons.plugin.rules.classesForTests.DummyCustomRule;
-import org.apache.maven.plugin.logging.Log;
-import org.apache.maven.plugin.testing.SilentLog;
+
 import org.junit.Test;
 
 import static java.util.Collections.emptyList;

@@ -1,7 +1,8 @@
 package com.societegenerale.commons.plugin.rules;
 
+import com.societegenerale.commons.plugin.SilentLog;
 import com.societegenerale.commons.plugin.utils.ArchUtils;
-import org.apache.maven.plugin.testing.SilentLog;
+
 import org.junit.Before;
 import org.junit.Test;
 
