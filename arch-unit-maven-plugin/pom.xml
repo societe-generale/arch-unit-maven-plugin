@@ -79,14 +79,6 @@
              -->
         </dependency>
 
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.4.2</version>
-            <scope>test</scope>
-        </dependency>
-
-
     </dependencies>
     <build>
         <plugins>
@@ -103,44 +95,6 @@
                 </executions>
             </plugin>
 
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <version>3.1.0</version>
-                <executions>
-                    <execution>
-                        <id>copy-aut-classes-to-destination</id>
-                        <phase>process-test-classes</phase>
-                        <goals>
-                            <goal>testResources</goal>
-                        </goals>
-
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/aut-target/classes/com/societegenerale/aut/main</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/test-classes/com/societegenerale/aut/main</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>copy-aut-test-classes-to-destination</id>
-                        <phase>process-test-classes</phase>
-                        <goals>
-                            <goal>testResources</goal>
-                        </goals>
-
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/aut-target/test-classes/com/societegenerale/aut/test</outputDirectory>
-                            <resources>
-                                <resource>
-                                    <directory>${project.build.directory}/test-classes/com/societegenerale/aut/test</directory>
-                                </resource>
-                            </resources>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
