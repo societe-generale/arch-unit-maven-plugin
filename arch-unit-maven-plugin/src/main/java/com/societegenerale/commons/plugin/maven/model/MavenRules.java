@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.societegenerale.commons.plugin.model.Rules;
 import org.apache.maven.plugins.annotations.Parameter;
+
+import static java.util.stream.Collectors.toList;
 
 public class MavenRules {
 
@@ -23,13 +26,12 @@ public class MavenRules {
         this.configurableRules = configurableRules;
     }
 
-    public com.societegenerale.commons.plugin.model.Rules toCoreRules(){
+    public Rules toCoreRules(){
 
-
-
-        return new com.societegenerale.commons.plugin.model.Rules(preConfiguredRules,
-                configurableRules.stream().map(e -> e.toCoreConfigurableRule()).collect(
-                Collectors.toList()));
+        return new Rules(preConfiguredRules,
+                configurableRules.stream()
+                                 .map(e -> e.toCoreConfigurableRule())
+                                 .collect(toList()));
     }
 
     public List<String> getPreConfiguredRules() {

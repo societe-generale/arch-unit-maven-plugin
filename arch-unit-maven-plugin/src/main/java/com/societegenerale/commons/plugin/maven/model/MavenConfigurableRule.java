@@ -3,6 +3,8 @@ package com.societegenerale.commons.plugin.maven.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.societegenerale.commons.plugin.model.ApplyOn;
+import com.societegenerale.commons.plugin.model.ConfigurableRule;
 import org.apache.maven.plugins.annotations.Parameter;
 
 public class MavenConfigurableRule {
@@ -19,8 +21,8 @@ public class MavenConfigurableRule {
   @Parameter(defaultValue = "false", required = false)
   private boolean skip;
 
-  public com.societegenerale.commons.plugin.model.ConfigurableRule toCoreConfigurableRule(){
-    return new com.societegenerale.commons.plugin.model.ConfigurableRule(rule, applyOn ==null ? new com.societegenerale.commons.plugin.model.ApplyOn() : applyOn
+  public ConfigurableRule toCoreConfigurableRule(){
+    return new ConfigurableRule(rule, applyOn ==null ? new ApplyOn() : applyOn
             .toCoreApplyOn(),checks,skip);
   }
 

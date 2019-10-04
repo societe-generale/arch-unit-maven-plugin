@@ -1,5 +1,6 @@
 package com.societegenerale.commons.plugin.maven.model;
 
+import com.societegenerale.commons.plugin.model.ApplyOn;
 import org.apache.maven.plugins.annotations.Parameter;
 
 public class MavenApplyOn {
@@ -37,7 +38,7 @@ public class MavenApplyOn {
     this.scope = scope;
   }
 
-  public com.societegenerale.commons.plugin.model.ApplyOn toCoreApplyOn() {
-      return new com.societegenerale.commons.plugin.model.ApplyOn(packageName,scope);
+  public ApplyOn toCoreApplyOn() {
+      return new ApplyOn(packageName,scope);
   }
 }
