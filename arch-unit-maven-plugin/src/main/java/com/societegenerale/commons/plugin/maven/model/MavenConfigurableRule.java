@@ -5,13 +5,13 @@ import java.util.List;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
-public class ConfigurableRule {
+public class MavenConfigurableRule {
 
   @Parameter(property ="rule")
   private String rule;
 
   @Parameter(property ="applyOn")
-  private ApplyOn applyOn;
+  private MavenApplyOn applyOn;
 
   @Parameter(property ="checks")
   private List<String> checks = new ArrayList<>();
@@ -20,7 +20,8 @@ public class ConfigurableRule {
   private boolean skip;
 
   public com.societegenerale.commons.plugin.model.ConfigurableRule toCoreConfigurableRule(){
-    return new com.societegenerale.commons.plugin.model.ConfigurableRule(rule, applyOn==null ? new com.societegenerale.commons.plugin.model.ApplyOn() : applyOn.toCoreApplyOn(),checks,skip);
+    return new com.societegenerale.commons.plugin.model.ConfigurableRule(rule, applyOn ==null ? new com.societegenerale.commons.plugin.model.ApplyOn() : applyOn
+            .toCoreApplyOn(),checks,skip);
   }
 
   public List<String> getChecks() {
@@ -39,11 +40,11 @@ public class ConfigurableRule {
     this.checks = checks;
   }
 
-  public ApplyOn getApplyOn() {
+  public MavenApplyOn getApplyOn() {
     return applyOn;
   }
 
-  public void setApplyOn(ApplyOn applyOn) {
+  public void setApplyOn(MavenApplyOn applyOn) {
     this.applyOn = applyOn;
   }
 

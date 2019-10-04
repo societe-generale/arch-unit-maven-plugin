@@ -6,19 +6,19 @@ import java.util.stream.Collectors;
 
 import org.apache.maven.plugins.annotations.Parameter;
 
-public class Rules {
+public class MavenRules {
 
     @Parameter(property = "preConfiguredRules")
     private List<String> preConfiguredRules= new ArrayList<>();
 
     @Parameter(property = "configurableRules")
-    private List<ConfigurableRule> configurableRules= new ArrayList<>();
+    private List<MavenConfigurableRule> configurableRules = new ArrayList<>();
 
-    public Rules() {
+    public MavenRules() {
         //no arg constructor required by Maven when running the plugin
     }
 
-    public Rules(List<String> preConfiguredRules, List<ConfigurableRule> configurableRules) {
+    public MavenRules(List<String> preConfiguredRules, List<MavenConfigurableRule> configurableRules) {
         this.preConfiguredRules = preConfiguredRules;
         this.configurableRules = configurableRules;
     }
@@ -27,7 +27,8 @@ public class Rules {
 
 
 
-        return new com.societegenerale.commons.plugin.model.Rules(preConfiguredRules,configurableRules.stream().map(e -> e.toCoreConfigurableRule()).collect(
+        return new com.societegenerale.commons.plugin.model.Rules(preConfiguredRules,
+                configurableRules.stream().map(e -> e.toCoreConfigurableRule()).collect(
                 Collectors.toList()));
     }
 
@@ -35,7 +36,7 @@ public class Rules {
         return preConfiguredRules;
     }
 
-    public List<ConfigurableRule> getConfigurableRules() {
+    public List<MavenConfigurableRule> getConfigurableRules() {
         return configurableRules;
     }
 
@@ -55,7 +56,7 @@ public class Rules {
         this.preConfiguredRules = preConfiguredRules;
     }
 
-    public void setConfigurableRules(List<ConfigurableRule> configurableRules) {
+    public void setConfigurableRules(List<MavenConfigurableRule> configurableRules) {
         this.configurableRules = configurableRules;
     }
 

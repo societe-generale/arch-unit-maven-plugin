@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.societegenerale.commons.plugin.maven.model.Rules;
+import com.societegenerale.commons.plugin.maven.model.MavenRules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -47,12 +47,12 @@ public class ArchUnitMojo extends AbstractMojo {
     private String projectPath = "./target";
 
     @Parameter(property = "rules")
-    private Rules rules;
+    private MavenRules rules;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
 
-    public Rules getRules() {
+    public MavenRules getRules() {
         return rules;
     }
 
