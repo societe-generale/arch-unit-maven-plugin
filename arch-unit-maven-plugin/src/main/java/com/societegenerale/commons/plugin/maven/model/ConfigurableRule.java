@@ -1,22 +1,27 @@
-package com.societegenerale.commons.plugin.model;
+package com.societegenerale.commons.plugin.maven.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import org.apache.maven.plugins.annotations.Parameter;
 
-@NoArgsConstructor
-@AllArgsConstructor
 public class ConfigurableRule {
 
+  @Parameter(property ="rule")
   private String rule;
 
+  @Parameter(property ="applyOn")
   private ApplyOn applyOn;
 
+  @Parameter(property ="checks")
   private List<String> checks = new ArrayList<>();
 
+  @Parameter(defaultValue = "false", required = false)
   private boolean skip;
+
+  public com.societegenerale.commons.plugin.model.ConfigurableRule toCoreConfigurableRule(){
+    return new com.societegenerale.commons.plugin.model.ConfigurableRule(rule, applyOn.toCoreApplyOn(),checks,skip);
+  }
 
   public List<String> getChecks() {
     return checks;

@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin;
+package com.societegenerale.commons.plugin.maven;
 
 import com.societegenerale.commons.plugin.Log;
 

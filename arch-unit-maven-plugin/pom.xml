@@ -56,6 +56,45 @@
             <scope>test</scope>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.maven</groupId>
+            <artifactId>maven-compat</artifactId>
+            <version>3.5.0</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.9</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <!-- Adding this lib to be able to have a test class using @Autowired. required only for test. -->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.1.5.RELEASE</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>1.7.3</version>
+            <!-- Need to add powerMock as a dependency WITHOUT test scope. This way, we're sure the Powermock classes are part of the plugin, and will be found
+            by the plugin at runtime in different projects. Without it, NoPowerMockRuleTest actually won't work !
+             see https://github.com/TNG/ArchUnit/issues/120
+             -->
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.4.2</version>
+            <scope>test</scope>
+        </dependency>
+
 
     </dependencies>
     <build>

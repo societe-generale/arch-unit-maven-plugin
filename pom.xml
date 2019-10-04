@@ -97,6 +97,23 @@
             <version>3.9.1</version>
             <scope>test</scope>
         </dependency>
+
+        <!--
+       ! Added to prevent logging output during Tests
+       ! based on slf4j requirement of archunit itself.
+       -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.25</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>5.4.2</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin;
+package com.societegenerale.commons.plugin.maven;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -6,7 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.societegenerale.commons.plugin.model.Rules;
+import com.societegenerale.commons.plugin.maven.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -81,7 +81,7 @@ public class ArchUnitMojo extends AbstractMojo {
 
             ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()));
 
-            ruleFailureMessage = ruleInvokerService.invokeRules(rules, projectPath);
+            ruleFailureMessage = ruleInvokerService.invokeRules(rules.toCoreRules(), projectPath);
         } catch (final Exception e) {
             throw new MojoFailureException(e.getMessage(), e);
         }

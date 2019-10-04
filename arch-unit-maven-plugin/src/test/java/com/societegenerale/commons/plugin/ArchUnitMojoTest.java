@@ -11,6 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
 import com.societegenerale.aut.test.TestClassWithPowerMock;
+import com.societegenerale.commons.plugin.maven.ArchUnitMojo;
 import com.societegenerale.commons.plugin.rules.MyCustomRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
 import com.tngtech.java.junit.dataprovider.DataProvider;
