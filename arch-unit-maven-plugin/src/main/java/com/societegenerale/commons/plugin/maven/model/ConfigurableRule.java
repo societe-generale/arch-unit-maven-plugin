@@ -20,7 +20,7 @@ public class ConfigurableRule {
   private boolean skip;
 
   public com.societegenerale.commons.plugin.model.ConfigurableRule toCoreConfigurableRule(){
-    return new com.societegenerale.commons.plugin.model.ConfigurableRule(rule, applyOn.toCoreApplyOn(),checks,skip);
+    return new com.societegenerale.commons.plugin.model.ConfigurableRule(rule, applyOn==null ? new com.societegenerale.commons.plugin.model.ApplyOn() : applyOn.toCoreApplyOn(),checks,skip);
   }
 
   public List<String> getChecks() {
