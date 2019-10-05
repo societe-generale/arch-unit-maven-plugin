@@ -41,18 +41,6 @@ public class MavenRules {
         return configurableRules;
     }
 
-    public boolean isValid() {
-        return (hasSomePreConfiguredRules() || hasSomeConfigurableRules());
-    }
-
-    public boolean hasSomePreConfiguredRules() {
-        return !preConfiguredRules.isEmpty();
-    }
-
-    public boolean hasSomeConfigurableRules() {
-        return !configurableRules.isEmpty();
-    }
-
     public void setPreConfiguredRules(List<String> preConfiguredRules) {
         this.preConfiguredRules = preConfiguredRules;
     }

@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.societegenerale.commons.plugin.maven.model.MavenRules;
+import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
@@ -67,7 +68,9 @@ public class ArchUnitMojo extends AbstractMojo {
             return;
         }
 
-        if (!rules.isValid()) {
+        Rules coreRules=rules.toCoreRules();
+
+        if (!coreRules.isValid()) {
             throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
         }
 
@@ -81,7 +84,7 @@ public class ArchUnitMojo extends AbstractMojo {
 
             ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()));
 
-            ruleFailureMessage = ruleInvokerService.invokeRules(rules.toCoreRules(), projectPath);
+            ruleFailureMessage = ruleInvokerService.invokeRules(coreRules, projectPath);
         } catch (final Exception e) {
             throw new MojoFailureException(e.getMessage(), e);
         }
