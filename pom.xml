@@ -91,6 +91,7 @@
             <groupId>com.societegenerale.commons</groupId>
             <artifactId>arch-unit-build-plugin-core</artifactId>
             <version>${arch-unit-build-plugin-core.version}</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -325,7 +326,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.0.1</version>
+                        <version>3.1.1</version>
                         <configuration>
                             <encoding>UTF-8</encoding>
                         </configuration>
