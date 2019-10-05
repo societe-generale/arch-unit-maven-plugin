@@ -91,7 +91,6 @@
             <groupId>com.societegenerale.commons</groupId>
             <artifactId>arch-unit-build-plugin-core</artifactId>
             <version>${arch-unit-build-plugin-core.version}</version>
-            <scope>provided</scope>
         </dependency>
 
         <dependency>

@@ -12,7 +12,6 @@ Now, imagine you have 3 architecture rules, and you want 10 repositories to appl
 ArchUnit Maven plugin comes with a couple of rules out of the box (but you can add your own) : all you need is a bit of Maven config in your root pom.xml to make sure the rules you want to enforce are actually run at every build ! it then becomes very easy to have a proper governance on dozens of repositories.
  
 And if you want to have regular reporting on which projects are using ArchUnit Maven plugin, with which rules, you can use our [GitHub crawler](https://github.com/societe-generale/github-crawler) 
-  
 
 ## How to use ArchUnit Maven plugin ? 
 
@@ -22,7 +21,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
 	<artifactId>arch-unit-maven-plugin</artifactId>
-	<version>2.2.0</version>
+	<version>2.3.0</version>
 	<configuration>
 		<projectPath>${project.basedir}/target</projectPath>
 		<rules>
@@ -52,6 +51,19 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 			</goals>
 		</execution>
 	</executions>
+    <dependencies>
+       <dependency>
+           <!-- 
+                A version of the core jar is included by default, but don't hesitate 
+                to upgrade to a later one if you need :
+                we will be able to add rules and behavior in arch-unit-build-plugin-core
+                without releasing a new version of arch-unit-maven-plugin
+            -->
+            <groupId>com.societegenerale.commons</groupId>
+            <artifactId>arch-unit-build-plugin-core</artifactId>
+            <version>SOME_VERSION_GREATER_THAN_2.3.0</version>
+       </dependency>
+    </dependencies>
 </plugin>
 ```
 
@@ -77,7 +89,7 @@ So your config would become something like :
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>2.2.0</version>
+  <version>2.3.0</version>
   <configuration>
     <projectPath>${project.basedir}/target</projectPath>
     <rules>
