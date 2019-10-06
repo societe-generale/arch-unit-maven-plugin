@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin;
+package com.societegenerale.commons.plugin.maven;
 
 import java.util.ArrayList;
 import java.util.List;

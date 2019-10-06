@@ -12,7 +12,6 @@ Now, imagine you have 3 architecture rules, and you want 10 repositories to appl
 ArchUnit Maven plugin comes with a couple of rules out of the box (but you can add your own) : all you need is a bit of Maven config in your root pom.xml to make sure the rules you want to enforce are actually run at every build ! it then becomes very easy to have a proper governance on dozens of repositories.
  
 And if you want to have regular reporting on which projects are using ArchUnit Maven plugin, with which rules, you can use our [GitHub crawler](https://github.com/societe-generale/github-crawler) 
-  
 
 ## How to use ArchUnit Maven plugin ? 
 
@@ -22,7 +21,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
 	<artifactId>arch-unit-maven-plugin</artifactId>
-	<version>2.2.0</version>
+	<version>2.3.0</version>
 	<configuration>
 		<projectPath>${project.basedir}/target</projectPath>
 		<rules>
@@ -52,8 +51,30 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 			</goals>
 		</execution>
 	</executions>
+    <dependencies>
+       <dependency>
+           <!-- 
+                A version of the core jar is included by default, but don't hesitate 
+                to upgrade to a later one if you need :
+                we will be able to add rules and behavior in arch-unit-build-plugin-core
+                without releasing a new version of arch-unit-maven-plugin
+            -->
+            <groupId>com.societegenerale.commons</groupId>
+            <artifactId>arch-unit-build-plugin-core</artifactId>
+            <version>SOME_VERSION_GREATER_THAN_2.3.0</version>
+       </dependency>
+    </dependencies>
 </plugin>
 ```
+
+## Dependency on arch-unit-build-plugin-core
+
+Since v2.3.0, a lot of the original code from this repository has been moved to [https://github.com/societe-generale/arch-unit-build-plugin-core](https://github.com/societe-generale/arch-unit-build-plugin-core) , so that we can build a Maven or a Gradle plugin on top of a (common) [core logic](https://github.com/societe-generale/arch-unit-build-plugin-core/tree/arch_unit_build_plugin_core_2.3.0). 
+
+Therefore, since then, this repository is greatly simplified as it contains only Maven specific code and the adapters between Maven world and arch-unit-build-plugin-core. 
+
+This Maven plugin ships with a default version of arch-unit-build-plugin-core, but if new rules are added in arch-unit-build-plugin-core, you'll need to declare it as a dependency (as in the example above) to benefit from them. As long as there's no major change in the core API that would force us to update the Maven plugin, we won't have to release a new version of the plugin.  
+
 
 ## Adding custom rules
 
@@ -77,7 +98,7 @@ So your config would become something like :
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>2.2.0</version>
+  <version>2.3.0</version>
   <configuration>
     <projectPath>${project.basedir}/target</projectPath>
     <rules>
@@ -172,7 +193,9 @@ Since v2.2.0, you can benefit from ArchUnit advanced configuration, as the plugi
 
 ## Contribute !
 
-If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of default ArchUnit Maven plugin package, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](./src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one.
+If you want to make changes in the Maven specific behavior, don't hesitate to open on issue on this repository and/or create a pull request.
+
+If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of arch-unit-build-plugin-core, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](https://github.com/societe-generale/arch-unit-build-plugin-core/tree/arch_unit_build_plugin_core_2.3.0/src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one.
 
 ## Official maintainers
 

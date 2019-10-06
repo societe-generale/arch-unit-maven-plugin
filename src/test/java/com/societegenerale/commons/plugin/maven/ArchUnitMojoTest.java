@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin;
+package com.societegenerale.commons.plugin.maven;
 
 import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
 import static java.util.Arrays.stream;

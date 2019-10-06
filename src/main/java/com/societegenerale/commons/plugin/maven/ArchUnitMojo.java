@@ -1,4 +1,4 @@
-package com.societegenerale.commons.plugin;
+package com.societegenerale.commons.plugin.maven;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.societegenerale.commons.plugin.maven.model.MavenRules;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import org.apache.commons.lang3.StringUtils;
@@ -47,12 +48,12 @@ public class ArchUnitMojo extends AbstractMojo {
     private String projectPath = "./target";
 
     @Parameter(property = "rules")
-    private Rules rules;
+    private MavenRules rules;
 
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
 
-    public Rules getRules() {
+    public MavenRules getRules() {
         return rules;
     }
 
@@ -67,7 +68,9 @@ public class ArchUnitMojo extends AbstractMojo {
             return;
         }
 
-        if (!rules.isValid()) {
+        Rules coreRules=rules.toCoreRules();
+
+        if (!coreRules.isValid()) {
             throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
         }
 
@@ -79,9 +82,9 @@ public class ArchUnitMojo extends AbstractMojo {
         try {
             configureContextClassLoader();
 
-            ruleInvokerService = new RuleInvokerService(getLog());
+            ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()));
 
-            ruleFailureMessage = ruleInvokerService.invokeRules(rules, projectPath);
+            ruleFailureMessage = ruleInvokerService.invokeRules(coreRules, projectPath);
         } catch (final Exception e) {
             throw new MojoFailureException(e.getMessage(), e);
         }
