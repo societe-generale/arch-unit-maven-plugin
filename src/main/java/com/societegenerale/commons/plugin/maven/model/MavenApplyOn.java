@@ -1,8 +1,9 @@
-package com.societegenerale.commons.plugin.model;
+package com.societegenerale.commons.plugin.maven.model;
 
+import com.societegenerale.commons.plugin.model.ApplyOn;
 import org.apache.maven.plugins.annotations.Parameter;
 
-public class ApplyOn {
+public class MavenApplyOn {
 
   @Parameter(property = "packageName")
   private String packageName;
@@ -11,12 +12,12 @@ public class ApplyOn {
   private String scope;
 
   //default constructor is required at runtime
-  public ApplyOn() {
+  public MavenApplyOn() {
 
   }
 
   //convenience constructor when calling from unit tests
-  public ApplyOn(String packageName, String scope) {
+  public MavenApplyOn(String packageName, String scope) {
     this.packageName = packageName;
     this.scope = scope;
   }
@@ -35,5 +36,9 @@ public class ApplyOn {
 
   public void setScope(String scope) {
     this.scope = scope;
+  }
+
+  public ApplyOn toCoreApplyOn() {
+      return new ApplyOn(packageName,scope);
   }
 }

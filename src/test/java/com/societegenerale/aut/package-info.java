@@ -7,4 +7,4 @@
  * <p>
  * This allows the tests to run just against these set of classes and not against themselves, too.
  */
-package com.societegenerale.aut;
+package com.societegenerale.aut.test;

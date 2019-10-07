@@ -1,17 +1,27 @@
-package com.societegenerale.commons.plugin;
+package com.societegenerale.commons.plugin.maven;
 
+import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
+import static java.util.Arrays.stream;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+import com.google.common.collect.ImmutableSet;
+import com.societegenerale.aut.test.TestClassWithPowerMock;
+import com.societegenerale.commons.plugin.rules.MyCustomRules;
+import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
+import com.tngtech.java.junit.dataprovider.DataProvider;
+import com.tngtech.java.junit.dataprovider.DataProviderRunner;
+import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import java.io.File;
 import java.io.StringReader;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import com.google.common.collect.ImmutableSet;
-import com.societegenerale.commons.plugin.rules.MyCustomRules;
-import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
-import com.societegenerale.aut.test.TestClassWithPowerMock;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.project.MavenProject;
@@ -19,6 +29,7 @@ import org.assertj.core.api.AbstractThrowableAssert;
 import org.assertj.core.api.Condition;
 import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
+import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
 import org.junit.Before;
 import org.junit.Rule;
@@ -28,10 +39,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
-import static java.util.Arrays.stream;
-import static org.assertj.core.api.Assertions.*;
 
 @RunWith(DataProviderRunner.class)
 public class ArchUnitMojoTest {
@@ -49,7 +56,6 @@ public class ArchUnitMojoTest {
   private MavenProject mavenProject;
 
   private PlexusConfiguration pluginConfiguration;
-
 
   // @formatter:off
   private static final String pomWithNoRule =
@@ -74,7 +80,6 @@ public class ArchUnitMojoTest {
   public void setUp() throws Exception {
 
     pluginConfiguration = mojoRule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
-
   }
 
   @Test
@@ -212,7 +217,36 @@ public class ArchUnitMojoTest {
     }).doesNotThrowAnyException();
   }
 
-  private void executeAndExpectViolations(ArchUnitMojo mojo, ExpectedRuleFailure... expectedRuleFailures) {
+  private String getBasedir() {
+    String basedir = System.getProperty("basedir");
+
+    if (basedir == null) {
+      basedir = new File("").getAbsolutePath();
+    }
+
+    return basedir;
+  }
+
+  @Test
+  public void shouldSkipIfPackagingIsPom() throws Exception {
+    InterceptingLog interceptingLogger = new InterceptingLog(
+        mojoRule.getContainer().lookup(LoggerManager.class).getLoggerForComponent(Mojo.ROLE));
+
+    File testPom = new File(getBasedir(), "target/test-classes/unit/plugin-config.xml");
+    ArchUnitMojo archUnitMojo = (ArchUnitMojo) mojoRule.lookupMojo("arch-test", testPom);
+
+    MavenProject mavenProject = mock(MavenProject.class);
+    when(mavenProject.getPackaging()).thenReturn("pom");
+
+    mojoRule.setVariableValueToObject(archUnitMojo, "mavenProject", mavenProject);
+    archUnitMojo.setLog(interceptingLogger);
+
+    assertThatCode(() -> archUnitMojo.execute()).doesNotThrowAnyException();
+
+    assertThat(interceptingLogger.debugLogs).containsExactly("module packaging is 'pom', so skipping execution");
+  }
+
+  private void executeAndExpectViolations( ArchUnitMojo mojo, ExpectedRuleFailure... expectedRuleFailures) {
     AbstractThrowableAssert<?, ? extends Throwable> throwableAssert = assertThatThrownBy(mojo::execute);
     stream(expectedRuleFailures).forEach(expectedFailure -> {
       throwableAssert.hasMessageContaining(String.format("Rule '%s' was violated", expectedFailure.ruleDescription));

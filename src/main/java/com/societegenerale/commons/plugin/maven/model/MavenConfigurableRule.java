@@ -1,23 +1,30 @@
-package com.societegenerale.commons.plugin.model;
-
-import org.apache.maven.plugins.annotations.Parameter;
+package com.societegenerale.commons.plugin.maven.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConfigurableRule {
+import com.societegenerale.commons.plugin.model.ApplyOn;
+import com.societegenerale.commons.plugin.model.ConfigurableRule;
+import org.apache.maven.plugins.annotations.Parameter;
+
+public class MavenConfigurableRule {
 
   @Parameter(property ="rule")
   private String rule;
 
   @Parameter(property ="applyOn")
-  private ApplyOn applyOn;
+  private MavenApplyOn applyOn;
 
   @Parameter(property ="checks")
   private List<String> checks = new ArrayList<>();
 
   @Parameter(defaultValue = "false", required = false)
   private boolean skip;
+
+  public ConfigurableRule toCoreConfigurableRule(){
+    return new ConfigurableRule(rule, applyOn ==null ? new ApplyOn() : applyOn
+            .toCoreApplyOn(),checks,skip);
+  }
 
   public List<String> getChecks() {
     return checks;
@@ -35,11 +42,11 @@ public class ConfigurableRule {
     this.checks = checks;
   }
 
-  public ApplyOn getApplyOn() {
+  public MavenApplyOn getApplyOn() {
     return applyOn;
   }
 
-  public void setApplyOn(ApplyOn applyOn) {
+  public void setApplyOn(MavenApplyOn applyOn) {
     this.applyOn = applyOn;
   }
 
