@@ -106,21 +106,23 @@ So your config would become something like :
        <preConfiguredRules>
             <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
        </preConfiguredRules>
-       <!-- ... and a custom one, coming from a dependency of the plugin-->
+       <!-- ... and a custom one, coming from a dependency of the plugin -->
        <configurableRules>
-       	 <configurableRule>
-       	 	<rule>com.mycompany.rules.CustomArchRule</rule>
-       	 	<applyOn>
-       	 		<packageName>com.myproject.mypackage</packageName>
-       	 		<scope>test</scope>
-       	 	</applyOn>
-            <!-- if the checks block is missing, all rules will be evaluated -->
-       	 	<checks>
-       	 	    <!-- otherwise you can specify either field or method names here -->
-       	 		<check>customArchRule</check>
-       	 	</checks>
-       	 </configurableRule>
+            <configurableRule>
+                <rule>com.tngtech.archunit.library.GeneralCodingRules</rule>
+                <applyOn>
+                    <packageName>com.myproject.mypackage</packageName>
+                    <!-- scope can be "main" or "test" -->
+                    <scope>main</scope>
+                </applyOn>
+
+                <checks>
+       	 	        <!-- otherwise you can specify either field or method names here. If no checks block is defined, all are executed -->
+       	 		    <check>NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS</check>
+       	 	    </checks>
+            </configurableRule>
        </configurableRules>
+
     </rules>
   </configuration>
   <executions>
