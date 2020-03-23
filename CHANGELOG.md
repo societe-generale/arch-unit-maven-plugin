@@ -12,6 +12,11 @@
 
 ### Fixed
 
+## [2.4.0] - 2020-03-23
+
+### Changed
+- using latest Mockito so that it runs fine with JDK 11
+- upgrading Archunit plugin core to 2.5.1 : now can configure excludedPaths
 
 ## [2.3.0] - 2019-10-06
 
