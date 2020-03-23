@@ -21,7 +21,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
 	<artifactId>arch-unit-maven-plugin</artifactId>
-	<version>2.3.0</version>
+	<version>2.4.0</version>
 	<configuration>
 		<projectPath>${project.basedir}/target</projectPath>
 		<rules>
@@ -98,9 +98,15 @@ So your config would become something like :
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>2.3.0</version>
+  <version>2.4.0</version>
   <configuration>
     <projectPath>${project.basedir}/target</projectPath>
+    
+    <!-- optional - you can exclude classes that have a path containing any of the mentioned paths -->
+    <excludedPaths>
+        <excludedPath>generated-sources</excludedPath>
+    </excludedPaths>
+
     <rules>
        <!-- using a rule available out of the box... -->
        <preConfiguredRules>
@@ -191,6 +197,12 @@ and then you can switch the parameter `archunit.skip` either on runtime (via `-D
 ### ArchUnit advanced configuration
 
 Since v2.2.0, you can benefit from ArchUnit advanced configuration, as the plugin can find `archunit.properties` file. More infos in [ArchUnit's user guide](https://www.archunit.org/userguide/html/000_Index.html#_advanced_configuration)
+
+## Excluding paths
+
+Since v2.4.0, configuration can take an optional `excludedPaths` element. All classes that have a location that contains one the mentioned Strings will be excluded from the ArchUnit checks : can be useful in case some classes are generated (Lombok, Mapstruct, ..) and you have little or no control on what gets generated.
+
+See [ExclusionImportOption.java](https://github.com/societe-generale/arch-unit-build-plugin-core/blob/2a6f5d009b96a7921bf2de65fcc0aad85edc006a/src/main/java/com/societegenerale/commons/plugin/utils/ExclusionImportOption.java) for details on the (very simple) logic. 
 
 
 ## Contribute !

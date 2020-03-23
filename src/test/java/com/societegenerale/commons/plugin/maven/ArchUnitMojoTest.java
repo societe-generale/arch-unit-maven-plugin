@@ -11,7 +11,7 @@ import static org.mockito.Mockito.when;
 
 import com.google.common.collect.ImmutableSet;
 import com.societegenerale.aut.test.TestClassWithPowerMock;
-import com.societegenerale.commons.plugin.rules.MyCustomRules;
+import com.societegenerale.commons.plugin.rules.MyCustomAndDummyRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
@@ -113,7 +113,7 @@ public class ArchUnitMojoTest {
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
     String missingCheck = "notThere";
-    String ruleClass = MyCustomRules.class.getName();
+    String ruleClass = MyCustomAndDummyRules.class.getName();
 
     configurableRule.addChild("rule", ruleClass);
     configurableRule.addChild(buildChecksBlock(missingCheck));
@@ -137,7 +137,7 @@ public class ArchUnitMojoTest {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
-    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild("rule", MyCustomAndDummyRules.class.getName());
     configurableRule.addChild(buildChecksBlock(checkName));
     configurableRule.addChild(buildApplyOnBlock("com.societegenerale.aut.test.specificCase", "test"));
 
@@ -155,7 +155,7 @@ public class ArchUnitMojoTest {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
-    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild("rule", MyCustomAndDummyRules.class.getName());
     configurableRule.addChild(buildApplyOnBlock("com.societegenerale.aut.test.specificCase", "test"));
 
     PlexusConfiguration configurableRules = pluginConfiguration.getChild("rules").getChild("configurableRules");
@@ -176,7 +176,7 @@ public class ArchUnitMojoTest {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
-    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild("rule", MyCustomAndDummyRules.class.getName());
     configurableRule.addChild(buildChecksBlock("annotatedWithTest_asField"));
     configurableRule.addChild(buildApplyOnBlock("com.societegenerale.aut.test.specificCase", "test"));
 
@@ -198,7 +198,7 @@ public class ArchUnitMojoTest {
 
     PlexusConfiguration configurableRule = new DefaultPlexusConfiguration("configurableRule");
 
-    configurableRule.addChild("rule", MyCustomRules.class.getName());
+    configurableRule.addChild("rule", MyCustomAndDummyRules.class.getName());
     configurableRule.addChild(buildChecksBlock("annotatedWithTest_asField"));
     configurableRule.addChild(buildApplyOnBlock("com.societegenerale.commons.plugin.rules.classesForTests.specificCase", "test"));
 
