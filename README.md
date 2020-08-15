@@ -21,9 +21,9 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
 	<artifactId>arch-unit-maven-plugin</artifactId>
-	<version>2.4.0</version>
+	<version>2.5.0</version>
 	<configuration>
-		<projectPath>${project.basedir}/target</projectPath>
+		
 		<rules>
 			<preConfiguredRules>
 				<rule>com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest</rule>
@@ -98,9 +98,8 @@ So your config would become something like :
 <plugin>
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>2.4.0</version>
+  <version>2.5.0</version>
   <configuration>
-    <projectPath>${project.basedir}/target</projectPath>
     
     <!-- optional - you can exclude classes that have a path containing any of the mentioned paths -->
     <excludedPaths>
