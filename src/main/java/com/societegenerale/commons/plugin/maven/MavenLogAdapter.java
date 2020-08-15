@@ -6,8 +6,8 @@ public class MavenLogAdapter implements Log {
 
     private org.apache.maven.plugin.logging.Log mavenLogger;
 
-    public MavenLogAdapter(org.apache.maven.plugin.logging.Log mavenLogger ) {
-        this.mavenLogger=mavenLogger;
+    public MavenLogAdapter(org.apache.maven.plugin.logging.Log mavenLogger) {
+        this.mavenLogger = mavenLogger;
     }
 
     @Override
@@ -16,8 +16,18 @@ public class MavenLogAdapter implements Log {
     }
 
     @Override
+    public boolean isDebugEnabled() {
+        return mavenLogger.isDebugEnabled();
+    }
+
+    @Override
     public void info(String msg) {
         mavenLogger.info(msg);
+    }
+
+    @Override
+    public void debug(String s) {
+
     }
 
     @Override
