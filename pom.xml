@@ -4,7 +4,7 @@
     <groupId>com.societegenerale.commons</groupId>
     <artifactId>arch-unit-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>2.6.0</version>
+    <version>2.6.1-SNAPSHOT</version>
 
     <name>ArchUnit Maven plugin</name>
 
@@ -64,7 +64,7 @@
         <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
         <connection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git</developerConnection>
-        <tag>archUnit_maven_plugin_2.6.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <repositories>
