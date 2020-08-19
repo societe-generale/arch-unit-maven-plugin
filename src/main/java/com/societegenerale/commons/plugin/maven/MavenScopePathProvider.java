@@ -1,16 +1,17 @@
 package com.societegenerale.commons.plugin.maven;
 
+import com.societegenerale.commons.plugin.model.RootClassFolder;
 import com.societegenerale.commons.plugin.service.ScopePathProvider;
 
 public class MavenScopePathProvider implements ScopePathProvider {
 
     @Override
-    public String getMainClassesPath() {
-        return "/classes";
+    public RootClassFolder getMainClassesPath() {
+        return new RootClassFolder("target/classes");
     }
 
     @Override
-    public String getTestClassesPath() {
-        return "/test-classes";
+    public RootClassFolder getTestClassesPath() {
+        return new RootClassFolder("target/test-classes");
     }
 }

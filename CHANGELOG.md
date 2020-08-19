@@ -5,6 +5,7 @@
 ### Added
 
 ### Changed
+- Breaking change : "projectPath" is not a valid property anymore. since we are in Maven context, we're using MavenScopePathProvider which provides the required values
 
 ### Deprecated
 

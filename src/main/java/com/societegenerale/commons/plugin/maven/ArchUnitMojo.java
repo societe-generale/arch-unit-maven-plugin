@@ -45,9 +45,6 @@ public class ArchUnitMojo extends AbstractMojo {
     @Parameter(defaultValue = "false", property = "archunit.skip", required = false)
     private boolean skip;
 
-    @Parameter(property = "projectPath")
-    private String projectPath = "./target";
-
     @Parameter(property = "excludedPaths")
     private List<String> excludedPaths  = emptyList();
 
@@ -86,9 +83,9 @@ public class ArchUnitMojo extends AbstractMojo {
         try {
             configureContextClassLoader();
 
-            ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()),new MavenScopePathProvider(),excludedPaths);
+            ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()), new MavenScopePathProvider(), excludedPaths);
 
-            ruleFailureMessage = ruleInvokerService.invokeRules(coreRules, projectPath);
+            ruleFailureMessage = ruleInvokerService.invokeRules(coreRules);
         } catch (final Exception e) {
             throw new MojoFailureException(e.getMessage(), e);
         }

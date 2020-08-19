@@ -1,13 +1,10 @@
 package com.societegenerale.commons.plugin.maven;
 
-import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
-import static java.util.Arrays.stream;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatCode;
-import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import java.io.File;
+import java.io.StringReader;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.common.collect.ImmutableSet;
 import com.societegenerale.aut.test.TestClassWithPowerMock;
@@ -16,11 +13,6 @@ import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
-import java.io.File;
-import java.io.StringReader;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.MojoRule;
@@ -39,6 +31,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+
+import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
+import static java.util.Arrays.stream;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
 public class ArchUnitMojoTest {
@@ -94,8 +95,6 @@ public class ArchUnitMojoTest {
 
   @Test
   public void shouldExecuteSinglePreconfiguredRule() throws Exception {
-
-    pluginConfiguration.getChild("projectPath").setValue("./target/aut-target/test-classes/com/societegenerale/aut/test");
 
     // add single rule
     PlexusConfiguration preConfiguredRules = pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
