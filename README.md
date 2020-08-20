@@ -201,7 +201,10 @@ Since v2.2.0, you can benefit from ArchUnit advanced configuration, as the plugi
 
 Since v2.4.0, configuration can take an optional `excludedPaths` element. All classes that have a location that contains one the mentioned Strings will be excluded from the ArchUnit checks : can be useful in case some classes are generated (Lombok, Mapstruct, ..) and you have little or no control on what gets generated.
 
+Remember that ArchUnit operates on the **compiled code** : so we can't exclude something like `generated-sources`. However, if these generated classes are part of a specific package, we can exclude that package.
+
 See [ExclusionImportOption.java](https://github.com/societe-generale/arch-unit-build-plugin-core/blob/2a6f5d009b96a7921bf2de65fcc0aad85edc006a/src/main/java/com/societegenerale/commons/plugin/utils/ExclusionImportOption.java) for details on the (very simple) logic. 
+
 
 
 ## Contribute !
