@@ -5,13 +5,19 @@
 ### Added
 
 ### Changed
-- Breaking change : "projectPath" is not a valid property anymore. since we are in Maven context, we're using MavenScopePathProvider which provides the required values
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [2.6.1] - 2020-08-20
+
+### Changed
+- PR #38 - Breaking change : "projectPath" is not a valid property anymore. since we are in Maven context, we're using MavenScopePathProvider which provides the required values
+- upgrading to arch-unit-core 2.6.1
+
 
 ## [2.4.0] - 2020-03-23
 
