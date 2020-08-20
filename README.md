@@ -103,7 +103,7 @@ So your config would become something like :
     
     <!-- optional - you can exclude classes that have a path containing any of the mentioned paths -->
     <excludedPaths>
-        <excludedPath>generated-sources</excludedPath>
+        <excludedPath>my/package/to/exclude</excludedPath>
     </excludedPaths>
 
     <rules>
