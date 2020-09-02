@@ -13,6 +13,7 @@ import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import org.apache.maven.model.Build;
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugin.testing.MojoRule;
@@ -79,6 +80,12 @@ public class ArchUnitMojoTest {
 
   @Before
   public void setUp() throws Exception {
+
+    Build mockBuild = mock(Build.class);
+
+    when(mavenProject.getBuild()).thenReturn(mockBuild);
+    when(mockBuild.getOutputDirectory()).thenReturn("target/classes");
+    when(mockBuild.getTestOutputDirectory()).thenReturn("target/test-classes");
 
     pluginConfiguration = mojoRule.extractPluginConfiguration("arch-unit-maven-plugin", Xpp3DomBuilder.build(new StringReader(pomWithNoRule)));
   }
@@ -234,7 +241,6 @@ public class ArchUnitMojoTest {
     File testPom = new File(getBasedir(), "target/test-classes/unit/plugin-config.xml");
     ArchUnitMojo archUnitMojo = (ArchUnitMojo) mojoRule.lookupMojo("arch-test", testPom);
 
-    MavenProject mavenProject = mock(MavenProject.class);
     when(mavenProject.getPackaging()).thenReturn("pom");
 
     mojoRule.setVariableValueToObject(archUnitMojo, "mavenProject", mavenProject);
