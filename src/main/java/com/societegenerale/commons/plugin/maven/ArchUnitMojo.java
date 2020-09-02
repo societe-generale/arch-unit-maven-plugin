@@ -83,7 +83,7 @@ public class ArchUnitMojo extends AbstractMojo {
         try {
             configureContextClassLoader();
 
-            ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()), new MavenScopePathProvider(), excludedPaths);
+            ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()), new MavenScopePathProvider(mavenProject), excludedPaths);
 
             ruleFailureMessage = ruleInvokerService.invokeRules(coreRules);
         } catch (final Exception e) {
