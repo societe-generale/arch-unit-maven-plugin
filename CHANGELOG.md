@@ -5,6 +5,7 @@
 ### Added
 
 ### Changed
+- Now getting the main and test values in MavenScopePathProviderfrom Maven project variable, instead of hardcoding it
 
 ### Deprecated
 
