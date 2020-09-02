@@ -14,22 +14,11 @@ public class MavenScopePathProvider implements ScopePathProvider {
 
     @Override
     public RootClassFolder getMainClassesPath() {
-
-        if (project == null) {
-            return new RootClassFolder("target/classes");
-        } else {
-            return new RootClassFolder(project.getBuild().getOutputDirectory());
-        }
+        return new RootClassFolder(project.getBuild().getOutputDirectory());
     }
 
     @Override
     public RootClassFolder getTestClassesPath() {
-
-        if (project == null) {
-            return new RootClassFolder("target/test-classes");
-        } else {
-            return new RootClassFolder(project.getBuild().getTestOutputDirectory());
-        }
-
+        return new RootClassFolder(project.getBuild().getTestOutputDirectory());
     }
 }
