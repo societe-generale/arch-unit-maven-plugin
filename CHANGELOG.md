@@ -5,13 +5,18 @@
 ### Added
 
 ### Changed
-- Now getting the main and test values in MavenScopePathProvider from Maven project variable, instead of hardcoding it
 
 ### Deprecated
 
 ### Removed
 
 ### Fixed
+
+## [2.6.2] - 2020-09-21
+
+### Changed
+- PR #39 - Now getting the main and test values in MavenScopePathProvider from Maven project variable, instead of hardcoding it
+
 
 ## [2.6.1] - 2020-08-20
 
