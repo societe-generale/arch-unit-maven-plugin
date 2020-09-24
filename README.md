@@ -63,7 +63,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
             -->
             <groupId>com.societegenerale.commons</groupId>
             <artifactId>arch-unit-build-plugin-core</artifactId>
-            <version>SOME_VERSION_GREATER_THAN_2.3.0</version>
+            <version>SOME_CORE_VERSION_GREATER_THAN_THE_PLUGIN</version>
        </dependency>
     </dependencies>
 </plugin>
