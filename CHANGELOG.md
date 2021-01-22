@@ -14,7 +14,7 @@
 
 ## [2.7.0] - 2021-01-22
 
-- PR #XX - Upgrading to arch-unit-build-plugin-core 2.7.0 for Java 15 compatibility 
+- PR #42 - Upgrading to arch-unit-build-plugin-core 2.7.0 for Java 15 compatibility 
 
 ## [2.6.2] - 2020-09-21
 
