@@ -12,8 +12,14 @@
 
 ### Fixed
 
+## [2.7.1] - 2021-01-27
+
+### Changed
+- Upgrading to arch-unit-build-plugin-core 2.7.1
+
 ## [2.7.0] - 2021-01-22
 
+### Changed
 - PR #42 - Upgrading to arch-unit-build-plugin-core 2.7.0 for Java 15 compatibility 
 
 ## [2.6.2] - 2020-09-21
