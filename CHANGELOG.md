@@ -4,6 +4,8 @@
 
 ### Added
 
+- plugin now has a prefix, to be able to run it directly with "mvn arch-unit:arch-test"
+
 ### Changed
 
 ### Deprecated
