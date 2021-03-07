@@ -184,30 +184,48 @@ and then your slow-to-be-fixed-artifacts my override the property `<archunit.cus
 If even skipping certain rules doesn't fit your needs, configure to skip the whole plugin execution:
 
 ```xml
+
 <properties>
-  <archunit.skip>false</archunit.skip>
+    <archunit.skip>false</archunit.skip>
 </properties>
-<!-- and then inside the ArchUnit Maven plugin -->
-  <configuration>
-    <skip>${archunit.skip}</skip>
-  </configuration>
+        <!-- and then inside the ArchUnit Maven plugin -->
+<configuration>
+<skip>${archunit.skip}</skip>
+</configuration>
 ```
 
 and then you can switch the parameter `archunit.skip` either on runtime (via `-Darchunit.skip=true`) or statically in child modules.
 
-### ArchUnit advanced configuration
+## ArchUnit advanced configuration
 
-Since v2.2.0, you can benefit from ArchUnit advanced configuration, as the plugin can find `archunit.properties` file. More infos in [ArchUnit's user guide](https://www.archunit.org/userguide/html/000_Index.html#_advanced_configuration)
+Since v2.2.0, you can benefit from ArchUnit advanced configuration, as the plugin can find `archunit.properties` file. More infos
+in [ArchUnit's user guide](https://www.archunit.org/userguide/html/000_Index.html#_advanced_configuration)
+
+### Using packaged freezing rules in a multi-module project
+
+If you are packaging a [freezing rule](https://www.archunit.org/userguide/html/000_Index.html#_freezing_arch_rules) and expect to apply it in multiple
+modules, you will probably face a behavior you don't expect. ArchUnit loads its
+configuration [once](https://github.com/TNG/ArchUnit/blob/3df2e7d26c6b18b1c2d383088a37ac0f45020f78/archunit/src/main/java/com/tngtech/archunit/ArchConfiguration.java#L57) :
+then it's cached and reused.
+
+The consequence is that the violation store location (which is stored in ArchUnit's cached configuration) is not redefined for each module as you
+could expect : it's defined for the first module for which the rule executes, and other modules will use the same value - which is probably not what
+you expect.
+
+See [here](https://github.com/societe-generale/arch-unit-maven-plugin/issues/37#issuecomment-792115469) for a workaround : you need to overwrite the
+store location value in the cached configuration before triggering the freezing rule.
 
 ## Excluding paths
 
-Since v2.4.0, configuration can take an optional `excludedPaths` element. All classes that have a location that contains one the mentioned Strings will be excluded from the ArchUnit checks : can be useful in case some classes are generated (Lombok, Mapstruct, ..) and you have little or no control on what gets generated.
+Since v2.4.0, configuration can take an optional `excludedPaths` element. All classes that have a location that contains one the mentioned Strings
+will be excluded from the ArchUnit checks : can be useful in case some classes are generated (Lombok, Mapstruct, ..) and you have little or no control
+on what gets generated.
 
-Remember that ArchUnit operates on the **compiled code** : so we can't exclude something like `generated-sources`. However, if these generated classes are part of a specific package, we can exclude that package.
+Remember that ArchUnit operates on the **compiled code** : so we can't exclude something like `generated-sources`. However, if these generated classes
+are part of a specific package, we can exclude that package.
 
-See [ExclusionImportOption.java](https://github.com/societe-generale/arch-unit-build-plugin-core/blob/2a6f5d009b96a7921bf2de65fcc0aad85edc006a/src/main/java/com/societegenerale/commons/plugin/utils/ExclusionImportOption.java) for details on the (very simple) logic. 
-
-
+See [ExclusionImportOption.java](https://github.com/societe-generale/arch-unit-build-plugin-core/blob/2a6f5d009b96a7921bf2de65fcc0aad85edc006a/src/main/java/com/societegenerale/commons/plugin/utils/ExclusionImportOption.java)
+for details on the (very simple) logic.
 
 ## Contribute !
 
