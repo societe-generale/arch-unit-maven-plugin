@@ -56,8 +56,8 @@
 
         <arch-unit-build-plugin-core.version>2.7.3</arch-unit-build-plugin-core.version>
 
-        <project.testresult.directory>${project.build.directory}/test-results
-        </project.testresult.directory>
+        <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
+        <generated.test.source.directory>${project.basedir}/target/generated-test-sources/test-annotations</generated.test.source.directory>
     </properties>
 
     <scm>
@@ -84,6 +84,7 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
     <dependencies>
 
         <dependency>
@@ -143,6 +144,13 @@
         </dependency>
 
         <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>3.9.1</version>
@@ -159,10 +167,70 @@
              -->
         </dependency>
 
+        <!--  needed to generate test classes above java 8      -->
+        <dependency>
+            <groupId>jakarta.xml.bind</groupId>
+            <artifactId>jakarta.xml.bind-api</artifactId>
+            <version>2.3.3</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.xml.bind</groupId>
+            <artifactId>jaxb-impl</artifactId>
+            <version>2.3.3</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>jaxb2-maven-plugin</artifactId>
+                <version>2.5.0</version>
+                <executions>
+                    <execution>
+                        <id>testXjc</id>
+                        <goals>
+                            <goal>testXjc</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                    </execution>
+                </executions>
+                <configuration>
+                    <packageName>com.societegenerale.commons.plugin.maven.test.generated</packageName>
+                    <outputDirectory>${generated.test.source.directory}</outputDirectory>
+                    <testXjbSources>
+                        <testXjbSource>${project.basedir}/src/test/resources/generate/book.xsd</testXjbSource>
+                    </testXjbSources>
+                    <testSources>
+                        <testSource>${project.basedir}/src/test/resources/generate/book.xsd</testSource>
+                    </testSources>
+                    <clearOutputDir>true</clearOutputDir>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.glassfish.jaxb</groupId>
+                        <artifactId>jaxb-xjc</artifactId>
+                        <version>2.3.2</version>
+                        <scope>compile</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>jakarta.xml.bind</groupId>
+                        <artifactId>jakarta.xml.bind-api</artifactId>
+                        <version>2.3.3</version>
+                        <scope>compile</scope>
+                    </dependency>
+                    <dependency>
+                        <groupId>com.sun.xml.bind</groupId>
+                        <artifactId>jaxb-impl</artifactId>
+                        <version>2.3.3</version>
+                        <scope>compile</scope>
+                    </dependency>
+                </dependencies>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -171,6 +239,28 @@
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
                 </configuration>
+                <executions>
+                    <execution>
+                        <id>default</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>compile-generated-test-source</id>
+                        <phase>test-compile</phase>
+                        <goals>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <configuration>
+                            <compileSourceRoots>
+                                <compileSourceRoot>${generated.test.source.directory}</compileSourceRoot>
+                            </compileSourceRoots>
+                            <generatedTestSourcesDirectory>${generated.test.source.directory}</generatedTestSourcesDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
@@ -183,6 +273,9 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
+                    <excludes>
+                        <exclude>**/Abstract*Test.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
 
