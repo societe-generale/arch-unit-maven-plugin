@@ -4,8 +4,6 @@
 
 ### Added
 
-- plugin now has a prefix, to be able to run it directly with "mvn arch-unit:arch-test"
-
 ### Changed
 
 ### Deprecated
@@ -13,6 +11,16 @@
 ### Removed
 
 ### Fixed
+
+## [2.7.3] - 2021-03-31
+
+### Changed
+
+- Upgrading to arch-unit-build-plugin-core 2.7.3
+
+### Added
+
+- plugin now has a prefix, to be able to run it directly with "mvn arch-unit:arch-test"
 
 ## [2.7.2] - 2021-02-03
 
