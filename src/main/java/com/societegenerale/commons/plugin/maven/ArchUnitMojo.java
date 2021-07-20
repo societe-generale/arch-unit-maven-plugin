@@ -7,8 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.maven.model.MavenRules;
 import com.societegenerale.commons.plugin.model.Rules;
+import com.societegenerale.commons.plugin.service.ExcludedPathsPreProcessor;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
 import com.tngtech.archunit.thirdparty.com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;
@@ -87,9 +89,9 @@ public class ArchUnitMojo extends AbstractMojo {
         String ruleFailureMessage;
         try {
             configureContextClassLoader();
-            final MavenLogAdapter mavenLogAdapter = new MavenLogAdapter(getLog());
+            final Log mavenLogAdapter = new MavenLogAdapter(getLog());
 
-            final Set<String> excludes = new ExcludedPathsPreProcessor().processExcludedPaths(getLog(), projectBuildDir, excludedPaths);
+            final Set<String> excludes = new ExcludedPathsPreProcessor().processExcludedPaths(mavenLogAdapter, projectBuildDir, excludedPaths);
             ruleInvokerService = new RuleInvokerService(mavenLogAdapter, new MavenScopePathProvider(mavenProject), excludes);
 
             ruleFailureMessage = ruleInvokerService.invokeRules(coreRules);
