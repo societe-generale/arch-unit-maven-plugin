@@ -273,9 +273,6 @@
                     <includes>
                         <include>**/*Test.java</include>
                     </includes>
-                    <excludes>
-                        <exclude>**/Abstract*Test.java</exclude>
-                    </excludes>
                 </configuration>
             </plugin>
 
