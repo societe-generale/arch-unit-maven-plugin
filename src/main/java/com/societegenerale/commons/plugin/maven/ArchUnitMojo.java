@@ -6,9 +6,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.maven.model.MavenRules;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
+import com.tngtech.archunit.thirdparty.com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -54,11 +56,14 @@ public class ArchUnitMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project}", required = true, readonly = true)
     private MavenProject mavenProject;
 
+    @Parameter(defaultValue = "${project.build.directory}")
+    private String projectBuildDir;
+
     public MavenRules getRules() {
         return rules;
     }
 
-    private RuleInvokerService ruleInvokerService ;
+    private RuleInvokerService ruleInvokerService;
 
     private static final String PREFIX_ARCH_VIOLATION_MESSAGE = "ArchUnit Maven plugin reported architecture failures listed below :";
 
@@ -82,8 +87,9 @@ public class ArchUnitMojo extends AbstractMojo {
         String ruleFailureMessage;
         try {
             configureContextClassLoader();
+            final Log mavenLogAdapter = new MavenLogAdapter(getLog());
 
-            ruleInvokerService = new RuleInvokerService(new MavenLogAdapter(getLog()), new MavenScopePathProvider(mavenProject), excludedPaths);
+            ruleInvokerService = new RuleInvokerService(mavenLogAdapter, new MavenScopePathProvider(mavenProject), excludedPaths, projectBuildDir);
 
             ruleFailureMessage = ruleInvokerService.invokeRules(coreRules);
         } catch (final Exception e) {
@@ -107,4 +113,8 @@ public class ArchUnitMojo extends AbstractMojo {
         Thread.currentThread().setContextClassLoader(contextClassLoader);
     }
 
+    @VisibleForTesting
+    void setProjectBuildDir(final String projectBuildDir) {
+        this.projectBuildDir = projectBuildDir;
+    }
 }

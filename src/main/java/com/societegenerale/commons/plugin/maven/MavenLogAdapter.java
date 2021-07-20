@@ -34,4 +34,14 @@ public class MavenLogAdapter implements Log {
     public void warn(String msg) {
         mavenLogger.warn(msg);
     }
+
+    @Override
+    public void warn(String msg, Throwable t) {
+        mavenLogger.warn(msg, t);
+    }
+
+    @Override
+    public void debug(String msg, Throwable t) {
+        mavenLogger.warn(msg, t);
+    }
 }
