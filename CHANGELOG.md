@@ -12,6 +12,10 @@
 
 ### Fixed
 
+## [2.8.0] - 2021-07-23
+
+- Upgrading to arch-unit-build-plugin-core 2.8.0
+
 ## [2.7.3] - 2021-03-31
 
 ### Changed
