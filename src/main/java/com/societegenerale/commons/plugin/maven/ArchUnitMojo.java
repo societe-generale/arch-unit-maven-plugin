@@ -10,7 +10,6 @@ import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.maven.model.MavenRules;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
-import com.tngtech.archunit.thirdparty.com.google.common.annotations.VisibleForTesting;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -112,8 +111,6 @@ public class ArchUnitMojo extends AbstractMojo {
         ClassLoader contextClassLoader = newInstance(urls.toArray(new URL[0]), Thread.currentThread().getContextClassLoader());
         Thread.currentThread().setContextClassLoader(contextClassLoader);
     }
-
-    @VisibleForTesting
     void setProjectBuildDir(final String projectBuildDir) {
         this.projectBuildDir = projectBuildDir;
     }
