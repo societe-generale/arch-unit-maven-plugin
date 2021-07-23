@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="/jaxb/book/gen"
+        xmlns:book="/jaxb/book/gen"
+        elementFormDefault="qualified">
+
+    <complexType name="book">
+        <sequence>
+            <element name="title" type="string" />
+            <element name="releaseDate" type="string" />
+        </sequence>
+    </complexType>
+</schema>

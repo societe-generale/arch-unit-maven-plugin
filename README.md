@@ -221,19 +221,22 @@ Since v2.4.0, configuration can take an optional `excludedPaths` element. All cl
 will be excluded from the ArchUnit checks : can be useful in case some classes are generated (Lombok, Mapstruct, ..) and you have little or no control
 on what gets generated.
 
-Remember that ArchUnit operates on the **compiled code** : so we can't exclude something like `generated-sources`. However, if these generated classes
-are part of a specific package, we can exclude that package.
-
 See [ExclusionImportOption.java](https://github.com/societe-generale/arch-unit-build-plugin-core/blob/2a6f5d009b96a7921bf2de65fcc0aad85edc006a/src/main/java/com/societegenerale/commons/plugin/utils/ExclusionImportOption.java)
 for details on the (very simple) logic.
+
+Since v2.8.0, we can exclude something like `generated-sources`, even if the code ends up in the same package(S) as the regular code. See the
+discussion in https://github.com/societe-generale/arch-unit-maven-plugin/pull/44 for more details
 
 ## Contribute !
 
 If you want to make changes in the Maven specific behavior, don't hesitate to open on issue on this repository and/or create a pull request.
 
-If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of arch-unit-build-plugin-core, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at the [code](https://github.com/societe-generale/arch-unit-build-plugin-core/tree/arch_unit_build_plugin_core_2.3.0/src/main/java/com/societegenerale/commons/plugin/rules), it's very easy to add one.
+If you don't want to package your rules separately and/or feel they could be useful to others, we can make your rules part of
+arch-unit-build-plugin-core, so that they can be used out of the box by anyone : don't hesitate to send us a pull request ! have a look at
+the [code](https://github.com/societe-generale/arch-unit-build-plugin-core/tree/arch_unit_build_plugin_core_2.3.0/src/main/java/com/societegenerale/commons/plugin/rules)
+, it's very easy to add one.
 
 ## Official maintainers
 
-- Arpit Garg 
+- Arpit Garg
 - Vincent Fuchs
