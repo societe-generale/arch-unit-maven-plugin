@@ -1,8 +1,5 @@
 package com.societegenerale.commons.plugin.maven;
 
-import java.io.File;
-import java.io.StringReader;
-
 import com.societegenerale.aut.test.TestClassWithPowerMock;
 import com.societegenerale.commons.plugin.rules.MyCustomAndDummyRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
@@ -12,6 +9,7 @@ import com.tngtech.java.junit.dataprovider.UseDataProvider;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugin.logging.Log;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.project.MavenProject;
 import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
@@ -27,13 +25,16 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import java.io.File;
+import java.io.StringReader;
+
 import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
-import static java.util.Arrays.stream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(DataProviderRunner.class)
@@ -106,6 +107,27 @@ public class ArchUnitMojoTest extends AbstractArchUnitMojoTest
     executeAndExpectViolations(mojo,
         expectRuleFailure("classes should not use Powermock")
             .withDetails("Favor Mockito and proper dependency injection - " + TestClassWithPowerMock.class.getName()));
+  }
+
+  @Test
+  public void shouldExecuteSinglePreconfiguredRuleWithNoFailOnError() throws Exception {
+
+    // add single rule
+
+    PlexusConfiguration preConfiguredRules = pluginConfiguration.getChild("rules").getChild("preConfiguredRules");
+    preConfiguredRules.addChild("rule", NoPowerMockRuleTest.class.getName());
+
+    pluginConfiguration.addChild("noFailOnError","true");
+
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
+
+    Log log = mock(Log.class);
+    mojo.setLog(log);
+    mojo.execute();
+
+    verify(log, times(1)).info("ArchUnit Maven plugin reported architecture failures listed below :Rule Violated - " + NoPowerMockRuleTest.class.getName() + System.lineSeparator() +
+            "java.lang.AssertionError: Architecture Violation [Priority: MEDIUM] - Rule 'classes should not use Powermock' was violated (1 times):" + System.lineSeparator() +
+            "Favor Mockito and proper dependency injection - " + TestClassWithPowerMock.class.getName() + System.lineSeparator());
   }
 
   @Test
