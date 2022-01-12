@@ -102,6 +102,9 @@ So your config would become something like :
   <artifactId>arch-unit-maven-plugin</artifactId>
   <version>2.7.2</version>
   <configuration>
+
+    <!-- optional - you can avoid build fail if there is issue. True to avoid build failure, default is false -->
+    <noFailOnError>true</noFailOnError>
     
     <!-- optional - you can exclude classes that have a path containing any of the mentioned paths -->
     <excludedPaths>

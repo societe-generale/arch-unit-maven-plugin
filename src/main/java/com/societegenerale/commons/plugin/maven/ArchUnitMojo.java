@@ -58,6 +58,9 @@ public class ArchUnitMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.directory}")
     private String projectBuildDir;
 
+    @Parameter(property = "noFailOnError", defaultValue = "false")
+    private boolean noFailOnError;
+
     public MavenRules getRules() {
         return rules;
     }
@@ -96,7 +99,11 @@ public class ArchUnitMojo extends AbstractMojo {
         }
 
         if (!StringUtils.isEmpty(ruleFailureMessage)) {
-            throw new MojoFailureException(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
+            if(!noFailOnError) {
+                throw new MojoFailureException(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
+            }
+
+            getLog().info(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
         }
     }
 
