@@ -4,6 +4,8 @@
 
 ### Added
 
+- PR #48 - add nofailonerror property - thanks [@bvedrenne](https://github.com/bvedrenne) !
+
 ### Changed
 
 ### Deprecated
