@@ -4,8 +4,6 @@
 
 ### Added
 
-- PR #48 - add nofailonerror property - thanks [@bvedrenne](https://github.com/bvedrenne) !
-
 ### Changed
 
 ### Deprecated
@@ -13,6 +11,13 @@
 ### Removed
 
 ### Fixed
+
+## [2.9.1] - 2022-04-12
+
+### Added
+
+- upgraded to arch-unit-build-plugin-core 2.9.1
+- PR #48 - add nofailonerror property - thanks [@bvedrenne](https://github.com/bvedrenne) !
 
 ## [2.8.0] - 2021-07-23
 

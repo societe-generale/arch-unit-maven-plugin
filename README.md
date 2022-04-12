@@ -22,9 +22,9 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 ```xml
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
-	<artifactId>arch-unit-maven-plugin</artifactId>
-	<version>2.7.2</version>
-	<configuration>
+    <artifactId>arch-unit-maven-plugin</artifactId>
+    <version>2.9.1</version>
+    <configuration>
 		
 		<rules>
 			<preConfiguredRules>
@@ -97,33 +97,37 @@ so that ArchUnit Maven plugin can instantiate it and run it.
 So your config would become something like :
 
 ```xml
+
 <plugin>
-  <groupId>com.societegenerale.commons</groupId>
-  <artifactId>arch-unit-maven-plugin</artifactId>
-  <version>2.7.2</version>
-  <configuration>
-    
-    <!-- optional - you can exclude classes that have a path containing any of the mentioned paths -->
-    <excludedPaths>
-        <excludedPath>my/package/to/exclude</excludedPath>
-    </excludedPaths>
+    <groupId>com.societegenerale.commons</groupId>
+    <artifactId>arch-unit-maven-plugin</artifactId>
+    <version>2.9.1</version>
+    <configuration>
 
-    <rules>
-       <!-- using a rule available out of the box... -->
-       <preConfiguredRules>
-            <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
-       </preConfiguredRules>
-       <!-- ... and a custom one, coming from a dependency of the plugin -->
-       <configurableRules>
-            <configurableRule>
-                <rule>com.tngtech.archunit.library.GeneralCodingRules</rule>
-                <applyOn>
-                    <packageName>com.myproject.mypackage</packageName>
-                    <!-- scope can be "main" or "test" -->
-                    <scope>main</scope>
-                </applyOn>
+        <!-- optional - you can avoid build fail if there is issue. True to avoid build failure, default is false -->
+        <noFailOnError>true</noFailOnError>
 
-                <checks>
+        <!-- optional - you can exclude classes that have a path containing any of the mentioned paths -->
+        <excludedPaths>
+            <excludedPath>my/package/to/exclude</excludedPath>
+        </excludedPaths>
+
+        <rules>
+            <!-- using a rule available out of the box... -->
+            <preConfiguredRules>
+                <rule>com.societegenerale.commons.plugin.rules.NoJunitAssertRuleTest</rule>
+            </preConfiguredRules>
+            <!-- ... and a custom one, coming from a dependency of the plugin -->
+            <configurableRules>
+                <configurableRule>
+                    <rule>com.tngtech.archunit.library.GeneralCodingRules</rule>
+                    <applyOn>
+                        <packageName>com.myproject.mypackage</packageName>
+                        <!-- scope can be "main" or "test" -->
+                        <scope>main</scope>
+                    </applyOn>
+
+                    <checks>
        	 	        <!-- otherwise you can specify either field or method names here. If no checks block is defined, all are executed -->
        	 		    <check>NO_CLASSES_SHOULD_ACCESS_STANDARD_STREAMS</check>
        	 	    </checks>
