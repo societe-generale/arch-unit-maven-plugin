@@ -14,7 +14,7 @@
 
 ## [2.9.1] - 2022-04-12
 
-### Added
+### Changed
 
 - upgraded to arch-unit-build-plugin-core 2.9.1
 - PR #48 - add nofailonerror property - thanks [@bvedrenne](https://github.com/bvedrenne) !
