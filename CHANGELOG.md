@@ -12,6 +12,13 @@
 
 ### Fixed
 
+## [2.9.2] - 2022-04-18
+
+### Fixed
+
+- upgraded to arch-unit-build-plugin-core 2.9.2.
+- publishing on new Nexus OSS server
+
 ## [2.9.1] - 2022-04-12
 
 ### Changed
