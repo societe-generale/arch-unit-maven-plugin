@@ -12,6 +12,12 @@
 
 ### Fixed
 
+## [2.9.3] - 2022-08-04
+
+### Changed
+
+- library upgrades : lombok 1.8.24, jacoco 0.8.8, archunit-plugin-core 2.9.6
+
 ## [2.9.2] - 2022-04-18
 
 ### Fixed
