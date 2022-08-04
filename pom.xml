@@ -50,11 +50,12 @@
         <maven.core.version>3.5.0</maven.core.version>
         <maven.plugin.annotation.version>3.5</maven.plugin.annotation.version>
 
-        <lombok.version>1.18.10</lombok.version>
-        <jacoco.version>0.8.3</jacoco.version>
+        <lombok.version>1.18.24</lombok.version>
+        <jacoco.version>0.8.8</jacoco.version>
         <mockito.version>3.1.0</mockito.version>
+        <jaxb.version>2.3.3</jaxb.version>
 
-        <arch-unit-build-plugin-core.version>2.9.2</arch-unit-build-plugin-core.version>
+        <arch-unit-build-plugin-core.version>2.9.6</arch-unit-build-plugin-core.version>
 
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <generated.test.source.directory>${project.basedir}/target/generated-test-sources/test-annotations</generated.test.source.directory>
@@ -170,7 +171,7 @@
         <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
-            <version>2.3.3</version>
+            <version>${jaxb.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -206,19 +207,19 @@
                     <dependency>
                         <groupId>org.glassfish.jaxb</groupId>
                         <artifactId>jaxb-xjc</artifactId>
-                        <version>2.3.2</version>
+                        <version>${jaxb.version}</version>
                         <scope>compile</scope>
                     </dependency>
                     <dependency>
                         <groupId>jakarta.xml.bind</groupId>
                         <artifactId>jakarta.xml.bind-api</artifactId>
-                        <version>2.3.3</version>
+                        <version>${jaxb.version}</version>
                         <scope>compile</scope>
                     </dependency>
                     <dependency>
                         <groupId>com.sun.xml.bind</groupId>
                         <artifactId>jaxb-impl</artifactId>
-                        <version>2.3.3</version>
+                        <version>${jaxb.version}</version>
                         <scope>compile</scope>
                     </dependency>
                 </dependencies>
