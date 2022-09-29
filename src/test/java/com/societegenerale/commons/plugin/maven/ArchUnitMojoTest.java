@@ -3,6 +3,7 @@ package com.societegenerale.commons.plugin.maven;
 import com.societegenerale.aut.test.TestClassWithPowerMock;
 import com.societegenerale.commons.plugin.rules.MyCustomAndDummyRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
+import com.tngtech.archunit.ArchConfiguration;
 import com.tngtech.java.junit.dataprovider.DataProvider;
 import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import com.tngtech.java.junit.dataprovider.UseDataProvider;
@@ -32,6 +33,7 @@ import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -257,4 +259,27 @@ public class ArchUnitMojoTest extends AbstractArchUnitMojoTest
     assertThat(interceptingLogger.debugLogs).containsExactly("module packaging is 'pom', so skipping execution");
   }
 
+  @Test
+  public void shouldConfigureArchConfigurationProperties() throws Exception {
+    final String propertyName = "archunit.propertyName";
+    final String propertyValue = "propertyValue";
+
+    // configure the property name and value
+    pluginConfiguration.getChild("properties").addChild(propertyName, propertyValue);
+
+    // configure some rule
+    pluginConfiguration.getChild("rules")
+            .getChild("preConfiguredRules")
+            .addChild("rule", NoPowerMockRuleTest.class.getName());
+
+    // execute the rule, which happens to fail
+    ArchUnitMojo mojo = (ArchUnitMojo) mojoRule.configureMojo(archUnitMojo, pluginConfiguration);
+    Log log = mock(Log.class);
+    mojo.setLog(log);
+    assertThrows(MojoFailureException.class, mojo::execute);
+
+    // assert that the configuration is applied
+    assertThat(ArchConfiguration.get().getProperty(propertyName)).isEqualTo(propertyValue);
+    verify(log, times(1)).debug("configuring ArchUnit properties");
+  }
 }

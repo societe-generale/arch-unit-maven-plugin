@@ -25,7 +25,9 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
     <artifactId>arch-unit-maven-plugin</artifactId>
     <version>2.9.1</version>
     <configuration>
-		
+        <properties>
+            <archunit.propertyName>propertyValue</archunit.propertyName>
+        </properties>
 		<rules>
 			<preConfiguredRules>
 				<rule>com.societegenerale.commons.plugin.rules.NoStandardStreamRuleTest</rule>
@@ -205,16 +207,38 @@ and then you can switch the parameter `archunit.skip` either on runtime (via `-D
 Since v2.2.0, you can benefit from ArchUnit advanced configuration, as the plugin can find `archunit.properties` file. More infos
 in [ArchUnit's user guide](https://www.archunit.org/userguide/html/000_Index.html#_advanced_configuration)
 
-### Using packaged freezing rules in a multi-module project
+### Using `archunit.properties` file
 
-If you are packaging a [freezing rule](https://www.archunit.org/userguide/html/000_Index.html#_freezing_arch_rules) and expect to apply it in multiple
-modules, you will probably face a behavior you don't expect. ArchUnit loads its
-configuration [once](https://github.com/TNG/ArchUnit/blob/3df2e7d26c6b18b1c2d383088a37ac0f45020f78/archunit/src/main/java/com/tngtech/archunit/ArchConfiguration.java#L57) :
-then it's cached and reused.
+ArchUnit loads its configuration [once](https://github.com/TNG/ArchUnit/blob/3df2e7d26c6b18b1c2d383088a37ac0f45020f78/archunit/src/main/java/com/tngtech/archunit/ArchConfiguration.java#L57) using the first `archunit.properties` file found as a resource in the classpath, then it's cached and reused.
+This can cause surprises in multi-module Maven projects since the ArchUnit instance is in use takes its configuration from the first module it's used with, and doesn't get reconfigured for each module as might be expected.
 
-The consequence is that the violation store location (which is stored in ArchUnit's cached configuration) is not redefined for each module as you
-could expect : it's defined for the first module for which the rule executes, and other modules will use the same value - which is probably not what
-you expect.
+For example, if you are packaging a [freezing rule](https://www.archunit.org/userguide/html/000_Index.html#_freezing_arch_rules) for use in a multi-module project, 
+the violation store location is configured once and isn't reconfigured for each module.
+As a workaround the rule can be adapted to overwrite the configuration before triggering the freezing rule, as described in [#37](https://github.com/societe-generale/arch-unit-maven-plugin/issues/37#issuecomment-792115469).
+
+### Using Maven `<properties>` configuration
+
+An alternative approach is to configure properties using the Maven plugin where properties can be configured without writing to an `archunit.properties` file.
+The plugin will reconfigure ArchUnit for each module, complete with standard maven property expansion, before triggering the configured rules.
+
+For example, if you are packaging a [freezing rule](https://www.archunit.org/userguide/html/000_Index.html#_freezing_arch_rules) for use in a multi-module project,
+you can enable store creation and set the location relative to each module:
+
+```xml
+<plugin>
+    <groupId>com.societegenerale.commons</groupId>
+    <artifactId>arch-unit-maven-plugin</artifactId>
+    <configuration>
+        <properties>
+            <freeze.store.default.allowStoreCreation>true</freeze.store.default.allowStoreCreation>
+            <freeze.store.default.path>${project.basedir}/src/archunit/</freeze.store.default.path>
+        </properties>
+        <rules>
+        ...
+        </rules>
+    </configuration>
+</plugin>
+```
 
 See [here](https://github.com/societe-generale/arch-unit-maven-plugin/issues/37#issuecomment-792115469) for a workaround : you need to overwrite the
 store location value in the cached configuration before triggering the freezing rule.
