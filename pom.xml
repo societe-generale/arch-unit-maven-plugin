@@ -4,7 +4,7 @@
     <groupId>com.societegenerale.commons</groupId>
     <artifactId>arch-unit-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>2.9.4-SNAPSHOT</version>
+    <version>3.0.0-SNAPSHOT</version>
 
     <name>ArchUnit Maven plugin</name>
 
@@ -43,9 +43,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <java.version>1.8</java.version>
+        <maven.compiler.source>1.11</maven.compiler.source>
+        <maven.compiler.target>1.11</maven.compiler.target>
+        <java.version>1.11</java.version>
 
         <maven.core.version>3.5.0</maven.core.version>
         <maven.plugin.annotation.version>3.5</maven.plugin.annotation.version>
@@ -55,7 +55,7 @@
         <mockito.version>3.1.0</mockito.version>
         <jaxb.version>2.3.3</jaxb.version>
 
-        <arch-unit-build-plugin-core.version>2.9.6</arch-unit-build-plugin-core.version>
+        <arch-unit-build-plugin-core.version>3.0.0</arch-unit-build-plugin-core.version>
 
         <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
         <generated.test.source.directory>${project.basedir}/target/generated-test-sources/test-annotations</generated.test.source.directory>
