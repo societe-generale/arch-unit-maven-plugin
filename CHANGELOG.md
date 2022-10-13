@@ -4,6 +4,8 @@
 
 ### Added
 
+- PR #51 - Allow ArchConfiguration properties to be set from Maven
+
 ### Changed
 
 ### Deprecated

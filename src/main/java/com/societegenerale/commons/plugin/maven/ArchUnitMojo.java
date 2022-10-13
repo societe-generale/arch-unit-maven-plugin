@@ -4,12 +4,15 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.maven.model.MavenRules;
 import com.societegenerale.commons.plugin.model.Rules;
 import com.societegenerale.commons.plugin.service.RuleInvokerService;
+import com.tngtech.archunit.ArchConfiguration;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
@@ -61,6 +64,9 @@ public class ArchUnitMojo extends AbstractMojo {
     @Parameter(property = "noFailOnError", defaultValue = "false")
     private boolean noFailOnError;
 
+    @Parameter
+    private Map<String, String> properties = new HashMap<>();
+
     public MavenRules getRules() {
         return rules;
     }
@@ -86,6 +92,13 @@ public class ArchUnitMojo extends AbstractMojo {
             getLog().debug("module packaging is 'pom', so skipping execution");
             return;
         }
+
+        if (!properties.isEmpty()) {
+            getLog().debug("configuring ArchUnit properties");
+            final ArchConfiguration archConfiguration = ArchConfiguration.get();
+            properties.forEach(archConfiguration::setProperty);
+        }
+
         String ruleFailureMessage;
         try {
             configureContextClassLoader();
