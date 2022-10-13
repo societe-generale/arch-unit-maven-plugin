@@ -23,7 +23,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
     <artifactId>arch-unit-maven-plugin</artifactId>
-    <version>2.9.1</version>
+    <version>3.0.0</version>
     <configuration>
         <properties>
             <archunit.propertyName>propertyValue</archunit.propertyName>
@@ -103,7 +103,7 @@ So your config would become something like :
 <plugin>
     <groupId>com.societegenerale.commons</groupId>
     <artifactId>arch-unit-maven-plugin</artifactId>
-    <version>2.9.1</version>
+    <version>3.0.0</version>
     <configuration>
 
         <!-- optional - you can avoid build fail if there is issue. True to avoid build failure, default is false -->
@@ -218,7 +218,7 @@ As a workaround the rule can be adapted to overwrite the configuration before tr
 
 ### Using Maven `<properties>` configuration
 
-An alternative approach is to configure properties using the Maven plugin where properties can be configured without writing to an `archunit.properties` file.
+Since v3.0.0, an alternative approach is to configure properties using the Maven plugin where properties can be configured without writing to an `archunit.properties` file.
 The plugin will reconfigure ArchUnit for each module, complete with standard maven property expansion, before triggering the configured rules.
 
 For example, if you are packaging a [freezing rule](https://www.archunit.org/userguide/html/000_Index.html#_freezing_arch_rules) for use in a multi-module project,
