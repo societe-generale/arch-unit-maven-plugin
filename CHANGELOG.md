@@ -4,8 +4,6 @@
 
 ### Added
 
-- PR #51 - Allow ArchConfiguration properties to be set from Maven
-
 ### Changed
 
 ### Deprecated
@@ -13,6 +11,16 @@
 ### Removed
 
 ### Fixed
+
+## [3.0.0] - 2022-10-13 
+
+### Added
+
+- PR #51 - Allow ArchConfiguration properties to be set from Maven - thanks [@roxspring](https://github.com/roxspring) !
+
+### Changed
+
+- PR #52 - upgrading to arch-unit-build-plugin-core 3.0.0 and JDK 11
 
 ## [2.9.3] - 2022-08-04
 
