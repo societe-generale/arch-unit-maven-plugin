@@ -4,7 +4,7 @@
     <groupId>com.societegenerale.commons</groupId>
     <artifactId>arch-unit-maven-plugin</artifactId>
     <packaging>maven-plugin</packaging>
-    <version>3.0.0-SNAPSHOT</version>
+    <version>4.0.0-SNAPSHOT</version>
     <name>ArchUnit Maven plugin</name>
     <description>An easy way to distribute ArchUnit rules across projects</description>
     <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
@@ -45,7 +45,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <arch-unit-build-plugin-core.version>3.0.1-SNAPSHOT</arch-unit-build-plugin-core.version>
+        <arch-unit-build-plugin-core.version>4.0.0-SNAPSHOT</arch-unit-build-plugin-core.version>
         <junit4.version>2.10</junit4.version>
         <maven.core.version>3.9.3</maven.core.version>
         <maven.plugin.annotation.version>3.9.0</maven.plugin.annotation.version>
