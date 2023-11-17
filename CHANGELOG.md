@@ -12,7 +12,15 @@
 
 ### Fixed
 
-## [3.0.0] - 2022-10-13 
+## [4.0.0] - 2023-11-17
+
+### Changed
+
+- PR #59 - upgrading to arch-unit-build-plugin-core 4.0.0 and JDK 21 - thanks [@sebienfait](https://github.com/sebienfait)
+- PR #60 - minor change in logging - thanks [@guerrillalg](https://github.com/guerrillalg) for the suggestion !
+
+
+## [3.0.0] - 2022-10-13
 
 ### Added
 
@@ -96,7 +104,7 @@
 ## [2.3.0] - 2019-10-06
 
 ### Changed
-- PR #30 - Now using https://github.com/societe-generale/arch-unit-build-plugin-core as the foundation for the maven plugin 
+- PR #30 - Now using https://github.com/societe-generale/arch-unit-build-plugin-core as the foundation for the maven plugin
 - PR #27 - setting Maven plugins versions to avoid warning at build time - thanks [@khmarbaise](https://github.com/khmarbaise) for the contribution !
 - PR #25 - not scanning "pom" projects - thanks [@khmarbaise](https://github.com/khmarbaise) for the contribution !
 - PR #20 - using Maven recommended way for logging - thanks [@croesh](https://github.com/croesh) for the contribution !
@@ -120,16 +128,16 @@
 - PR #15 - will now fail if test to execute is not found
 - PR #15 - all checks of a configurableRule will execute by default
 - PR #15 - pretty big refactoring, to improve overall design
---> Thanks a lot to [@codecholeric](https://github.com/codecholeric) for the contribution ! 
+--> Thanks a lot to [@codecholeric](https://github.com/codecholeric) for the contribution !
 
 ## [2.0.0] - 2019-05-19
 
 ### Changed
-- PR #6 - BREAKING CHANGE : config has changed to enable the use of preconfigured rule (as before) and configurable rules 
+- PR #6 - BREAKING CHANGE : config has changed to enable the use of preconfigured rule (as before) and configurable rules
 - refactoring, cleaning up ArchUtils
 
 ### Added
-- PR #5 - new preconfigured rule available : NoJavaUtilDateRuleTest - thanks [@FanJups](https://github.com/FanJups) for the contribution ! 
+- PR #5 - new preconfigured rule available : NoJavaUtilDateRuleTest - thanks [@FanJups](https://github.com/FanJups) for the contribution !
 
 
 ## [1.0.2] - 2019-05-06
