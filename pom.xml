@@ -21,13 +21,13 @@
             <name>Vincent Fuchs</name>
             <email>vincent.fuchs@gmail.com</email>
         </developer>
-        
+
         <developer>
 			<id>FanJups</id>
 			<name>Fanon Jupkwo</name>
 			<email>jupsfan@gmail.com</email>
   		</developer>
-        
+
     </developers>
 
     <licenses>
@@ -45,7 +45,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
-        <arch-unit-build-plugin-core.version>4.0.0-SNAPSHOT</arch-unit-build-plugin-core.version>
+        <arch-unit-build-plugin-core.version>4.0.0</arch-unit-build-plugin-core.version>
         <junit4.version>2.10</junit4.version>
         <maven.core.version>3.9.3</maven.core.version>
         <maven.plugin.annotation.version>3.9.0</maven.plugin.annotation.version>
