@@ -116,7 +116,7 @@ public class ArchUnitMojo extends AbstractMojo {
                 throw new MojoFailureException(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
             }
 
-            getLog().info(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
+            getLog().warn(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
         }
     }
 
