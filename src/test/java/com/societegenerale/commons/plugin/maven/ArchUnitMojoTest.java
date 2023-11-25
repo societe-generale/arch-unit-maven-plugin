@@ -1,5 +1,8 @@
 package com.societegenerale.commons.plugin.maven;
 
+import java.io.File;
+import java.io.StringReader;
+
 import com.societegenerale.aut.test.TestClassWithPowerMock;
 import com.societegenerale.commons.plugin.rules.MyCustomAndDummyRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
@@ -25,9 +28,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-
-import java.io.File;
-import java.io.StringReader;
 
 import static com.tngtech.junit.dataprovider.DataProviders.testForEach;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -127,9 +127,12 @@ public class ArchUnitMojoTest extends AbstractArchUnitMojoTest
     mojo.setLog(log);
     mojo.execute();
 
-    verify(log, times(1)).info("ArchUnit Maven plugin reported architecture failures listed below :Rule Violated - " + NoPowerMockRuleTest.class.getName() + System.lineSeparator() +
-            "java.lang.AssertionError: Architecture Violation [Priority: MEDIUM] - Rule 'classes should not use Powermock' was violated (1 times):" + System.lineSeparator() +
-            "Favor Mockito and proper dependency injection - " + TestClassWithPowerMock.class.getName() + System.lineSeparator());
+    verify(log, times(1)).warn(
+            "ArchUnit Maven plugin reported architecture failures listed below :Rule Violated - " + NoPowerMockRuleTest.class.getName()
+                    + System.lineSeparator() +
+                    "java.lang.AssertionError: Architecture Violation [Priority: MEDIUM] - Rule 'classes should not use Powermock' was violated (1 times):"
+                    + System.lineSeparator() +
+                    "Favor Mockito and proper dependency injection - " + TestClassWithPowerMock.class.getName() + System.lineSeparator());
   }
 
   @Test
