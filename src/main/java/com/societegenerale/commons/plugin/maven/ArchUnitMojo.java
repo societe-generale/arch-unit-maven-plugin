@@ -17,6 +17,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.maven.artifact.DependencyResolutionRequiredException;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoFailureException;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
@@ -25,13 +26,10 @@ import org.apache.maven.project.MavenProject;
 import static java.net.URLClassLoader.newInstance;
 import static java.util.Collections.emptyList;
 
-/**
- * @goal generate
- * @phase process-classes
- * @configurator include-project-dependencies
- * @requiresDependencyResolution compile+runtime
- */
-@Mojo(name = "arch-test", requiresDependencyResolution = ResolutionScope.TEST)
+@Mojo(name = "arch-test",
+        requiresDependencyResolution = ResolutionScope.COMPILE_PLUS_RUNTIME,
+        defaultPhase = LifecyclePhase.PROCESS_CLASSES,
+        configurator = "include-project-dependencies")
 public class ArchUnitMojo extends AbstractMojo {
     /**
      * Skips all processing performed by this plugin.
