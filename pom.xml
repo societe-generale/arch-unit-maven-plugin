@@ -47,6 +47,7 @@
 
         <arch-unit-build-plugin-core.version>4.0.0</arch-unit-build-plugin-core.version>
         <junit4.version>2.10</junit4.version>
+        <junit-jupiter.version>5.10.0</junit-jupiter.version>
         <maven.core.version>3.9.3</maven.core.version>
         <maven.plugin.annotation.version>3.9.0</maven.plugin.annotation.version>
         <maven-plugin-testing.version>3.3.0</maven-plugin-testing.version>
@@ -281,6 +282,13 @@
                         <include>**/*Test.java</include>
                     </includes>
                 </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.junit.vintage</groupId>
+                        <artifactId>junit-vintage-engine</artifactId>
+                        <version>${junit-jupiter.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
