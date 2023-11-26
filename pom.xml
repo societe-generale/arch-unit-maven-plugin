@@ -342,6 +342,7 @@
                 <version>${maven-plugin-plugin.version}</version>
                 <configuration>
                     <goalPrefix>arch-unit</goalPrefix>
+                    <requiredJavaVersion>21</requiredJavaVersion>
                 </configuration>
                 <executions>
                     <execution>
