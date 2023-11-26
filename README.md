@@ -1,7 +1,6 @@
 # ArchUnit Maven plugin
 
-[![Build Status](https://travis-ci.org/societe-generale/arch-unit-maven-plugin.svg?branch=master)](https://travis-ci.org/societe-generale/arch-unit-maven-plugin)
-[![Coverage Status](https://coveralls.io/repos/github/societe-generale/arch-unit-maven-plugin/badge.svg?branch=master)](https://coveralls.io/github/societe-generale/arch-unit-maven-plugin?branch=master)
+[![codecov](https://codecov.io/github/societe-generale/arch-unit-maven-plugin/graph/badge.svg?token=XrRWdv5yfi)](https://codecov.io/github/societe-generale/arch-unit-maven-plugin)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-maven-plugin/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-maven-plugin)
 
 
