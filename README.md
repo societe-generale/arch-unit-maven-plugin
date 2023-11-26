@@ -1,5 +1,6 @@
 # ArchUnit Maven plugin
 
+![Build Status](https://github.com/societe-generale/arch-unit-maven-plugin/actions/workflows/build_workflow.yml/badge.svg)
 [![codecov](https://codecov.io/github/societe-generale/arch-unit-maven-plugin/graph/badge.svg?token=XrRWdv5yfi)](https://codecov.io/github/societe-generale/arch-unit-maven-plugin)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-maven-plugin/badge.svg?style=plastic)](https://maven-badges.herokuapp.com/maven-central/com.societegenerale.commons/arch-unit-maven-plugin)
 
