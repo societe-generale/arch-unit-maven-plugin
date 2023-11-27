@@ -2,19 +2,15 @@ package com.societegenerale.commons.plugin.maven;
 
 import java.io.StringReader;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
 import com.societegenerale.commons.plugin.rules.StringFieldsThatAreActuallyDatesRuleTest;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.testing.MojoRule;
 import org.apache.maven.project.MavenProject;
 import org.assertj.core.api.AbstractThrowableAssert;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
@@ -24,17 +20,13 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith (DataProviderRunner.class)
 public class ArchUnitMojoExcludeTest extends AbstractArchUnitMojoTest
 {
 
-    @Rule
     public final MojoRule mojoRule1 = new MojoRule();
 
-    @Rule
     public final MojoRule mojoRule2 = new MojoRule();
 
-    @Rule
     public final MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @InjectMocks
@@ -89,8 +81,7 @@ public class ArchUnitMojoExcludeTest extends AbstractArchUnitMojoTest
       "</project>";
     // @formatter:on
 
-
-    @Before
+    @BeforeEach
     public void setUp()
     {
 

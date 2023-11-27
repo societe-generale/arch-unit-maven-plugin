@@ -46,7 +46,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <arch-unit-build-plugin-core.version>4.0.0</arch-unit-build-plugin-core.version>
-        <junit4.version>2.10</junit4.version>
+        <junit-dataprovider.version>2.0</junit-dataprovider.version>
         <junit-jupiter.version>5.10.0</junit-jupiter.version>
         <maven.core.version>3.9.3</maven.core.version>
         <maven.plugin.annotation.version>3.9.0</maven.plugin.annotation.version>
@@ -120,8 +120,8 @@
 
         <dependency>
             <groupId>com.tngtech.junit.dataprovider</groupId>
-            <artifactId>junit4-dataprovider</artifactId>
-            <version>${junit4.version}</version>
+            <artifactId>junit-jupiter-dataprovider</artifactId>
+            <version>${junit-dataprovider.version}</version>
             <scope>test</scope>
         </dependency>
 
@@ -190,6 +190,13 @@
             <artifactId>jaxb-impl</artifactId>
             <version>${jaxb.version}</version>
             <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -284,13 +291,6 @@
                         <include>**/*Test.java</include>
                     </includes>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.vintage</groupId>
-                        <artifactId>junit-vintage-engine</artifactId>
-                        <version>${junit-jupiter.version}</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <plugin>

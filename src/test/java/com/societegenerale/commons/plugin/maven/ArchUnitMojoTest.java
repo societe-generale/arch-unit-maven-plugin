@@ -7,9 +7,8 @@ import com.societegenerale.aut.test.TestClassWithPowerMock;
 import com.societegenerale.commons.plugin.rules.MyCustomAndDummyRules;
 import com.societegenerale.commons.plugin.rules.NoPowerMockRuleTest;
 import com.tngtech.archunit.ArchConfiguration;
-import com.tngtech.java.junit.dataprovider.DataProvider;
-import com.tngtech.java.junit.dataprovider.DataProviderRunner;
-import com.tngtech.java.junit.dataprovider.UseDataProvider;
+import com.tngtech.junit.dataprovider.DataProvider;
+import com.tngtech.junit.dataprovider.UseDataProvider;
 import org.apache.maven.model.Build;
 import org.apache.maven.plugin.Mojo;
 import org.apache.maven.plugin.MojoFailureException;
@@ -20,12 +19,9 @@ import org.codehaus.plexus.configuration.DefaultPlexusConfiguration;
 import org.codehaus.plexus.configuration.PlexusConfiguration;
 import org.codehaus.plexus.logging.LoggerManager;
 import org.codehaus.plexus.util.xml.Xpp3DomBuilder;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
@@ -39,21 +35,16 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(DataProviderRunner.class)
 public class ArchUnitMojoTest extends AbstractArchUnitMojoTest
 {
 
-  @Rule
   public final MojoRule mojoRule = new MojoRule();
 
-  @Rule
   public final MockitoRule mockitoRule = MockitoJUnit.rule();
 
   @InjectMocks
   private ArchUnitMojo archUnitMojo;
-
-  @Mock
-  private MavenProject mavenProject;
+  private final MavenProject mavenProject = mock(MavenProject.class);
 
   private PlexusConfiguration pluginConfiguration;
 
@@ -75,7 +66,7 @@ public class ArchUnitMojoTest extends AbstractArchUnitMojoTest
         "</build>" +
       "</project>";  // @formatter:on
 
-  @Before
+  @BeforeEach
   public void setUp() throws Exception {
 
     Build mockBuild = mock(Build.class);
