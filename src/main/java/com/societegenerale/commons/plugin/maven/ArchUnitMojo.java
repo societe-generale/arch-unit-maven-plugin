@@ -1,13 +1,5 @@
 package com.societegenerale.commons.plugin.maven;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.societegenerale.commons.plugin.Log;
 import com.societegenerale.commons.plugin.maven.model.MavenRules;
 import com.societegenerale.commons.plugin.model.Rules;
@@ -22,6 +14,15 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.ResolutionScope;
 import org.apache.maven.project.MavenProject;
+
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import static java.net.URLClassLoader.newInstance;
 import static java.util.Collections.emptyList;
@@ -80,55 +81,84 @@ public class ArchUnitMojo extends AbstractMojo {
             return;
         }
 
-        Rules coreRules=rules.toCoreRules();
-
-        if (!coreRules.isValid()) {
+        if (!rules.toCoreRules().isValid()) {
             throw new MojoFailureException("Arch unit Plugin should have at least one preconfigured/configurable rule");
         }
 
-        if ("pom".equals(mavenProject.getPackaging())) {
-            getLog().debug("module packaging is 'pom', so skipping execution");
-            return;
-        }
-
-        if (!properties.isEmpty()) {
-            getLog().debug("configuring ArchUnit properties");
-            final ArchConfiguration archConfiguration = ArchConfiguration.get();
-            properties.forEach(archConfiguration::setProperty);
-        }
-
         String ruleFailureMessage;
-        try {
-            configureContextClassLoader();
-            final Log mavenLogAdapter = new MavenLogAdapter(getLog());
 
-            ruleInvokerService = new RuleInvokerService(mavenLogAdapter, new MavenScopePathProvider(mavenProject), excludedPaths, projectBuildDir);
-
-            ruleFailureMessage = ruleInvokerService.invokeRules(coreRules);
-        } catch (final Exception e) {
-            throw new MojoFailureException(e.getMessage(), e);
+        Rules coreRules;
+        List<MavenProject> targetProjects;
+        if ("pom".equals(mavenProject.getPackaging())) {
+            coreRules = rules.toCoreRules(true);
+            targetProjects = mavenProject.getCollectedProjects();
         }
+        else {
+            coreRules = rules.toCoreRules(false);
+            targetProjects = List.of(mavenProject);
+        }
+
+        ruleFailureMessage = executeArchUnitRules(coreRules, targetProjects);
 
         if (!StringUtils.isEmpty(ruleFailureMessage)) {
             if(!noFailOnError) {
                 throw new MojoFailureException(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
             }
 
-            getLog().warn(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
+            getLog().info(PREFIX_ARCH_VIOLATION_MESSAGE + ruleFailureMessage);
         }
     }
 
-    private void configureContextClassLoader() throws DependencyResolutionRequiredException, MalformedURLException {
+    private String executeArchUnitRules(Rules coreRules, List<MavenProject> projects) throws MojoFailureException {
+        if (!coreRules.isValid()) {
+            String debugMessage = "no rule apply for projects";
+            if (!projects.isEmpty()) {
+                debugMessage += ": %s".formatted(projects.stream()
+                        .map(MavenProject::getName)
+                        .collect(Collectors.joining(";")));
+            }
+            getLog().debug(debugMessage);
+            return null;
+        }
+        configureProperties();
+        try {
+            configureContextClassLoader(projects);
+            final Log mavenLogAdapter = new MavenLogAdapter(getLog());
+
+            ruleInvokerService = new RuleInvokerService(mavenLogAdapter,
+                    projects.stream().map(MavenScopePathProvider::new).collect(Collectors.toList()),
+                    excludedPaths,
+                    projectBuildDir);
+
+            return ruleInvokerService.invokeRules(coreRules);
+        } catch (final Exception e) {
+            throw new MojoFailureException(e.getMessage(), e);
+        }
+    }
+
+    private void configureProperties() {
+        if (!properties.isEmpty()) {
+            getLog().debug("configuring ArchUnit properties");
+            final ArchConfiguration archConfiguration = ArchConfiguration.get();
+            properties.forEach(archConfiguration::setProperty);
+        }
+    }
+
+    private void configureContextClassLoader(List<MavenProject> projects)
+            throws DependencyResolutionRequiredException, MalformedURLException {
 
         List<URL> urls = new ArrayList<>();
-        List<String> elements = mavenProject.getTestClasspathElements();
-        for (String element : elements) {
-            urls.add(new File(element).toURI().toURL());
+        for (MavenProject project : projects) {
+            for (String element : project.getTestClasspathElements()) {
+                urls.add(new File(element).toURI().toURL());
+            }
         }
 
-        ClassLoader contextClassLoader = newInstance(urls.toArray(new URL[0]), Thread.currentThread().getContextClassLoader());
+        ClassLoader contextClassLoader = newInstance(urls.toArray(new URL[0]),
+                Thread.currentThread().getContextClassLoader());
         Thread.currentThread().setContextClassLoader(contextClassLoader);
     }
+
     void setProjectBuildDir(final String projectBuildDir) {
         this.projectBuildDir = projectBuildDir;
     }
