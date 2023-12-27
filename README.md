@@ -23,7 +23,7 @@ Add below plugin in your root pom.xml : all available ```<rule>``` are mentioned
 <plugin>
 	<groupId>com.societegenerale.commons</groupId>
     <artifactId>arch-unit-maven-plugin</artifactId>
-    <version>3.0.0</version>
+    <version>4.0.0</version>
     <configuration>
         <properties>
             <archunit.propertyName>propertyValue</archunit.propertyName>
