@@ -2,6 +2,7 @@ package com.societegenerale.commons.plugin.maven.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.societegenerale.commons.plugin.model.Rules;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -29,8 +30,16 @@ public class MavenRules {
 
         return new Rules(preConfiguredRules,
                 configurableRules.stream()
-                                 .map(e -> e.toCoreConfigurableRule())
-                                 .collect(toList()));
+                        .map(e -> e.toCoreConfigurableRule())
+                        .collect(toList()));
+    }
+
+    public Rules toCoreRules(boolean isApplyOnAggregator) {
+        return new Rules(isApplyOnAggregator ? List.of() : preConfiguredRules,
+                configurableRules.stream()
+                        .filter(configurableRule -> Optional.ofNullable(configurableRule.getApplyOn()).map(MavenApplyOn::getAggregator).orElse(false) == isApplyOnAggregator)
+                        .map(MavenConfigurableRule::toCoreConfigurableRule)
+                        .toList());
     }
 
     public List<String> getPreConfiguredRules() {
