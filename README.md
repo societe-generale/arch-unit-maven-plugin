@@ -255,6 +255,13 @@ for details on the (very simple) logic.
 Since v2.8.0, we can exclude something like `generated-sources`, even if the code ends up in the same package(S) as the regular code. See the
 discussion in https://github.com/societe-generale/arch-unit-maven-plugin/pull/44 for more details
 
+## Disable fallback for wrongly configured paths
+
+When no class files have been found using the configured paths, all folders of the current maven module are scanned for analysable classes. This could be a 
+problem in multi-module projects when some modules do not contain analyzable code (e.g. for packaging of web applications).
+
+This behavior can be disabled by setting the optional `fallbackToRootDirectory` element of the configuration to `false`. 
+
 ## Contribute !
 
 If you want to make changes in the Maven specific behavior, don't hesitate to open on issue on this repository and/or create a pull request.
