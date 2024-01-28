@@ -62,6 +62,9 @@ public class ArchUnitMojo extends AbstractMojo {
     @Parameter(property = "noFailOnError", defaultValue = "false")
     private boolean noFailOnError;
 
+    @Parameter(defaultValue = "true")
+    private boolean fallbackToRootDirectory = true;
+
     @Parameter
     private Map<String, String> properties = new HashMap<>();
 
@@ -102,7 +105,7 @@ public class ArchUnitMojo extends AbstractMojo {
             configureContextClassLoader();
             final Log mavenLogAdapter = new MavenLogAdapter(getLog());
 
-            ruleInvokerService = new RuleInvokerService(mavenLogAdapter, new MavenScopePathProvider(mavenProject), excludedPaths, projectBuildDir);
+            ruleInvokerService = new RuleInvokerService(mavenLogAdapter, new MavenScopePathProvider(mavenProject), excludedPaths, projectBuildDir, fallbackToRootDirectory);
 
             ruleFailureMessage = ruleInvokerService.invokeRules(coreRules);
         } catch (final Exception e) {
