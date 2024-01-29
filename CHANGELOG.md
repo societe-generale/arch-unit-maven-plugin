@@ -12,6 +12,19 @@
 
 ### Fixed
 
+## [3.0.2] - 2024-01-28
+
+### Changed
+
+- PR #67 - bumped arch-unit-build-plugin-core to 3.1.1
+
+
+## [3.0.1] - 2023-11-25
+
+### Changed
+
+- PR #60 - changed a log level  
+
 ## [3.0.0] - 2022-10-13 
 
 ### Added
