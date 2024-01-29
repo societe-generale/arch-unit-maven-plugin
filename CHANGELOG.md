@@ -12,6 +12,14 @@
 
 ### Fixed
 
+## [4.0.1] - 2024-01-28
+
+### Changed
+
+- PR #68 - upgrading to arch-unit-build-plugin-core 4.0.1 - thanks [@purnhar] !
+- various build related stuff
+
+
 ## [4.0.0] - 2023-11-17
 
 ### Changed
