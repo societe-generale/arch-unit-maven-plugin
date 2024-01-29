@@ -258,7 +258,7 @@ discussion in https://github.com/societe-generale/arch-unit-maven-plugin/pull/44
 ## Disable fallback for wrongly configured paths
 
 When no class files have been found using the configured paths, all folders of the current maven module are scanned for analysable classes. This could be a 
-problem in multi-module projects when some modules do not contain analyzable code (e.g. for packaging of web applications).
+problem in multi-modules projects when some modules do not contain analyzable code (e.g. for packaging of web applications), if you don't want to override the plugin config (by disabling it entirely) in some modules
 
 This behavior can be disabled by setting the optional `fallbackToRootDirectory` element of the configuration to `false`. 
 
