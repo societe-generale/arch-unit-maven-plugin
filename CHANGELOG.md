@@ -12,6 +12,13 @@
 
 ### Fixed
 
+## [4.0.2] - 2024-02-05
+
+### Fixed
+
+- rolled back the move to Mojo annotations introduced in 4.0.1, that was causing issue raised in https://github.com/societe-generale/arch-unit-maven-plugin/issues/69 
+
+
 ## [4.0.1] - 2024-01-28
 
 ### Changed
