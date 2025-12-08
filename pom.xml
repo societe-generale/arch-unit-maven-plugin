@@ -58,7 +58,7 @@
     <mockito.version>5.20.0</mockito.version>
     <assertj.version>3.27.6</assertj.version>
     <powermock.version>2.0.9</powermock.version>
-    <bind-api.version>4.0.1</bind-api.version>
+    <bind-api.version>4.0.4</bind-api.version>
     <jaxb.version>4.0.2</jaxb.version>
 
     <jaxb2.version>3.1.0</jaxb2.version>
