@@ -1,0 +1,53 @@
+name: "Feature request"
+description: "Suggest a new feature or an improvement."
+title: "[Feature] {{summary}}"
+type: feature
+assignees:
+  - vincent-fuchs
+  - paul58914080
+labels:
+  - enhancement
+  - needs-triage
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: "Short, descriptive summary of the requested feature."
+      placeholder: "Brief summary (<=120 chars)"
+    validations:
+      required: true
+      max_length: 120
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: "Why is this feature important? What problems does it solve?"
+      placeholder: "Why do you want this?"
+    validations:
+      required: true
+  - type: textarea
+    id: proposed_behavior
+    attributes:
+      label: Proposed behavior / API
+      description: "Describe the desired behavior. Give examples or pseudo-code if helpful."
+      placeholder: "Describe how the feature should behave."
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance_criteria
+    attributes:
+      label: Acceptance criteria (optional)
+      description: "Optional: define measurable acceptance criteria for the feature."
+      placeholder: "e.g. 'When X, then Y should happen'"
+    validations:
+      required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact (optional)
+      description: "Optional: your GitHub handle / email / link to more details."
+      placeholder: "@your-handle, email, or link"
+    validations:
+      required: false
+

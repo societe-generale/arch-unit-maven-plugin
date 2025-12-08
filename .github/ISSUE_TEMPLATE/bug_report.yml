@@ -1,0 +1,74 @@
+name: "Bug report"
+description: "Report a reproducible bug."
+title: "[Bug] {{summary}}"
+type: bug
+assignees:
+  - vincent-fuchs
+  - paul58914080
+labels:
+  - bug
+  - needs-triage
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: "Short, descriptive summary of the bug."
+      placeholder: "Brief summary (<=120 chars)"
+    validations:
+      required: true
+      max_length: 120
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: "Provide versions and environment details (e.g. Version, OS, JVM)."
+      placeholder: "Version: \nOS: \nJVM:"
+    validations:
+      required: false
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current behavior
+      description: "Describe what actually happens and include relevant logs or stack traces."
+      placeholder: "What happens now? Include logs or errors"
+    validations:
+      required: true
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected behavior
+      description: "Describe what you expected to happen."
+      placeholder: "What should happen instead?"
+    validations:
+      required: true
+  - type: textarea
+    id: steps_to_reproduce
+    attributes:
+      label: Steps to reproduce
+      description: "Step-by-step instructions to reproduce the bug. Exact commands, inputs, or links help a lot."
+      placeholder: "1) ...\n2) ...\n3) ..."
+    validations:
+      required: true
+  - type: checkboxes
+    id: attachments
+    attributes:
+      label: Additional information (optional)
+      description: "Optional: check items you can attach to help triage."
+      options:
+        - label: I can provide logs
+          required: false
+        - label: I can provide a small reproduction repository
+          required: false
+        - label: I can provide screenshots
+          required: false
+    validations:
+      required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact (optional)
+      description: "Optional: your GitHub handle / email / link to more details."
+      placeholder: "@your-handle, email, or link"
+    validations:
+      required: false

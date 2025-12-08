@@ -1,0 +1,45 @@
+name: "Question"
+description: "Ask a question about how to use the project, APIs or docs."
+title: "[Question] {{summary}}"
+type: question
+assignees:
+  - vincent-fuchs
+  - paul58914080
+labels:
+  - question
+  - needs-triage
+body:
+  - type: input
+    id: summary
+    attributes:
+      label: Summary
+      description: "Short summary of your question."
+      placeholder: "Brief summary (<=120 chars)"
+    validations:
+      required: true
+      max_length: 120
+  - type: textarea
+    id: details
+    attributes:
+      label: Details
+      description: "Explain your question in detail and what you've tried so far."
+      placeholder: "Provide context, code snippets, or links to docs."
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Your environment (optional)
+      description: "Optional: provide version, OS, or library versions if relevant."
+      placeholder: "Version: \nOS: \nLibraries:"
+    validations:
+      required: false
+  - type: input
+    id: contact
+    attributes:
+      label: Contact (optional)
+      description: "Optional: your GitHub handle / email / link to more details."
+      placeholder: "@your-handle, email, or link"
+    validations:
+      required: false
+
