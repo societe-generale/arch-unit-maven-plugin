@@ -1,442 +1,450 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.societegenerale.commons</groupId>
-    <artifactId>arch-unit-maven-plugin</artifactId>
-    <packaging>maven-plugin</packaging>
-    <version>4.0.3-SNAPSHOT</version>
-    <name>ArchUnit Maven plugin</name>
-    <description>An easy way to distribute ArchUnit rules across projects</description>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.societegenerale.commons</groupId>
+  <artifactId>arch-unit-maven-plugin</artifactId>
+  <packaging>maven-plugin</packaging>
+  <version>4.0.3-SNAPSHOT</version>
+  <name>ArchUnit Maven plugin</name>
+  <description>An easy way to distribute ArchUnit rules across projects</description>
+  <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
+
+  <developers>
+    <developer>
+      <id>arpitgarg9168</id>
+      <name>Arpit Garg</name>
+      <email>cs.arpit@gmail.com</email>
+    </developer>
+
+    <developer>
+      <id>vincent-fuchs</id>
+      <name>Vincent Fuchs</name>
+      <email>vincent.fuchs@gmail.com</email>
+    </developer>
+
+    <developer>
+      <id>FanJups</id>
+      <name>Fanon Jupkwo</name>
+      <email>jupsfan@gmail.com</email>
+    </developer>
+
+  </developers>
+
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <java.version>21</java.version>
+    <maven.compiler.source>${java.version}</maven.compiler.source>
+    <maven.compiler.target>${java.version}</maven.compiler.target>
+
+    <arch-unit-build-plugin-core.version>4.0.1</arch-unit-build-plugin-core.version>
+    <junit4.version>2.10</junit4.version>
+    <junit-jupiter.version>5.10.0</junit-jupiter.version>
+    <maven.core.version>3.9.3</maven.core.version>
+    <maven.plugin.annotation.version>3.9.0</maven.plugin.annotation.version>
+    <maven-plugin-testing.version>3.3.0</maven-plugin-testing.version>
+    <mockito.version>5.4.0</mockito.version>
+    <assertj.version>3.24.2</assertj.version>
+    <powermock.version>2.0.9</powermock.version>
+    <bind-api.version>4.0.1</bind-api.version>
+    <jaxb.version>4.0.2</jaxb.version>
+
+    <jaxb2.version>3.1.0</jaxb2.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
+    <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
+    <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+    <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
+    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
+    <maven-plugin-plugin.version>3.9.0</maven-plugin-plugin.version>
+    <jacoco.version>0.8.10</jacoco.version>
+    <coveralls.version>4.3.0</coveralls.version>
+    <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
+    <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
+    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+
+    <project.testresult.directory>${project.build.directory}/test-results
+    </project.testresult.directory>
+    <generated.test.source.directory>
+      ${project.basedir}/target/generated-test-sources/test-annotations
+    </generated.test.source.directory>
+  </properties>
+
+  <scm>
     <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
+    <connection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git
+    </developerConnection>
+    <tag>archUnit_maven_plugin_4.0.0</tag>
+  </scm>
 
-    <developers>
-        <developer>
-            <id>arpitgarg9168 </id>
-            <name>Arpit Garg</name>
-            <email>cs.arpit@gmail.com</email>
-        </developer>
+  <repositories>
+    <repository>
+      <id>sonatype-snapshots</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </repository>
+  </repositories>
 
-        <developer>
-            <id>vincent-fuchs</id>
-            <name>Vincent Fuchs</name>
-            <email>vincent.fuchs@gmail.com</email>
-        </developer>
+  <distributionManagement>
+    <snapshotRepository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+    </snapshotRepository>
+    <repository>
+      <id>ossrh</id>
+      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+    </repository>
+  </distributionManagement>
 
-        <developer>
-			<id>FanJups</id>
-			<name>Fanon Jupkwo</name>
-			<email>jupsfan@gmail.com</email>
-  		</developer>
+  <dependencies>
 
-    </developers>
+    <dependency>
+      <groupId>com.societegenerale.commons</groupId>
+      <artifactId>arch-unit-build-plugin-core</artifactId>
+      <version>${arch-unit-build-plugin-core.version}</version>
+    </dependency>
 
-    <licenses>
-        <license>
-            <name>Apache 2</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>21</java.version>
-        <maven.compiler.source>${java.version}</maven.compiler.source>
-        <maven.compiler.target>${java.version}</maven.compiler.target>
-
-        <arch-unit-build-plugin-core.version>4.0.1</arch-unit-build-plugin-core.version>
-        <junit4.version>2.10</junit4.version>
-        <junit-jupiter.version>5.10.0</junit-jupiter.version>
-        <maven.core.version>3.9.3</maven.core.version>
-        <maven.plugin.annotation.version>3.9.0</maven.plugin.annotation.version>
-        <maven-plugin-testing.version>3.3.0</maven-plugin-testing.version>
-        <mockito.version>5.4.0</mockito.version>
-        <assertj.version>3.24.2</assertj.version>
-        <powermock.version>2.0.9</powermock.version>
-        <bind-api.version>4.0.1</bind-api.version>
-        <jaxb.version>4.0.2</jaxb.version>
-
-        <jaxb2.version>3.1.0</jaxb2.version>
-        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
-        <maven-surefire-plugin.version>3.1.2</maven-surefire-plugin.version>
-        <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
-        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-        <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-        <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
-        <maven-plugin-plugin.version>3.9.0</maven-plugin-plugin.version>
-        <jacoco.version>0.8.10</jacoco.version>
-        <coveralls.version>4.3.0</coveralls.version>
-        <maven-source-plugin.version>3.3.0</maven-source-plugin.version>
-        <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-        <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
-
-        <project.testresult.directory>${project.build.directory}/test-results</project.testresult.directory>
-        <generated.test.source.directory>${project.basedir}/target/generated-test-sources/test-annotations</generated.test.source.directory>
-    </properties>
-
-    <scm>
-        <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
-        <connection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git</developerConnection>
-        <tag>archUnit_maven_plugin_4.0.0</tag>
-    </scm>
-
-    <repositories>
-        <repository>
-            <id>sonatype-snapshots</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </repository>
-    </repositories>
-
-    <distributionManagement>
-        <snapshotRepository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-        </snapshotRepository>
-        <repository>
-            <id>ossrh</id>
-            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-        </repository>
-    </distributionManagement>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>com.societegenerale.commons</groupId>
-            <artifactId>arch-unit-build-plugin-core</artifactId>
-            <version>${arch-unit-build-plugin-core.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.societegenerale.commons</groupId>
-            <artifactId>arch-unit-build-plugin-core</artifactId>
-            <version>${arch-unit-build-plugin-core.version}</version>
-            <classifier>tests</classifier>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>com.societegenerale.commons</groupId>
+      <artifactId>arch-unit-build-plugin-core</artifactId>
+      <version>${arch-unit-build-plugin-core.version}</version>
+      <classifier>tests</classifier>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
 
 
-        <dependency>
-            <groupId>com.tngtech.junit.dataprovider</groupId>
-            <artifactId>junit4-dataprovider</artifactId>
-            <version>${junit4.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>com.tngtech.junit.dataprovider</groupId>
+      <artifactId>junit4-dataprovider</artifactId>
+      <version>${junit4.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-core</artifactId>
-            <version>${maven.core.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-core</artifactId>
+      <version>${maven.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-            <version>${maven.plugin.annotation.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-tools</groupId>
+      <artifactId>maven-plugin-annotations</artifactId>
+      <version>${maven.plugin.annotation.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.apache.maven.plugin-testing</groupId>
-            <artifactId>maven-plugin-testing-harness</artifactId>
-            <version>${maven-plugin-testing.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.apache.maven.plugin-testing</groupId>
+      <artifactId>maven-plugin-testing-harness</artifactId>
+      <version>${maven-plugin-testing.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-compat</artifactId>
-            <version>${maven.core.version}</version>
-            <scope>provided</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.apache.maven</groupId>
+      <artifactId>maven-compat</artifactId>
+      <version>${maven.core.version}</version>
+      <scope>provided</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>${mockito.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>${assertj.version}</version>
-            <scope>test</scope>
-        </dependency>
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+      <scope>test</scope>
+    </dependency>
 
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <!-- Need to add powerMock as a dependency WITHOUT test scope. This way, we're sure the Powermock classes are part of the plugin, and will be found
-            by the plugin at runtime in different projects. Without it, NoPowerMockRuleTest actually won't work !
-             see https://github.com/TNG/ArchUnit/issues/120
-             -->
-        </dependency>
+    <dependency>
+      <groupId>org.powermock</groupId>
+      <artifactId>powermock-module-junit4</artifactId>
+      <version>${powermock.version}</version>
+      <!-- Need to add powerMock as a dependency WITHOUT test scope. This way, we're sure the Powermock classes are part of the plugin, and will be found
+      by the plugin at runtime in different projects. Without it, NoPowerMockRuleTest actually won't work !
+       see https://github.com/TNG/ArchUnit/issues/120
+       -->
+    </dependency>
 
-        <!--  needed to generate test classes above java 8      -->
-        <dependency>
+    <!--  needed to generate test classes above java 8      -->
+    <dependency>
+      <groupId>jakarta.xml.bind</groupId>
+      <artifactId>jakarta.xml.bind-api</artifactId>
+      <version>${bind-api.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.sun.xml.bind</groupId>
+      <artifactId>jaxb-impl</artifactId>
+      <version>${jaxb.version}</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>jaxb2-maven-plugin</artifactId>
+        <version>${jaxb2.version}</version>
+        <executions>
+          <execution>
+            <id>testXjc</id>
+            <goals>
+              <goal>testXjc</goal>
+            </goals>
+            <phase>generate-test-sources</phase>
+          </execution>
+        </executions>
+        <configuration>
+          <packageName>com.societegenerale.commons.plugin.maven.test.generated</packageName>
+          <outputDirectory>${generated.test.source.directory}</outputDirectory>
+          <testXjbSources>
+            <testXjbSource>${project.basedir}/src/test/resources/generate/book.xsd</testXjbSource>
+          </testXjbSources>
+          <testSources>
+            <testSource>${project.basedir}/src/test/resources/generate/book.xsd</testSource>
+          </testSources>
+          <clearOutputDir>true</clearOutputDir>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-xjc</artifactId>
+            <version>${jaxb.version}</version>
+            <scope>compile</scope>
+          </dependency>
+          <dependency>
             <groupId>jakarta.xml.bind</groupId>
             <artifactId>jakarta.xml.bind-api</artifactId>
             <version>${bind-api.version}</version>
             <scope>compile</scope>
-        </dependency>
-
-        <dependency>
+          </dependency>
+          <dependency>
             <groupId>com.sun.xml.bind</groupId>
             <artifactId>jaxb-impl</artifactId>
             <version>${jaxb.version}</version>
             <scope>compile</scope>
-        </dependency>
-    </dependencies>
+          </dependency>
+        </dependencies>
+      </plugin>
 
-    <build>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
+        <configuration>
+          <source>${maven.compiler.source}</source>
+          <target>${maven.compiler.target}</target>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>compile-generated-test-source</id>
+            <phase>test-compile</phase>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+            <configuration>
+              <compileSourceRoots>
+                <compileSourceRoot>${generated.test.source.directory}</compileSourceRoot>
+              </compileSourceRoots>
+              <generatedTestSourcesDirectory>${generated.test.source.directory}
+              </generatedTestSourcesDirectory>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <!-- Sets the VM argument line used when unit tests are run. -->
+          <argLine>${surefireArgLine}</argLine>
+          <includes>
+            <include>**/*Test.java</include>
+          </includes>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.junit.vintage</groupId>
+            <artifactId>junit-vintage-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <version>${maven-deploy-plugin.version}</version>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${maven-javadoc-plugin.version}</version>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.sonatype.plugins</groupId>
+        <artifactId>nexus-staging-maven-plugin</artifactId>
+        <version>${nexus-staging-maven-plugin.version}</version>
+        <extensions>true</extensions>
+        <configuration>
+          <serverId>ossrh</serverId>
+          <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+          <autoReleaseAfterClose>true</autoReleaseAfterClose>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-release-plugin</artifactId>
+        <version>${maven-release-plugin.version}</version>
+        <configuration>
+          <stagingRepository>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2
+          </stagingRepository>
+          <tagNameFormat>archUnit_maven_plugin_@{project.version}</tagNameFormat>
+          <localCheckout>true</localCheckout>
+          <autoVersionSubmodules>true</autoVersionSubmodules>
+          <pushChanges>false</pushChanges>
+          <useReleaseProfile>false</useReleaseProfile>
+          <releaseProfiles>makeRelease</releaseProfiles>
+          <mavenExecutorId>forked-path</mavenExecutorId>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>${maven-plugin-plugin.version}</version>
+        <configuration>
+          <goalPrefix>arch-unit</goalPrefix>
+          <requiredJavaVersion>21</requiredJavaVersion>
+        </configuration>
+        <executions>
+          <execution>
+            <id>default-descriptor</id>
+            <phase>process-classes</phase>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco.version}</version>
+        <executions>
+          <execution>
+            <id>pre-unit-tests</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+            <configuration>
+              <propertyName>surefireArgLine</propertyName>
+            </configuration>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eluder.coveralls</groupId>
+        <artifactId>coveralls-maven-plugin</artifactId>
+        <version>${coveralls.version}</version>
+      </plugin>
+    </plugins>
+  </build>
+
+  <profiles>
+    <profile>
+      <id>makeRelease</id>
+      <build>
         <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>jaxb2-maven-plugin</artifactId>
-                <version>${jaxb2.version}</version>
-                <executions>
-                    <execution>
-                        <id>testXjc</id>
-                        <goals>
-                            <goal>testXjc</goal>
-                        </goals>
-                        <phase>generate-test-sources</phase>
-                    </execution>
-                </executions>
-                <configuration>
-                    <packageName>com.societegenerale.commons.plugin.maven.test.generated</packageName>
-                    <outputDirectory>${generated.test.source.directory}</outputDirectory>
-                    <testXjbSources>
-                        <testXjbSource>${project.basedir}/src/test/resources/generate/book.xsd</testXjbSource>
-                    </testXjbSources>
-                    <testSources>
-                        <testSource>${project.basedir}/src/test/resources/generate/book.xsd</testSource>
-                    </testSources>
-                    <clearOutputDir>true</clearOutputDir>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.glassfish.jaxb</groupId>
-                        <artifactId>jaxb-xjc</artifactId>
-                        <version>${jaxb.version}</version>
-                        <scope>compile</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>jakarta.xml.bind</groupId>
-                        <artifactId>jakarta.xml.bind-api</artifactId>
-                        <version>${bind-api.version}</version>
-                        <scope>compile</scope>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.sun.xml.bind</groupId>
-                        <artifactId>jaxb-impl</artifactId>
-                        <version>${jaxb.version}</version>
-                        <scope>compile</scope>
-                    </dependency>
-                </dependencies>
-            </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>default</id>
-                        <phase>compile</phase>
-                        <goals>
-                            <goal>compile</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>compile-generated-test-source</id>
-                        <phase>test-compile</phase>
-                        <goals>
-                            <goal>testCompile</goal>
-                        </goals>
-                        <configuration>
-                            <compileSourceRoots>
-                                <compileSourceRoot>${generated.test.source.directory}</compileSourceRoot>
-                            </compileSourceRoots>
-                            <generatedTestSourcesDirectory>${generated.test.source.directory}</generatedTestSourcesDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>
+            <version>${maven-source-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>attach-sources</id>
+                <goals>
+                  <goal>jar-no-fork</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-plugin.version}</version>
-                <configuration>
-                    <!-- Sets the VM argument line used when unit tests are run. -->
-                    <argLine>${surefireArgLine}</argLine>
-                    <includes>
-                        <include>**/*Test.java</include>
-                    </includes>
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.junit.vintage</groupId>
-                        <artifactId>junit-vintage-engine</artifactId>
-                        <version>${junit-jupiter.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>${maven-javadoc-plugin.version}</version>
+            <configuration>
+              <encoding>UTF-8</encoding>
+            </configuration>
+            <executions>
+              <execution>
+                <id>attach-javadoc</id>
+                <goals>
+                  <goal>jar</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
 
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <version>${maven-deploy-plugin.version}</version>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>${nexus-staging-maven-plugin.version}</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>${maven-release-plugin.version}</version>
-                <configuration>
-                    <stagingRepository>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2</stagingRepository>
-                    <tagNameFormat>archUnit_maven_plugin_@{project.version}</tagNameFormat>
-                    <localCheckout>true</localCheckout>
-                    <autoVersionSubmodules>true</autoVersionSubmodules>
-                    <pushChanges>false</pushChanges>
-                    <useReleaseProfile>false</useReleaseProfile>
-                    <releaseProfiles>makeRelease</releaseProfiles>
-                    <mavenExecutorId>forked-path</mavenExecutorId>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-plugin-plugin</artifactId>
-                <version>${maven-plugin-plugin.version}</version>
-                <configuration>
-                    <goalPrefix>arch-unit</goalPrefix>
-                    <requiredJavaVersion>21</requiredJavaVersion>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>default-descriptor</id>
-                        <phase>process-classes</phase>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <id>pre-unit-tests</id>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                        <configuration>
-                            <propertyName>surefireArgLine</propertyName>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>test</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.eluder.coveralls</groupId>
-                <artifactId>coveralls-maven-plugin</artifactId>
-                <version>${coveralls.version}</version>
-            </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <version>${maven-gpg-plugin.version}</version>
+            <executions>
+              <execution>
+                <id>sign-artifacts</id>
+                <phase>verify</phase>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
         </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>makeRelease</id>
-            <build>
-                <plugins>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-source-plugin</artifactId>
-                        <version>${maven-source-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>attach-sources</id>
-                                <goals>
-                                    <goal>jar-no-fork</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>${maven-javadoc-plugin.version}</version>
-                        <configuration>
-                            <encoding>UTF-8</encoding>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>attach-javadoc</id>
-                                <goals>
-                                    <goal>jar</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-gpg-plugin</artifactId>
-                        <version>${maven-gpg-plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <id>sign-artifacts</id>
-                                <phase>verify</phase>
-                                <goals>
-                                    <goal>sign</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
+      </build>
+    </profile>
+  </profiles>
 </project>
