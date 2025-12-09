@@ -6,7 +6,7 @@
   <groupId>com.societegenerale.commons</groupId>
   <artifactId>arch-unit-maven-plugin</artifactId>
   <packaging>maven-plugin</packaging>
-  <version>4.0.3-SNAPSHOT</version>
+  <version>5.0.1</version>
   <name>ArchUnit Maven plugin</name>
   <description>An easy way to distribute ArchUnit rules across projects</description>
   <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
@@ -30,15 +30,30 @@
       <email>jupsfan@gmail.com</email>
     </developer>
 
+
+    <developer>
+      <id>paul58914080</id>
+      <name>Paul Williams</name>
+      <email>paul58914080@gmail.com</email>
+      <url>https://github.com/paul58914080</url>
+    </developer>
   </developers>
 
   <licenses>
     <license>
       <name>Apache 2</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+      <url>https://www.apache.org/licenses/LICENSE-2.0.html</url>
       <distribution>repo</distribution>
     </license>
   </licenses>
+
+  <scm>
+    <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
+    <connection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git</connection>
+    <developerConnection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git
+    </developerConnection>
+    <tag>HEAD</tag>
+  </scm>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -66,14 +81,12 @@
     <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
     <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
     <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-    <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
     <maven-plugin-plugin.version>3.15.2</maven-plugin-plugin.version>
     <jacoco.version>0.8.14</jacoco.version>
     <coveralls.version>4.3.0</coveralls.version>
     <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
     <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
-    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+    <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 
     <project.testresult.directory>${project.build.directory}/test-results
     </project.testresult.directory>
@@ -82,56 +95,25 @@
     </generated.test.source.directory>
   </properties>
 
-  <scm>
-    <url>https://github.com/societe-generale/arch-unit-maven-plugin</url>
-    <connection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git</connection>
-    <developerConnection>scm:git:git@github.com:societe-generale/arch-unit-maven-plugin.git
-    </developerConnection>
-    <tag>archUnit_maven_plugin_4.0.0</tag>
-  </scm>
-
-  <repositories>
-    <repository>
-      <id>sonatype-snapshots</id>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-  </repositories>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <repository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-    </repository>
-  </distributionManagement>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit-jupiter.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
   <dependencies>
 
-
-    <dependency>
-      <groupId>org.junit.vintage</groupId>
-      <artifactId>junit-vintage-engine</artifactId>
-      <version>${junit-jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>com.societegenerale.commons</groupId>
       <artifactId>arch-unit-build-plugin-core</artifactId>
       <version>${arch-unit-build-plugin-core.version}</version>
     </dependency>
-
-    <dependency>
-      <groupId>com.societegenerale.commons</groupId>
-      <artifactId>arch-unit-build-plugin-core</artifactId>
-      <version>${arch-unit-build-plugin-core.version}</version>
-      <classifier>tests</classifier>
-      <type>test-jar</type>
-      <scope>test</scope>
-    </dependency>
-
 
     <dependency>
       <groupId>com.tngtech.junit.dataprovider</groupId>
@@ -169,22 +151,10 @@
     </dependency>
 
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>${mockito.version}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>${lombok.version}</version>
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>${assertj.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -210,6 +180,37 @@
       <artifactId>jaxb-impl</artifactId>
       <version>${jaxb.version}</version>
       <scope>compile</scope>
+    </dependency>
+
+    <!-- test -->
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>${junit-jupiter.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>${mockito.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.assertj</groupId>
+      <artifactId>assertj-core</artifactId>
+      <version>${assertj.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.societegenerale.commons</groupId>
+      <artifactId>arch-unit-build-plugin-core</artifactId>
+      <version>${arch-unit-build-plugin-core.version}</version>
+      <classifier>tests</classifier>
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
@@ -317,50 +318,6 @@
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-deploy-plugin</artifactId>
-        <version>${maven-deploy-plugin.version}</version>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>${maven-javadoc-plugin.version}</version>
-        <configuration>
-          <skip>true</skip>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>${nexus-staging-maven-plugin.version}</version>
-        <extensions>true</extensions>
-        <configuration>
-          <serverId>ossrh</serverId>
-          <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-          <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-release-plugin</artifactId>
-        <version>${maven-release-plugin.version}</version>
-        <configuration>
-          <stagingRepository>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2
-          </stagingRepository>
-          <tagNameFormat>archUnit_maven_plugin_@{project.version}</tagNameFormat>
-          <localCheckout>true</localCheckout>
-          <autoVersionSubmodules>true</autoVersionSubmodules>
-          <pushChanges>false</pushChanges>
-          <useReleaseProfile>false</useReleaseProfile>
-          <releaseProfiles>makeRelease</releaseProfiles>
-          <mavenExecutorId>forked-path</mavenExecutorId>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <version>${maven-plugin-plugin.version}</version>
         <configuration>
@@ -398,12 +355,6 @@
           </execution>
         </executions>
       </plugin>
-
-      <plugin>
-        <groupId>org.eluder.coveralls</groupId>
-        <artifactId>coveralls-maven-plugin</artifactId>
-        <version>${coveralls.version}</version>
-      </plugin>
     </plugins>
   </build>
 
@@ -412,7 +363,6 @@
       <id>makeRelease</id>
       <build>
         <plugins>
-
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
@@ -457,6 +407,25 @@
                 </goals>
               </execution>
             </executions>
+            <configuration>
+              <gpgArguments>
+                <arg>--pinentry-mode</arg>
+                <arg>loopback</arg>
+              </gpgArguments>
+            </configuration>
+          </plugin>
+
+          <!-- ✨ NEW Sonatype Central Publishing Plugin -->
+          <plugin>
+            <groupId>org.sonatype.central</groupId>
+            <artifactId>central-publishing-maven-plugin</artifactId>
+            <version>0.9.0</version>
+            <extensions>true</extensions>
+            <configuration>
+              <publishingServerId>central</publishingServerId>
+              <autoPublish>true</autoPublish>
+              <waitUntil>published</waitUntil>
+            </configuration>
           </plugin>
         </plugins>
       </build>
