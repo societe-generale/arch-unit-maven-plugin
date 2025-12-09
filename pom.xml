@@ -74,7 +74,7 @@
     <assertj.version>3.27.6</assertj.version>
     <powermock.version>2.0.9</powermock.version>
     <bind-api.version>4.0.4</bind-api.version>
-    <jaxb.version>4.0.2</jaxb.version>
+    <jaxb.version>4.0.6</jaxb.version>
 
     <jaxb2.version>4.0.0</jaxb2.version>
     <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
