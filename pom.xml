@@ -81,14 +81,12 @@
     <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
     <maven-deploy-plugin.version>3.1.1</maven-deploy-plugin.version>
     <maven-javadoc-plugin.version>3.5.0</maven-javadoc-plugin.version>
-    <nexus-staging-maven-plugin.version>1.6.13</nexus-staging-maven-plugin.version>
-    <maven-release-plugin.version>3.0.1</maven-release-plugin.version>
     <maven-plugin-plugin.version>3.15.2</maven-plugin-plugin.version>
     <jacoco.version>0.8.14</jacoco.version>
     <coveralls.version>4.3.0</coveralls.version>
     <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
     <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
-    <maven-gpg-plugin.version>3.1.0</maven-gpg-plugin.version>
+    <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
 
     <project.testresult.directory>${project.build.directory}/test-results
     </project.testresult.directory>
