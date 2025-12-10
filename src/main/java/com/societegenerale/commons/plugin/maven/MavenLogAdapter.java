@@ -42,6 +42,6 @@ public class MavenLogAdapter implements Log {
 
     @Override
     public void debug(String msg, Throwable t) {
-        mavenLogger.warn(msg, t);
+        mavenLogger.debug(msg, t);
     }
 }
