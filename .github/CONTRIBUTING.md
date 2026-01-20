@@ -76,7 +76,7 @@ further defined and clarified by project maintainers.
 ### Enforcement
 
 Instances of abusive, harassing, or otherwise unacceptable behavior may be
-reported by contacting the project team at [paul58914080@gmail.com](mailto:paul58914080@gmail.com).
+reported by contacting the project team at [opensource@socgen.com](mailto:opensource@socgen.com).
 All
 complaints will be reviewed and investigated and will result in a response that
 is deemed necessary and appropriate to the circumstances. The project team is
